@@ -1,0 +1,798 @@
+<title>독립·광복 탐험 수첩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#FFF7EA; --paper-2:#FFEFD6; --card:#FFFFFF;
+  --ink:#3E2A1E; --ink-soft:#7A5C48; --line:#EBD7BC;
+  --tang:#FF8A3D; --tang-d:#D9661A; --tang-bg:#FFE9D9;
+  --mint:#3FB987; --mint-d:#23895F; --mint-bg:#E1F6EC;
+  --sky:#4E9BE8; --sky-d:#2F74BD; --sky-bg:#E4F0FC;
+  --pink:#F2708F; --pink-d:#C94A69; --pink-bg:#FFE6EC;
+  --butter:#F5B800; --butter-d:#B88400; --butter-bg:#FFF3C7;
+  --ok:#23945E; --ok-bg:#DDF5E8; --no:#D9434A; --no-bg:#FDE3E3;
+  --display:"Jua", "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body:"Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  --r:18px;
+}
+*{box-sizing:border-box}
+html,body{background:var(--paper)}
+body{
+  margin:0; color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.7;
+  background-color:var(--paper);
+  background-image:radial-gradient(var(--line) 1.2px, transparent 1.3px);
+  background-size:22px 22px;
+  word-break:keep-all; overflow-wrap:break-word;
+}
+h1,h2,h3,h4,.disp{font-family:var(--display); font-weight:400; line-height:1.3; text-wrap:balance; margin:0}
+p{margin:0}
+a{color:inherit}
+button{font-family:var(--display); font-size:16px; cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--tang); outline-offset:2px}
+img{max-width:100%; display:block}
+.wrap{max-width:980px; margin:0 auto; padding-inline:16px}
+
+/* ---------- header ---------- */
+.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:30; background:rgba(255,247,234,.94); backdrop-filter:blur(6px); border-bottom:2px dashed var(--line)}
+.top .wrap{display:flex; align-items:center; gap:12px; padding-block:10px; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:8px; margin-right:auto; background:none; border:0; padding:0; color:var(--ink)}
+.brand svg{width:38px; height:44px}
+.brand b{font-family:var(--display); font-weight:400; font-size:21px}
+.stamps{display:flex; gap:5px; align-items:center}
+.stamps span{width:26px; height:26px; border-radius:50%; border:2px dashed #D8BFA0; display:grid; place-items:center; font-family:var(--display); font-size:12px; color:#B09077; transition:.3s}
+.stamps span.on{border:2px solid var(--no); color:var(--no); background:#FFF0F0; transform:rotate(-12deg)}
+.nav{display:flex; gap:6px; overflow-x:auto; width:100%; padding-bottom:2px; scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav button{flex:0 0 auto; border:2px solid var(--line); background:var(--card); color:var(--ink-soft); border-radius:999px; padding:4px 14px; font-size:15px}
+.nav button[aria-current="true"]{background:var(--ink); border-color:var(--ink); color:#fff}
+
+/* ---------- common ---------- */
+main{padding-block:24px 60px}
+.screen{display:grid; gap:22px}
+.btn{border:0; border-radius:14px; padding:10px 20px; background:var(--tang); color:#fff; box-shadow:0 4px 0 var(--tang-d); transition:transform .1s, box-shadow .1s}
+.btn:active{transform:translateY(3px); box-shadow:0 1px 0 var(--tang-d)}
+.btn.ghost{background:var(--card); color:var(--ink); box-shadow:0 4px 0 var(--line); border:2px solid var(--line)}
+.btn.small{padding:6px 14px; font-size:15px}
+.btn[disabled]{opacity:.45; cursor:not-allowed}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.chip{display:inline-block; font-family:var(--display); font-size:14px; padding:2px 12px; border-radius:999px; background:var(--paper-2); color:var(--ink-soft)}
+.panel{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:22px}
+.muted{color:var(--ink-soft)}
+.small{font-size:14px}
+mark{background:linear-gradient(transparent 55%, var(--butter-bg) 55%); color:inherit; font-weight:700; padding:0 2px}
+.sec-title{display:flex; align-items:center; gap:10px}
+.sec-title h2{font-size:26px}
+.sec-title .num{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; color:#fff; font-family:var(--display); font-size:20px; flex:0 0 auto}
+
+/* theme per lesson */
+[data-c="mint"]{--c:var(--mint); --cd:var(--mint-d); --cb:var(--mint-bg)}
+[data-c="sky"]{--c:var(--sky); --cd:var(--sky-d); --cb:var(--sky-bg)}
+[data-c="pink"]{--c:var(--pink); --cd:var(--pink-d); --cb:var(--pink-bg)}
+[data-c="butter"]{--c:var(--butter); --cd:var(--butter-d); --cb:var(--butter-bg)}
+[data-c="tang"]{--c:var(--tang); --cd:var(--tang-d); --cb:var(--tang-bg)}
+
+/* ---------- home ---------- */
+.hero{display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; background:var(--card); border:2px solid var(--line); border-radius:24px; padding:22px; position:relative; overflow:hidden}
+.hero .mascot{width:110px}
+.bubble{position:relative; background:var(--butter-bg); border-radius:18px; padding:12px 16px; font-size:16px}
+.bubble::before{content:""; position:absolute; left:-10px; top:22px; border:10px solid transparent; border-right-color:var(--butter-bg); border-left:0}
+.hero h1{font-size:clamp(26px,5vw,38px); margin-block:6px 8px}
+.hero .unit{font-family:var(--display); color:var(--tang-d); font-size:16px}
+.goals{display:grid; gap:8px; margin-top:12px; padding:0; list-style:none}
+.goals li{display:flex; gap:8px; align-items:flex-start; font-size:16px}
+.goals li::before{content:""; flex:0 0 18px; height:18px; margin-top:5px; border-radius:6px; border:2px solid var(--mint)}
+
+.timeline{overflow-x:auto; padding-bottom:6px}
+.tl{display:grid; grid-template-columns:repeat(6, minmax(130px,1fr)); gap:0; min-width:780px; position:relative; padding-top:14px}
+.tl::before{content:""; position:absolute; left:6%; right:6%; top:34px; height:6px; border-radius:3px; background:repeating-linear-gradient(90deg,var(--tang) 0 14px, transparent 14px 22px)}
+.tl .ev{text-align:center; display:grid; justify-items:center; gap:6px; padding-inline:4px; position:relative}
+.tl .dot{width:44px; height:44px; border-radius:50%; background:var(--card); border:4px solid var(--c); display:grid; place-items:center; font-family:var(--display); color:var(--cd); font-size:15px; z-index:1}
+.tl .ev b{font-family:var(--display); font-weight:400; font-size:17px}
+.tl .ev small{font-size:13px; color:var(--ink-soft); line-height:1.4}
+
+.courses{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px}
+.course{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:16px; text-align:left; color:var(--ink); display:grid; gap:6px; align-content:start; position:relative; box-shadow:0 5px 0 var(--cb); transition:transform .15s}
+.course:hover{transform:translateY(-3px)}
+.course .tag{font-family:var(--display); font-size:13px; color:#fff; background:var(--c); border-radius:999px; padding:1px 10px; justify-self:start}
+.course h3{font-size:19px}
+.course p{font-family:var(--body); font-size:14px; color:var(--ink-soft); line-height:1.5}
+.course .done{position:absolute; right:10px; top:10px; width:44px; height:44px; border-radius:50%; border:2px solid var(--no); color:var(--no); font-family:var(--display); font-size:12px; display:grid; place-items:center; transform:rotate(-14deg); background:#FFF0F0}
+.how{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px}
+.how div{background:var(--paper-2); border-radius:14px; padding:12px 14px; font-size:15px}
+.how b{font-family:var(--display); font-weight:400; font-size:17px; display:block}
+details.teacher{background:var(--card); border:2px dashed var(--line); border-radius:var(--r); padding:14px 18px}
+details.teacher summary{font-family:var(--display); font-size:18px; cursor:pointer}
+details.teacher table{border-collapse:collapse; width:100%; font-size:15px; margin-top:10px}
+details.teacher td,details.teacher th{border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top}
+details.teacher th{background:var(--paper-2); font-family:var(--display); font-weight:400}
+
+/* ---------- lesson ---------- */
+.lhead{background:var(--cb); border-radius:24px; padding:22px; display:grid; gap:8px}
+.lhead .k{font-family:var(--display); color:var(--cd)}
+.lhead h1{font-size:clamp(24px,4.4vw,34px)}
+.steps{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
+.steps a{font-family:var(--display); text-decoration:none; background:var(--card); border-radius:999px; padding:3px 14px; font-size:15px; color:var(--cd); border:2px solid var(--c)}
+.cards{display:grid; gap:18px}
+.card{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:20px; display:grid; grid-template-columns:1fr; gap:14px}
+.card.has-pics{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.card header{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.card h3{font-size:22px}
+.card .era{font-family:var(--display); font-size:13px; color:var(--cd); background:var(--cb); padding:2px 10px; border-radius:999px}
+.card ul{margin:0; padding-left:1.1em; display:grid; gap:6px}
+.card li::marker{color:var(--c)}
+.easy{background:var(--paper-2); border-radius:12px; padding:10px 14px; font-size:15px; margin-top:4px}
+.easy b{font-family:var(--display); font-weight:400; color:var(--tang-d); margin-right:4px}
+.pics{display:grid; gap:14px; align-content:start}
+.pics.two{grid-template-columns:1fr 1fr}
+figure{margin:0; background:#fff; padding:8px 8px 6px; border-radius:6px; box-shadow:0 2px 0 var(--line), 0 6px 14px rgba(62,42,30,.08); position:relative; transform:rotate(var(--rot,-1deg))}
+figure:nth-child(2n){--rot:1.2deg}
+figure::before{content:""; position:absolute; top:-9px; left:50%; width:70px; height:20px; transform:translateX(-50%) rotate(-3deg); background:color-mix(in srgb, var(--c, var(--butter)) 45%, transparent); border-radius:2px}
+figure button{border:0; padding:0; background:none; display:block; width:100%; cursor:zoom-in}
+figure img{width:100%; height:170px; object-fit:cover; border-radius:3px; background:var(--paper-2)}
+figure img.contain{object-fit:contain; background:#fff}
+figcaption{font-size:13px; line-height:1.45; padding-top:6px; color:var(--ink)}
+.law{display:grid; gap:10px}
+.law .item{background:var(--paper-2); border-radius:12px; padding:10px 14px; display:grid; gap:4px}
+.law .item p{font-weight:700}
+.law .item button{justify-self:start; border:0; background:none; color:var(--cd); font-family:var(--display); padding:0; font-size:15px; text-decoration:underline; text-underline-offset:3px}
+.law .item .ans{font-size:15px; color:var(--ink)}
+
+/* blanks */
+.blank-box{background:var(--card); border:3px solid var(--c); border-radius:24px; padding:22px; display:grid; gap:14px; position:relative}
+.blank-box .hd{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.blank-box h2{font-size:24px}
+.bl{display:grid; gap:4px; padding:12px 14px; border-radius:14px; background:var(--paper); border:2px solid transparent}
+.bl .topic{font-family:var(--display); font-size:13px; color:var(--cd)}
+.bl .sent{line-height:2.1}
+.bl input{font-family:var(--display); font-size:17px; width:9.5em; max-width:100%; padding:2px 10px; border:0; border-bottom:3px solid var(--c); background:var(--cb); border-radius:8px 8px 0 0; color:var(--ink); text-align:center}
+.bl.ok{border-color:var(--ok); background:var(--ok-bg)}
+.bl.no{border-color:var(--no); background:var(--no-bg)}
+.bl .fb{font-size:14px; min-height:0}
+.bl.ok .fb{color:var(--ok)} .bl.no .fb{color:var(--no)}
+.bl .hint{font-size:14px; color:var(--ink-soft)}
+.score{font-family:var(--display); font-size:20px}
+.think{background:var(--cb); border-radius:var(--r); padding:18px; display:grid; gap:10px}
+.think h3{font-size:20px}
+.think textarea{font-family:var(--body); font-size:16px; width:100%; min-height:90px; border:2px solid var(--line); border-radius:12px; padding:10px; background:#fff; color:var(--ink); resize:vertical}
+.think .ex{background:#fff; border-radius:12px; padding:10px 14px; font-size:15px}
+
+/* links */
+.links{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px}
+.lk{display:grid; gap:2px; text-decoration:none; background:var(--card); border:2px solid var(--line); border-radius:14px; padding:12px 14px; transition:border-color .15s, transform .15s}
+.lk:hover{border-color:var(--c); transform:translateY(-2px)}
+.lk .src{font-size:12px; font-family:var(--display); color:var(--cd)}
+.lk b{font-family:var(--display); font-weight:400; font-size:17px}
+.lk span{font-size:14px; color:var(--ink-soft); line-height:1.5}
+.lk::after{content:"새 창으로 열기 ↗"; font-size:12px; color:var(--ink-soft); margin-top:4px}
+.stampbar{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; background:var(--card); border:2px dashed var(--c); border-radius:var(--r); padding:14px 18px}
+
+/* play */
+.game{background:var(--card); border:2px solid var(--line); border-radius:24px; padding:22px; display:grid; gap:14px}
+.game h2{font-size:24px}
+.pool,.slots{display:flex; flex-wrap:wrap; gap:8px}
+.pool button{border:2px solid var(--butter); background:var(--butter-bg); border-radius:12px; padding:8px 14px; color:var(--ink)}
+.pool button[disabled]{opacity:.3}
+.slots{counter-reset:s; min-height:56px; background:var(--paper); border-radius:14px; padding:10px; align-items:center}
+.slots span{counter-increment:s; font-family:var(--display); background:#fff; border:2px solid var(--line); border-radius:12px; padding:6px 12px}
+.slots span::before{content:counter(s) ". "; color:var(--tang-d)}
+.slots span.ok{border-color:var(--ok); background:var(--ok-bg)} .slots span.no{border-color:var(--no); background:var(--no-bg)}
+.slots em{color:var(--ink-soft); font-style:normal; font-size:15px}
+.det{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; align-items:center}
+.det figure img{height:240px; object-fit:contain; background:#fff}
+.opts{display:grid; gap:8px}
+.opts button{border:2px solid var(--line); background:var(--card); border-radius:12px; padding:10px; text-align:left; color:var(--ink)}
+.opts button.ok{border-color:var(--ok); background:var(--ok-bg)} .opts button.no{border-color:var(--no); background:var(--no-bg)}
+.match{display:grid; gap:10px}
+.match .m{display:grid; grid-template-columns:130px 1fr auto; gap:10px; align-items:center; background:var(--paper); border-radius:12px; padding:8px 12px; border:2px solid transparent}
+.match .m b{font-family:var(--display); font-weight:400; font-size:18px}
+.match select{font-family:var(--body); font-size:15px; padding:6px 8px; border-radius:10px; border:2px solid var(--line); background:#fff; color:var(--ink); width:100%}
+.match .m.ok{border-color:var(--ok); background:var(--ok-bg)} .match .m.no{border-color:var(--no); background:var(--no-bg)}
+.match .mark{font-family:var(--display); width:24px; text-align:center}
+.progress{height:10px; background:var(--paper-2); border-radius:6px; overflow:hidden}
+.progress i{display:block; height:100%; background:var(--butter); transition:width .3s}
+
+/* final */
+.q{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:16px 18px; display:grid; gap:10px}
+.q h3{font-size:18px; font-family:var(--body); font-weight:700}
+.q h3 .n{font-family:var(--display); font-weight:400; color:var(--tang-d); margin-right:6px}
+.q label{display:flex; gap:10px; align-items:flex-start; padding:8px 12px; border-radius:10px; border:2px solid var(--paper-2); cursor:pointer; font-size:16px}
+.q label:has(input:checked){border-color:var(--tang); background:var(--tang-bg)}
+.q input{margin-top:6px; accent-color:var(--tang)}
+.q label.right{border-color:var(--ok); background:var(--ok-bg)}
+.q label.wrong{border-color:var(--no); background:var(--no-bg)}
+.q .exp{font-size:15px; background:var(--paper); border-radius:10px; padding:8px 12px}
+.self{display:grid; gap:10px}
+.self .s{display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; background:var(--paper); border-radius:12px; padding:10px 14px}
+.stars{display:flex; gap:4px}
+.stars button{border:0; background:none; font-size:26px; line-height:1; color:var(--line); padding:0 2px}
+.stars button.on{color:var(--butter)}
+.cert{background:#fff; border:3px double var(--tang); border-radius:24px; padding:26px 22px; text-align:center; display:grid; gap:12px; justify-items:center; position:relative; overflow:hidden}
+.cert::before,.cert::after{content:""; position:absolute; width:140px; height:140px; border-radius:50%; background:var(--butter-bg); z-index:0}
+.cert::before{left:-50px; top:-50px} .cert::after{right:-50px; bottom:-50px; background:var(--mint-bg)}
+.cert > *{position:relative; z-index:1}
+.cert h2{font-size:30px; color:var(--tang-d)}
+.cert input{font-family:var(--display); font-size:22px; text-align:center; border:0; border-bottom:3px dashed var(--tang); background:transparent; width:220px; max-width:100%; color:var(--ink)}
+.cert .big-stamps{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+.cert .big-stamps span{width:60px; height:60px; border-radius:50%; border:3px solid var(--line); display:grid; place-items:center; font-family:var(--display); font-size:13px; color:var(--line); line-height:1.1}
+.cert .big-stamps span.on{border-color:var(--no); color:var(--no); transform:rotate(-10deg); background:#FFF0F0}
+
+.credits{font-size:13px; color:var(--ink-soft)}
+.credits summary{font-family:var(--display); font-size:16px; cursor:pointer; color:var(--ink)}
+.credits ol{padding-left:1.3em; display:grid; gap:2px; margin:8px 0 0}
+
+/* lightbox */
+.lb{position:fixed; inset:0; background:rgba(40,26,18,.82); z-index:50; display:grid; place-items:center; padding:20px}
+.lb figure{transform:none; max-width:min(92vw,720px)}
+.lb figure::before{display:none}
+.lb img{height:auto; max-height:72vh; object-fit:contain}
+.lb .x{position:absolute; top:16px; right:16px}
+
+.toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:#fff; font-family:var(--display); padding:10px 20px; border-radius:999px; z-index:60; font-size:16px; box-shadow:0 6px 18px rgba(0,0,0,.2)}
+@keyframes pop{0%{transform:scale(.3) rotate(-30deg);opacity:0}70%{transform:scale(1.15) rotate(-8deg);opacity:1}100%{transform:scale(1) rotate(-12deg)}}
+.pop{animation:pop .5s ease-out}
+@keyframes wob{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.hero .mascot{animation:wob 3s ease-in-out infinite; transform-origin:50% 90%}
+@media (prefers-reduced-motion: reduce){*{animation:none!important; transition:none!important}}
+
+@media (max-width:720px){
+  .card.has-pics{grid-template-columns:1fr}
+  .det{grid-template-columns:1fr}
+  .hero{grid-template-columns:1fr; text-align:left}
+  .hero .mascot{width:80px}
+  .bubble::before{display:none}
+  .match .m{grid-template-columns:1fr auto}
+  .match .m select{grid-column:1 / -1; grid-row:2}
+  .brand b{font-size:18px}
+}
+@media (max-width:420px){ .pics.two{grid-template-columns:1fr} }
+
+/* ---- additions for unit 2·3 ---- */
+.stampbox{display:flex; align-items:center; gap:8px; background:var(--card); border:2px solid var(--line); border-radius:999px; padding:3px 10px 3px 12px}
+.stampbox > b{font-family:var(--display); font-weight:400; font-size:14px; color:var(--ink-soft); white-space:nowrap}
+.stamps span{width:auto; min-width:30px; height:26px; border-radius:999px; padding:0 8px; font-size:12px}
+.stamps span.on{transform:rotate(-6deg)}
+.vids{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:14px}
+.vid{display:grid; grid-template-rows:auto 1fr; align-content:start; text-decoration:none; background:var(--card); border:2px solid var(--line); border-radius:14px; overflow:hidden; transition:transform .15s, border-color .15s; color:var(--ink)}
+.vid:hover{transform:translateY(-2px); border-color:var(--c)}
+.vid .th{position:relative; aspect-ratio:16/9; overflow:hidden; background:var(--paper-2)}
+.vid .th img{width:100%; height:100%; object-fit:cover}
+.vid .th span{position:absolute; right:6px; bottom:6px; background:rgba(0,0,0,.78); color:#fff; font-size:12px; font-family:var(--display); padding:1px 7px; border-radius:6px}
+.vid .th i{position:absolute; left:50%; top:50%; width:42px; height:30px; margin:-15px 0 0 -21px; background:rgba(230,33,23,.92); border-radius:9px}
+.vid .th i::after{content:""; position:absolute; left:17px; top:8px; border:7px solid transparent; border-left:11px solid #fff; border-right:0}
+.vid .meta{padding:10px 12px 12px; display:grid; gap:2px}
+.vid .meta b{font-family:var(--body); font-weight:700; font-size:15px; line-height:1.45}
+.vid .meta small{font-size:12px; color:var(--ink-soft)}
+.grid4{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px}
+.grid4 div{background:var(--cb); border-radius:12px; padding:10px 12px; display:grid; gap:2px; font-size:15px; line-height:1.55}
+.grid4 b{font-family:var(--display); font-weight:400; font-size:18px; color:var(--cd)}
+.bl .sent input{margin-inline:2px}
+.bl .sent input.ok{border-bottom-color:var(--ok); background:#fff}
+.bl .sent input.no{border-bottom-color:var(--no); background:#fff}
+.sub-h{font-size:22px}
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="taegeuki" viewBox="0 0 120 140">
+      <path d="M38 42 C38 20 82 20 82 42 L82 50 L38 50 Z" fill="#2b2320"/>
+      <ellipse cx="60" cy="54" rx="21" ry="19" fill="#FBDCB0"/>
+      <path d="M30 130 C30 92 42 68 60 68 C78 68 90 92 90 130 Z" fill="#FBF7EE" stroke="#E7DCC4" stroke-width="1.5"/>
+      <path d="M44 80 Q60 90 76 80" stroke="#C7392B" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M48 70 L60 82 L72 70" stroke="#2b2320" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="60" cy="86" r="5" fill="#274C77"/>
+      <circle cx="52" cy="52" r="3.4" fill="#3B2416"/><circle cx="68" cy="52" r="3.4" fill="#3B2416"/>
+      <circle cx="53.3" cy="50.6" r="1.2" fill="#fff"/><circle cx="69.3" cy="50.6" r="1.2" fill="#fff"/>
+      <ellipse cx="46" cy="60" rx="6" ry="3.5" fill="#FF9AA8" opacity=".75"/><ellipse cx="74" cy="60" rx="6" ry="3.5" fill="#FF9AA8" opacity=".75"/>
+      <path d="M51 63 Q60 70 69 63" stroke="#3B2416" stroke-width="2.7" fill="none" stroke-linecap="round"/>
+      <path d="M88 96 L100 78" stroke="#B97A45" stroke-width="3" stroke-linecap="round"/>
+      <g transform="translate(88,62) rotate(18)">
+        <rect x="0" y="0" width="26" height="18" fill="#fff" stroke="#ddd" stroke-width="0.6"/>
+        <circle cx="13" cy="9" r="5.4" fill="#C7392B"/>
+        <path d="M13 3.6 A5.4 5.4 0 0 1 13 14.4 A2.7 2.7 0 0 1 13 9 A2.7 2.7 0 0 0 13 3.6 Z" fill="#274C77"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+<header class="top">
+  <div class="wrap">
+    <button class="brand" data-go="home" aria-label="처음 화면으로"><svg><use href="#taegeuki"/></svg><b>독립·광복 탐험 수첩</b></button>
+    <div class="stampbox"><b>내 도장</b><div class="stamps" id="stampsTop" aria-label="모은 도장"></div></div>
+    <nav class="nav" id="nav" aria-label="탐험 코스"></nav>
+  </div>
+</header>
+<main class="wrap" id="main"></main>
+<div id="overlay"></div>
+<script>
+const D = {
+UNIT:"사회 5-2 · 3단원", UNIT_SHORT:"3단원", UNIT_NAME:"식민 통치와 저항, 전쟁이 바꾼 사회와 생활",
+TITLE_HTML:"식민 통치와 저항,<br>전쟁이 바꾼 사회와 생활",
+BUBBLE:"안녕, 나는 <b>태극이</b>야. 이번 여행은 조금 무겁지만 꼭 기억해야 할 시간이야. 나라를 빼앗긴 아픔 속에서도 <b>독립</b>을 위해 애쓴 사람들, 그리고 <b>광복</b>과 <b>6·25 전쟁</b>을 겪으며 오늘의 대한민국을 만든 사람들을 만나러 가 보자.",
+GOALS:["일제의 침략과 식민 통치 속에서 나라를 지키려 한 사람들의 노력을 설명할 수 있어요.","3·1 운동, 대한민국 임시 정부, 독립군 등 광복을 위한 노력을 알 수 있어요.","광복 이후 대한민국 정부 수립 과정과 6·25 전쟁의 과정, 영향을 설명할 수 있어요."],
+CERT_RANGE:"을사늑약부터 6·25 전쟁까지",
+PLAY_SUM:"사건 순서·사진 탐정·인물 짝 찾기",
+TL:[["을사늑약","1905년","mint"],["헤이그 특사","1907년","mint"],["3·1 운동","1919년","sky"],["청산리 전투","1920년","sky"],["한국광복군","1940년","sky"],["광복","1945년","pink"],["정부 수립","1948년","pink"],["6·25 전쟁","1950~1953년","pink"]],
+IMG:{
+ jungmyeong:{cap:"덕수궁 중명전 — 을사늑약이 강제로 체결된 곳"},
+ hague:{cap:"헤이그 특사 — 이준, 이상설, 이위종", fit:"contain"},
+ anjg:{cap:"안중근", fit:"contain"},
+ ggb:{cap:"조선 총독부 건물(지금은 철거됨)", fit:"contain"},
+ proclaim:{cap:"3·1 운동 때 발표한 독립 선언서", fit:"contain"},
+ map31:{cap:"3·1 운동이 일어난 주요 지역 — 전국으로 퍼졌어요", fit:"contain"},
+ yugs:{cap:"유관순 — 고향 천안에서 만세 운동을 이끌었어요", fit:"contain"},
+ shanghai:{cap:"중국 상하이에 있는 대한민국 임시 정부 수립 장소"},
+ kimgu:{cap:"김구와 윤봉길", fit:"contain"},
+ malmoi:{cap:"말모이 원고 — 우리말 사전을 만들려던 노력"},
+ klarmy:{cap:"한국광복군", fit:"contain"},
+ lib45:{cap:"1945년 광복을 맞아 거리로 나온 사람들", fit:"contain"},
+ p38:{cap:"1945년 38도선에서 만난 미군과 소련군", fit:"contain"},
+ vote48:{cap:"1948년 5·10 총선거에서 투표하는 모습", fit:"contain"},
+ govt48:{cap:"1948년 8월 15일 대한민국 정부 수립 기념식", fit:"contain"},
+ incheon:{cap:"1950년 9월 15일 인천 상륙 작전", fit:"contain"},
+ armistice:{cap:"1953년 정전 협정 체결 모습", fit:"contain"},
+ refugees:{cap:"눈길을 걸어 피란을 떠나는 사람들(1951)", fit:"contain"},
+ orphans:{cap:"전쟁으로 부모를 잃은 어린이들", fit:"contain"}
+},
+LESSONS:[
+{ id:"l1", n:1, c:"mint", short:"코스 ①", nav:"① 나라를 빼앗기다", title:"일제의 침략과 식민 통치에 맞선 사람들", sum:"을사늑약, 헤이그 특사, 안중근, 조선 총독부, 민족 말살 통치",
+  intro:"일제는 조약을 강제로 맺어 우리나라의 권리를 하나씩 빼앗았어요. 사람들은 저마다의 방법으로 나라를 지키려 했고, 식민 통치 속에서도 굽히지 않았어요.",
+  cards:[
+   {t:"을사늑약", era:"1905년", pics:["jungmyeong"], pts:[
+     "일제가 고종의 거부에도 강제로 체결하여 우리나라의 <mark>외교권</mark>을 빼앗은 조약이에요."],
+     easy:"‘늑약’은 억지로 맺은 조약이라는 뜻이에요. 외교권을 빼앗기면 다른 나라와 스스로 약속하거나 교류할 수 없어요."},
+   {t:"헤이그 특사", era:"1907년", pics:["hague"], pts:[
+     "고종은 네덜란드 <mark>헤이그</mark>에서 열리는 <mark>만국 평화 회의</mark>에 특사를 보내 을사늑약의 부당함을 알리려고 했으나 일제의 방해로 실패했어요."]},
+   {t:"나라를 지키려는 사람들의 노력", era:"의병과 애국지사", pics:["anjg"], pts:[
+     "<mark>의병 활동</mark>: 양반, 평민, 여성 등이 의병 활동에 참여해 일제에 저항했어요.",
+     "<mark>안중근</mark>: 만주 <mark>하얼빈역</mark>에서 이토 히로부미를 처단했어요.",
+     "<mark>이회영</mark>: 전 재산을 처분하고 만주로 건너가 <mark>신흥 강습소</mark>를 세워 독립군을 길렀어요.",
+     "<mark>안창호</mark>: 독립에 힘쓸 인재를 기르기 위해 평양에 <mark>대성 학교</mark>를 세웠어요."]},
+   {t:"일제의 식민 통치", era:"1910년 이후", pics:["ggb"], pts:[
+     "<mark>강압적인 식민 통치</mark>: 일제는 <mark>조선 총독부</mark>를 설치하고 <mark>헌병</mark>에게 경찰의 임무를 주어 사람들을 감시하고 독립운동을 탄압했어요.",
+     "<mark>토지 조사 사업</mark>: 식민 통치에 필요한 비용을 마련하려고 시작한 사업으로, 많은 농민이 토지를 빼앗겼어요.",
+     "<mark>식량과 자원 수탈</mark>: <mark>철도</mark>와 항구를 이용해 빼앗은 식량과 자원을 일본으로 가져갔어요.",
+     "1930년대 후반에는 쇠붙이, 쌀 등 전쟁에 필요한 물자를 빼앗고, 사람들을 강제로 전쟁터에 내보내거나 광산, 공장 등으로 끌고 갔어요."]},
+   {t:"일제의 민족 말살 통치", era:"우리 민족을 없애려 한 정책", pics:[], pts:[
+     "우리 <mark>말</mark>과 우리글, 그리고 우리 <mark>역사</mark> 교육을 금지했어요.",
+     "일본의 신을 모신 신사에 강제로 절하게 하는 <mark>신사 참배</mark>를 강요했어요.",
+     "일본식 <mark>이름</mark>으로 바꾸도록 강제했어요."],
+     easy:"말과 글, 역사, 이름은 우리 민족이 누구인지 알려 주는 것들이에요. 일제는 이것을 없애 우리 민족의 정신을 지우려고 했어요."}
+  ],
+  blanks:[
+   {topic:"외교권을 빼앗긴 조약", s:"{을사늑약|을사조약}: 일제가 고종의 거부에도 강제로 체결하여 외교권을 빼앗은 조약"},
+   {topic:"특사", s:"고종은 네덜란드 {헤이그}에서 열리는 만국 평화 회의에 특사를 보냈으나 일제의 방해로 실패함."},
+   {topic:"하얼빈역", s:"{안중근}: 만주 하얼빈역에서 이토 히로부미를 처단함."},
+   {topic:"독립군 양성", s:"이회영: 전 재산을 처분하고 만주로 건너가 {신흥 강습소|신흥강습소}을/를 세워 독립군을 양성함."},
+   {topic:"인재 양성", s:"안창호: 독립에 힘쓸 인재를 기르기 위해 평양에 {대성 학교|대성학교}을/를 세움."},
+   {topic:"강압적인 통치", s:"일제는 {조선 총독부|조선총독부}을/를 설치하고 {헌병}에게 경찰의 임무를 주어 사람들을 감시함."},
+   {topic:"토지를 빼앗긴 농민", s:"{토지 조사 사업|토지조사사업}: 식민 통치에 필요한 비용을 마련하려고 시작한 사업. 많은 농민이 토지를 빼앗김."},
+   {topic:"수탈", s:"일제는 {철도}과/와 항구를 이용해 수탈한 식량과 자원을 일본으로 가져감."},
+   {topic:"민족 말살 통치", s:"우리 {말|우리말}과 우리글, 우리 {역사} 교육을 금지하고, {신사 참배|신사참배}을/를 강요하고, 일본식 {이름}(으)로 바꾸도록 강제함."}
+  ],
+  vids:[
+   {id:"2_p84nGLHZY", t:"우리 민족은 을사늑약에 어떻게 저항했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"3:13"},
+   {id:"FfV1brWL9mA", t:"을사늑약에 맞서 우리 민족은 어떻게 저항하였을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"4:13"},
+   {id:"LUYIos2g_iw", t:"우리 민족은 나라를 지키기 위해 어떤 노력을 하였을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"3:32"},
+   {id:"mqsd-cFLGqM", t:"일제는 우리나라를 어떻게 통치했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:48"},
+   {id:"1ERCbSnQiEE", t:"일제의 무단 통치로 우리 민족은 어떤 어려움을 겪었을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"3:13"},
+   {id:"yDIpzpz_TB0", t:"1930년대 이후 일제는 어떤 방법으로 우리 민족을 통치하였을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"3:43"}
+  ],
+  think:{q:"일제가 우리말과 역사 교육을 금지하고 일본식 이름을 쓰게 한 까닭은 무엇일까요? 만약 내가 그 시대에 살았다면 우리말과 이름을 지키기 위해 어떤 일을 했을지 써 보세요.",
+    ex:"우리 민족이 스스로를 한국 사람이라고 생각하지 못하게 해서 독립하려는 마음을 없애려고 했어요. 나는 집에서 몰래 우리말로 된 책을 읽고, 동생에게 한글과 우리 역사를 가르쳐 주었을 것 같아요."},
+  links:[
+   {src:"우리역사넷 · 한국사 연대기", t:"안중근", d:"하얼빈역 의거와 안중근의 삶", u:"https://contents.history.go.kr/mobile/kc/view.do?levelId=kc_n402100&code=kc_age_40"},
+   {src:"독립기념관", t:"독립기념관 누리집", d:"독립운동의 역사와 전시를 살펴봐요", u:"https://i815.or.kr/"},
+   {src:"우리역사넷 · 재미있는 초등역사", t:"근현대 이야기 모음", d:"개항부터 오늘날까지의 인물과 사건", u:"https://contents.history.go.kr/front/newEh/list.do?code=eh_age_40"}
+  ]},
+{ id:"l2", n:2, c:"sky", short:"코스 ②", nav:"② 독립을 위한 노력", title:"광복을 위한 끊임없는 노력", sum:"3·1 운동, 임시 정부, 청산리 전투, 한인 애국단, 한국광복군",
+  intro:"1919년 3월 1일, 전국에서 ‘대한 독립 만세’가 울려 퍼졌어요. 그 뒤로도 사람들은 나라 안팎에서 끝까지 독립을 위해 싸우고, 우리 말과 역사를 지켰어요.",
+  cards:[
+   {t:"3·1 운동", era:"1919년 3월 1일", pics:["proclaim","map31","yugs"], pts:[
+     "일제의 식민 통치에 저항하고자 시작된 <mark>전국적인 만세 운동</mark>이에요.",
+     "학생, 농민, 상인 등 많은 사람이 참여했고, 나라 밖으로도 퍼져 나갔어요."],
+     easy:"유관순은 서울에서 만세 운동에 참여한 뒤, 고향인 천안으로 내려가 아우내 장터에서 만세 운동을 이끌었어요."},
+   {t:"대한민국 임시 정부", era:"1919년 상하이", pics:["shanghai"], pts:[
+     "3·1 운동 이후 독립운동을 지속적이고 체계적으로 이끌기 위해 중국 <mark>상하이</mark>에 여러 임시 정부를 통합한 <mark>대한민국 임시 정부</mark>가 세워졌어요."]},
+   {t:"독립군의 활동", era:"1920년", pics:[], pts:[
+     "<mark>봉오동 전투</mark>: 만주 봉오동에서 <mark>홍범도</mark>의 독립군 부대가 일본군을 무찔렀어요.",
+     "<mark>청산리 전투</mark>: <mark>김좌진</mark>과 홍범도의 독립군 부대가 청산리의 지형을 이용해 일본군을 상대로 큰 승리를 거두었어요."]},
+   {t:"의거 활동", era:"한인 애국단", pics:["kimgu"], pts:[
+     "<mark>한인 애국단</mark>: 대한민국 임시 정부의 <mark>김구</mark>가 만든 단체로, <mark>이봉창</mark>과 <mark>윤봉길</mark>이 소속되어 일제를 상대로 의거를 일으켰어요."]},
+   {t:"민족정신을 지키기 위한 노력", era:"우리말과 우리 역사", pics:["malmoi"], pts:[
+     "<mark>조선어 학회</mark>: 우리말과 우리글을 연구하고 널리 알리려고 노력했어요.",
+     "<mark>신채호</mark>: 일제의 역사 왜곡에 맞서 우리 역사를 연구했어요."],
+     easy:"조선어 학회 사람들은 일제에 붙잡혀 고초를 겪으면서도 우리말 사전을 만들기 위한 원고를 지켜 냈어요."},
+   {t:"광복을 위한 노력", era:"1940년 한국광복군", pics:["klarmy"], pts:[
+     "대한민국 임시 정부는 여러 지역의 독립군을 모아 <mark>한국광복군</mark>을 조직하고, 연합군과 함께 일본군에 맞서 싸웠어요."]}
+  ],
+  blanks:[
+   {topic:"만세 운동", s:"{3·1 운동|3.1 운동|3·1운동|3.1운동|삼일 운동|삼일운동}: 1919년 3월 1일 일제의 식민 통치에 저항하고자 시작된 전국적인 만세 운동"},
+   {topic:"임시 정부", s:"3·1 운동 이후 중국 {상하이|상해}에 여러 임시 정부를 통합한 대한민국 임시 정부가 수립됨."},
+   {topic:"독립군의 큰 승리", s:"{청산리 전투|청산리전투|청산리 대첩}: 김좌진과 홍범도의 독립군 부대가 청산리 지형을 이용해 일본군을 상대로 큰 승리를 함."},
+   {topic:"의거 활동", s:"{한인 애국단|한인애국단}: 김구가 만든 단체로, 이봉창과 윤봉길이 소속되어 의거를 함."},
+   {topic:"우리말 지키기", s:"{조선어 학회|조선어학회}: 우리말과 우리글을 연구하고 보급하려 노력함."},
+   {topic:"광복군", s:"대한민국 임시 정부는 여러 지역의 독립군을 모아 {한국광복군|한국 광복군|광복군}을/를 조직함."}
+  ],
+  vids:[
+   {id:"OZ5SNHp4HIA", t:"3·1 운동은 어떻게 일어났을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:48"},
+   {id:"OEH0PLhtEyw", t:"3·1 운동은 왜 일어났을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"2:48"},
+   {id:"8hbW7tq_Rnc", t:"대한민국 임시 정부는 어떤 일을 했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:07"},
+   {id:"6R1VkRlJb4o", t:"대한민국 임시 정부는 나라를 되찾기 위하여 어떤 노력을 하였을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"3:23"},
+   {id:"HCmVfy9Jxmg", t:"독립군 부대는 일제를 어떻게 물리쳤을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:59"},
+   {id:"lfrLdbYlF9U", t:"의거 활동을 벌인 ‘한인 애국단’", ch:"공부왕찐천재 · 역사만화", len:"3:25"},
+   {id:"JT7OghljQ6g", t:"민족정신을 지키기 위해 한 노력에는 무엇이 있을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:35"},
+   {id:"QFUhCcj2DY8", t:"우리 민족은 민족 문화를 지키기 위해 어떤 노력을 하였을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"1:58"}
+  ],
+  think:{q:"3·1 운동에 참여한 사람들은 총이나 칼 대신 태극기와 만세 소리로 독립을 외쳤어요. 이 운동이 이후의 독립운동에 어떤 힘이 되었을지 써 보세요.",
+    ex:"신분, 나이, 지역에 상관없이 온 국민이 독립을 바란다는 것을 세계에 알렸어요. 이 힘이 모여 대한민국 임시 정부가 세워지고, 독립운동이 더 체계적으로 이어질 수 있었어요."},
+  links:[
+   {src:"우리역사넷 · 재미있는 초등역사", t:"3·1 운동 유적", d:"3·1 운동의 현장을 따라가 봐요", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0320_0010"},
+   {src:"우리역사넷 · 재미있는 초등역사", t:"유관순", d:"아우내 장터 만세 운동을 이끈 유관순", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_n0860_0010&code=eh_age_40"},
+   {src:"우리역사넷 · 재미있는 초등역사", t:"윤봉길", d:"한인 애국단 윤봉길의 의거", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_n0890_0010&code=eh_age_40"},
+   {src:"우리역사넷 · 한국사 연대기", t:"김구", d:"대한민국 임시 정부를 이끈 김구", u:"https://contents.history.go.kr/mobile/kc/view.do?levelId=kc_n400245&code=kc_age_40"}
+  ]},
+{ id:"l3", n:3, c:"pink", short:"코스 ③", nav:"③ 광복과 6·25 전쟁", title:"광복과 전쟁이 바꾼 사회와 생활", sum:"광복, 38도선, 5·10 총선거, 대한민국 정부 수립, 6·25 전쟁",
+  intro:"1945년 드디어 광복을 맞았지만, 한반도는 38도선으로 나뉘었어요. 대한민국 정부가 세워진 뒤 6·25 전쟁이 일어나 큰 아픔을 겪었고, 분단은 오늘날까지 이어지고 있어요.",
+  cards:[
+   {t:"광복", era:"1945년 8월 15일", pics:["lib45"], pts:[
+     "우리나라가 일제의 식민 통치에서 벗어나 독립한 것을 <mark>광복</mark>이라고 해요.",
+     "광복은 연합군의 승리와 함께, 나라 안팎에서 끊임없이 이어진 우리 민족의 독립운동이 있었기에 가능했어요."]},
+   {t:"분단", era:"38도선", pics:["p38"], pts:[
+     "광복 직후 한반도에 남아 있는 일본군을 해산한다는 이유로 <mark>38도선</mark>을 경계로 남쪽에는 <mark>미군</mark>이, 북쪽에는 <mark>소련군</mark>이 들어왔어요.",
+     "남과 북 사이에 사람, 물자, 우편, 통신의 교류가 중단되었어요."]},
+   {t:"대한민국 정부 수립", era:"1948년", pics:["vote48","govt48"], pts:[
+     "<mark>국제 연합(UN)</mark>의 결정으로 남한에서만 총선거를 하기로 했어요.",
+     "1948년 5월 10일 국회 의원을 뽑는 총선거가 시행되었어요(<mark>5·10 총선거</mark>).",
+     "총선거로 뽑힌 <mark>제헌 국회</mark> 의원들은 우리나라 최초의 헌법인 <mark>제헌 헌법</mark>을 만들었어요.",
+     "헌법에 따라 이승만을 대통령으로 뽑고, 1948년 8월 15일 <mark>대한민국 정부</mark>를 수립했어요.",
+     "북한에서도 별도의 정권을 세우면서 한반도는 남과 북으로 분단되었어요."],
+     easy:"5·10 총선거는 우리나라 최초의 민주 선거로, 일정한 나이가 된 국민이면 누구나 한 표씩 투표할 수 있었어요."},
+   {t:"6·25 전쟁의 원인과 과정", era:"1950년 6월 25일", pics:["incheon"], pts:[
+     "북한은 무력으로 한반도를 통일하려고 <mark>38도선</mark>을 넘어 기습적으로 남한을 쳐들어왔어요.",
+     "3일 만에 서울이 함락되고, 국군은 <mark>낙동강</mark>까지 후퇴했어요.",
+     "국제 연합(UN)은 북한의 침략을 비판하며 남한에 <mark>국제 연합군</mark>을 보냈어요.",
+     "국군과 국제 연합군은 <mark>인천 상륙 작전</mark>의 성공으로 전쟁의 흐름을 바꾸고 압록강까지 나아갔어요.",
+     "북한을 돕기 위해 <mark>중국군</mark>이 전쟁에 개입하면서 다시 서울을 빼앗겼어요.",
+     "국군과 국제 연합군이 서울을 되찾았으나, 38도선 부근에서 밀고 밀리는 전투가 계속되었어요."]},
+   {t:"6·25 전쟁의 결과", era:"1953년", pics:["armistice"], pts:[
+     "3년 동안 이어진 전쟁은 오랜 협상 끝에 1953년 <mark>정전 협정</mark>이 체결되며 중단되었어요.",
+     "남과 북을 나누는 <mark>군사 분계선</mark>이 정해졌고, 분단은 오늘날까지 이어지고 있어요."],
+     easy:"‘정전’은 전쟁이 완전히 끝난 것이 아니라 싸움을 멈춘 상태라는 뜻이에요."},
+   {t:"전쟁 중 사람들의 생활과 전쟁의 영향", era:"전쟁이 남긴 상처", pics:["refugees","orphans"], pts:[
+     "전쟁이 일어나자 수많은 사람이 전투에 참여했고, 지역이 번갈아 점령될 때마다 많은 사람이 고통을 겪었어요.",
+     "전쟁 중에도 <mark>임시 학교</mark>, 시장 등을 열어 일상을 이어 나갔어요.",
+     "부모를 잃은 <mark>전쟁고아</mark>와 피란 과정에서 가족과 헤어진 <mark>이산가족</mark>이 생겨났어요.",
+     "국토가 황폐해지고 주요 시설이 대부분 파괴되었으며, 숭례문, 보신각, 수원 화성 등 주요 <mark>국가유산</mark>이 훼손되거나 불타 없어지기도 했어요.",
+     "전쟁은 사람들의 마음에 큰 상처를 남겼고, 분단이 이어지면서 그 상처는 오늘날까지 남아 있어요."]}
+  ],
+  blanks:[
+   {topic:"광복", s:"{광복}: 1945년 8월 15일, 우리나라가 일제의 식민 통치에서 벗어나 독립한 것"},
+   {topic:"분단", s:"광복 직후 {38도선|38선|삼팔선}을/를 경계로 남쪽에는 {미군}이/가, 북쪽에는 {소련군}이/가 들어옴."},
+   {topic:"총선거 결정", s:"{국제 연합|국제연합|유엔|UN}의 결정으로 남한에서만 총선거 실시가 결정됨."},
+   {topic:"최초의 헌법", s:"총선거로 뽑힌 {제헌 국회|제헌국회} 의원들은 우리나라 최초의 헌법인 {제헌 헌법|제헌헌법}을/를 만듦."},
+   {topic:"정부 수립", s:"1948년 8월 15일 {대한민국 정부}을/를 수립함."},
+   {topic:"전쟁의 시작", s:"1950년 6월 25일, 북한은 {38도선|38선|삼팔선}을/를 넘어 기습적으로 남한을 쳐들어옴."},
+   {topic:"전쟁의 과정", s:"UN은 남한에 {국제 연합군|국제연합군|유엔군|UN군}을/를 보냄. 국군과 국제 연합군은 {인천 상륙 작전|인천상륙작전}의 성공으로 압록강까지 진격함. 이후 {중국군|중공군}이/가 개입함."},
+   {topic:"전쟁의 결과", s:"1953년 {정전 협정|정전협정|휴전 협정|휴전협정}이/가 체결되고, 남과 북을 나누는 {군사 분계선|군사분계선|휴전선}이/가 설정됨."},
+   {topic:"전쟁 중 생활과 영향", s:"전쟁 중에도 {임시 학교|임시학교|천막 학교}, 시장 등을 열어 일상을 이어 감. 부모를 잃은 {전쟁고아|전쟁 고아}과/와 가족과 헤어진 {이산가족}이/가 생겨남."},
+   {topic:"문화유산의 피해", s:"숭례문, 보신각, 수원 화성 등 주요 {국가유산|문화유산|문화재}이/가 훼손되거나 불타 없어지기도 함."}
+  ],
+  vids:[
+   {id:"4bByXml3kjw", t:"우리나라는 어떻게 광복을 맞이했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:19"},
+   {id:"nXhy97P7UAM", t:"대한민국 정부는 어떻게 수립되었을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:32"},
+   {id:"vYkwZJs07dc", t:"8·15 광복 이후 어떤 과정을 거쳐 대한민국 정부가 수립되었을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"4:42"},
+   {id:"JOnMz-DFrdc", t:"6·25 전쟁은 왜 일어났을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:38"},
+   {id:"zCMH20ZC6zQ", t:"6·25 전쟁은 왜 일어났고 어떤 결과를 가져왔을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"3:18"}
+  ],
+  think:{q:"6·25 전쟁으로 생긴 이산가족은 70년이 넘도록 가족을 만나지 못하기도 해요. 전쟁이 남긴 상처를 떠올리며, 평화를 위해 우리가 할 수 있는 일을 써 보세요.",
+    ex:"이산가족 할머니, 할아버지들이 얼마나 가족을 그리워하는지 생각하니 마음이 아파요. 친구와 다툼이 생기면 대화로 풀고, 전쟁의 역사를 잊지 않고 배우며 평화의 소중함을 주변에 알리고 싶어요."},
+  links:[
+   {src:"우리역사넷 · 재미있는 초등역사", t:"광복 후 대한민국 정부 수립", d:"광복부터 정부 수립까지의 과정", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0382_0010&code=ganada"},
+   {src:"우리역사넷 · 재미있는 초등역사", t:"6·25 전쟁 유적", d:"전쟁의 흔적이 남은 곳을 찾아봐요", u:"https://contents.history.go.kr/mobile/eh/view.do?code=&levelId=eh_r0390_0010"},
+   {src:"우리역사넷 · 한국사 연대기", t:"6·25 전쟁(1950)", d:"전쟁의 과정을 더 자세히 알아봐요", u:"https://contents.history.go.kr/mobile/kc/view.do?levelId=kc_i501100&code=kc_age_50"}
+  ]}
+],
+ORDER:["을사늑약","헤이그 특사","3·1 운동","청산리 전투","한국광복군 창설","광복","대한민국 정부 수립","6·25 전쟁"],
+DETECT_TITLE:"사진 탐정", DETECT_Q:"무엇과 관련된 사진일까요?",
+DETECT:[
+ {img:"hague", a:"헤이그 특사", why:"을사늑약의 부당함을 알리려고 헤이그에 간 특사들이에요."},
+ {img:"anjg", a:"안중근", why:"하얼빈역에서 이토 히로부미를 처단한 안중근이에요."},
+ {img:"ggb", a:"조선 총독부", why:"일제가 식민 통치를 위해 세운 조선 총독부 건물이에요."},
+ {img:"proclaim", a:"3·1 운동", why:"3·1 운동 때 발표한 독립 선언서예요."},
+ {img:"kimgu", a:"한인 애국단", why:"한인 애국단을 만든 김구와 단원 윤봉길이에요."},
+ {img:"malmoi", a:"우리말을 지키려는 노력", why:"우리말 사전을 만들려고 모은 말모이 원고예요."},
+ {img:"klarmy", a:"한국광복군", why:"대한민국 임시 정부가 조직한 한국광복군이에요."},
+ {img:"vote48", a:"5·10 총선거", why:"1948년 우리나라 최초의 총선거 모습이에요."},
+ {img:"incheon", a:"인천 상륙 작전", why:"6·25 전쟁의 흐름을 바꾼 인천 상륙 작전이에요."},
+ {img:"armistice", a:"정전 협정", why:"1953년 6·25 전쟁을 멈춘 정전 협정 체결 모습이에요."}
+],
+PEOPLE:[
+ ["안중근","하얼빈역에서 이토 히로부미를 처단했어요."],
+ ["이회영","전 재산을 팔아 만주에 신흥 강습소를 세웠어요."],
+ ["안창호","평양에 대성 학교를 세워 인재를 길렀어요."],
+ ["김좌진","청산리 전투에서 독립군을 이끌어 큰 승리를 거두었어요."],
+ ["김구","대한민국 임시 정부에서 한인 애국단을 만들었어요."],
+ ["윤봉길","한인 애국단 단원으로 의거를 일으켰어요."],
+ ["신채호","일제의 역사 왜곡에 맞서 우리 역사를 연구했어요."]
+],
+FINAL:[
+ {q:"일제가 고종의 거부에도 강제로 체결하여 우리나라의 외교권을 빼앗은 조약은?", o:["강화도 조약","을사늑약","정전 협정","제헌 헌법"], a:1, e:"을사늑약(1905)으로 외교권을 빼앗긴 뒤, 고종은 헤이그에 특사를 보내 그 부당함을 알리려 했어요."},
+ {q:"인물과 한 일을 바르게 짝 지은 것은?", o:["안중근 - 대성 학교 설립","이회영 - 신흥 강습소 설립","안창호 - 하얼빈역 의거","김좌진 - 조선어 학회 활동"], a:1, e:"이회영은 만주에 신흥 강습소를, 안창호는 평양에 대성 학교를 세웠고, 안중근은 하얼빈역에서 의거를 일으켰어요."},
+ {q:"일제가 식민 통치에 필요한 비용을 마련하려고 시작해 많은 농민이 땅을 빼앗긴 사업은?", o:["토지 조사 사업","갑오개혁","개화 정책","5·10 총선거"], a:0, e:"토지 조사 사업으로 많은 농민이 토지를 빼앗겼어요."},
+ {q:"일제의 민족 말살 통치에 해당하지 않는 것은?", o:["우리말 교육 금지","신사 참배 강요","일본식 이름 강요","한글로 된 독립신문 발행"], a:3, e:"독립신문은 대한 제국 시기에 독립 협회가 펴낸 신문이에요."},
+ {q:"3·1 운동 이후 독립운동을 체계적으로 이끌기 위해 중국 상하이에 세운 것은?", o:["조선 총독부","대한민국 임시 정부","신흥 강습소","만민 공동회"], a:1, e:"3·1 운동 이후 여러 임시 정부를 통합해 상하이에 대한민국 임시 정부를 세웠어요."},
+ {q:"김구가 만든 단체로, 이봉창과 윤봉길이 속해 있던 곳은?", o:["독립 협회","조선어 학회","한인 애국단","한국광복군"], a:2, e:"한인 애국단은 김구가 만든 단체로 이봉창, 윤봉길이 의거를 일으켰어요."},
+ {q:"광복 직후 38도선을 경계로 남쪽과 북쪽에 들어온 군대를 바르게 짝 지은 것은?", o:["남쪽 - 소련군, 북쪽 - 미군","남쪽 - 미군, 북쪽 - 소련군","남쪽 - 중국군, 북쪽 - 미군","남쪽 - 일본군, 북쪽 - 소련군"], a:1, e:"38도선 남쪽에는 미군이, 북쪽에는 소련군이 들어왔어요."},
+ {q:"대한민국 정부 수립 과정을 순서대로 바르게 나열한 것은?", o:["5·10 총선거 → 제헌 헌법 제정 → 대한민국 정부 수립","제헌 헌법 제정 → 5·10 총선거 → 대한민국 정부 수립","대한민국 정부 수립 → 5·10 총선거 → 제헌 헌법 제정","정전 협정 → 5·10 총선거 → 대한민국 정부 수립"], a:0, e:"5·10 총선거로 뽑힌 제헌 국회가 제헌 헌법을 만들고, 1948년 8월 15일 대한민국 정부를 수립했어요."},
+ {q:"6·25 전쟁에서 국군과 국제 연합군이 전쟁의 흐름을 유리하게 바꾼 작전은?", o:["인천 상륙 작전","봉오동 전투","청산리 전투","위화도 회군"], a:0, e:"인천 상륙 작전의 성공으로 서울을 되찾고 압록강까지 나아갔어요."},
+ {q:"6·25 전쟁의 영향으로 알맞지 않은 것은?", o:["전쟁고아와 이산가족이 생겼다.","국토가 황폐해지고 시설이 파괴되었다.","주요 국가유산이 훼손되었다.","남과 북이 곧바로 통일되었다."], a:3, e:"1953년 정전 협정으로 전쟁은 멈추었지만, 군사 분계선이 생기고 분단은 오늘날까지 이어지고 있어요."}
+],
+SELF:["일제의 침략과 식민 통치, 이에 맞선 사람들의 노력을 설명할 수 있어요.","3·1 운동, 임시 정부, 독립군 등 광복을 위한 노력을 말할 수 있어요.","대한민국 정부 수립 과정과 6·25 전쟁의 과정, 영향을 설명할 수 있어요."],
+TEACHER:[["1차시","코스 ① 일제의 침략과 식민 통치에 맞선 사람들","을사늑약 → 헤이그 특사 → 의병·애국지사로 이어지는 흐름을 타임라인으로 먼저 보여 주세요."],["2차시","코스 ② 광복을 위한 끊임없는 노력","인물 카드를 모둠별로 나눠 ‘독립운동가 소개하기’ 활동으로 이어갈 수 있어요."],["3차시","코스 ③ 광복과 6·25 전쟁","전쟁의 아픔을 다루는 차시예요. ‘생각 톡톡’으로 평화의 소중함을 함께 이야기해 보세요."],["4차시","코스 ④ 정리 놀이 + ⑤ 평가","평가 후 나오는 탐험 인증서 화면을 캡처해 제출하게 하면 학습 확인이 쉬워요."]],
+CREDITS:[["덕수궁 중명전","Lawinc82, CC BY-SA 3.0"],["헤이그 특사, 안중근, 김구와 윤봉길, 한국광복군, 유관순, 3·1 독립 선언서","퍼블릭 도메인"],["조선 총독부 건물","퍼블릭 도메인"],["3·1 운동 주요 봉기도","NZ 토끼들, CC BY-SA 4.0"],["상하이 임시 정부 수립 장소","Fayhoo, CC BY-SA 3.0"],["말모이 원고","Jocelyndurrey, CC BY-SA 4.0"],["1945년 광복 당일 거리","퍼블릭 도메인"],["38도선의 미군과 소련군","Don O'Brien, CC BY 2.0"],["5·10 총선거","U.S. Army, 퍼블릭 도메인"],["대한민국 정부 수립 기념식","퍼블릭 도메인"],["인천 상륙 작전, 피란민, 정전 협정, 전쟁고아","미국 정부 기록 사진, 퍼블릭 도메인"],["영상","참쌤스쿨, 최태성 초등TV, 공부왕찐천재 유튜브 채널"]]
+};
+
+/* =================== ENGINE (uses global D) =================== */
+const IMG = D.IMG, LESSONS = D.LESSONS;
+const STAMP_KEYS = [["l1","①"],["l2","②"],["l3","③"],["play","놀이"],["final","평가"]];
+const S = { screen:"home", stamps:{}, blanks:{}, orderPick:[], det:{i:0,score:0,answered:false,order:null,done:false}, final:null, self:D.SELF.map(()=>0), name:"" };
+
+const $ = (s,el=document)=>el.querySelector(s);
+const norm = s=>String(s||"").replace(/[\s·.,()'"‧・ㆍ\-]/g,"").toLowerCase();
+const CHO = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+const chosung = w=>[...w].map(ch=>{const c=ch.charCodeAt(0)-44032; return (c>=0&&c<=11171)?CHO[Math.floor(c/588)]:ch;}).join("");
+const shuffle = a=>{a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a;};
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(msg){const t=document.createElement("div"); t.className="toast"; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2200);}
+function fig(k){const m=IMG[k]; if(!m) return ""; return `<figure><button type="button" data-zoom="${k}" aria-label="${esc(m.cap)} 크게 보기"><img src="img/${k}.jpg" alt="${esc(m.cap)}" loading="lazy" class="${m.fit==="contain"?"contain":""}"></button><figcaption>${m.cap}</figcaption></figure>`;}
+/* parse "text {ans|alt} text" into parts */
+function parseSent(s){ const parts=[]; const re=/\{([^}]+)\}/g; let last=0,m; while((m=re.exec(s))){ parts.push({t:s.slice(last,m.index)}); parts.push({a:m[1].split("|")}); last=re.lastIndex; } parts.push({t:s.slice(last)}); parts.forEach((p,i)=>{ if(p.a){ const pr=parts[i-1], nx=parts[i+1]; if(pr&&/\(\s*$/.test(pr.t)&&nx&&/^\s*\)/.test(nx.t)){ pr.t=pr.t.replace(/\(\s*$/,""); nx.t=nx.t.replace(/^\s*\)/,""); } } }); return parts; }
+LESSONS.forEach(L=>L.blanks.forEach(b=>{ b.parts=parseSent(b.s); b.ans=b.parts.filter(p=>p.a).map(p=>p.a); }));
+const totalBlanks = L=>L.blanks.reduce((n,b)=>n+b.ans.length,0);
+
+const NAV = [["home","처음"], ...LESSONS.map(L=>[L.id, L.nav]), ["play","④ 정리 놀이"],["final","⑤ 마무리 평가"]];
+function renderTop(anim,key){
+  $("#stampsTop").innerHTML = STAMP_KEYS.map(([k,l])=>`<span class="${S.stamps[k]?"on":""} ${anim&&key===k?"pop":""}" title="${l} 도장">${S.stamps[k]?"참":l}</span>`).join("");
+  $("#nav").innerHTML = NAV.map(([k,l])=>`<button data-go="${k}" aria-current="${S.screen===k}">${l}</button>`).join("");
+}
+function go(k){ S.screen=k; renderTop(); render(); window.scrollTo(0,0); }
+function render(){
+  const m=$("#main");
+  if(S.screen==="home") m.innerHTML=homeView();
+  else if(S.screen==="play") m.innerHTML=playView();
+  else if(S.screen==="final") m.innerHTML=finalView();
+  else m.innerHTML=lessonView(LESSONS.find(l=>l.id===S.screen));
+  afterRender();
+}
+
+function homeView(){
+  const courses=[...LESSONS.map(L=>[L.id,L.c,L.short,L.title,L.sum]),["play","butter","코스 ④","단원 정리 놀이",D.PLAY_SUM],["final","tang","코스 ⑤","마무리 평가와 인증서","10문제 풀고 탐험 인증서 받기"]];
+  return `<section class="screen">
+  <div class="hero">
+    <svg class="mascot" viewBox="0 0 120 140" role="img" aria-label="독립을 응원하는 캐릭터 태극이"><use href="#taegeuki"/></svg>
+    <div>
+      <p class="unit">${D.UNIT}</p>
+      <h1>${D.TITLE_HTML}</h1>
+      <p class="bubble">${D.BUBBLE}</p>
+      <ul class="goals">${D.GOALS.map(g=>`<li>${g}</li>`).join("")}</ul>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="sec-title" style="margin-bottom:6px"><span class="num" style="background:var(--tang)">✦</span><h2>한눈에 보는 시간 여행 길</h2></div>
+    <p class="muted small">왼쪽에서 오른쪽으로 갈수록 오늘날과 가까워져요. 옆으로 밀어서 볼 수 있어요.</p>
+    <div class="timeline"><div class="tl" style="grid-template-columns:repeat(${D.TL.length}, minmax(118px,1fr)); min-width:${D.TL.length*118}px">${D.TL.map(([a,b,c],i)=>`<div class="ev" data-c="${c}"><span class="dot">${i+1}</span><b>${a}</b><small>${b}</small></div>`).join("")}</div></div>
+  </div>
+  <div>
+    <div class="sec-title" style="margin-bottom:12px"><span class="num" style="background:var(--mint)">➜</span><h2>탐험 코스 고르기</h2></div>
+    <div class="courses">${courses.map(([k,c,tag,t,d])=>`<button class="course" data-c="${c}" data-go="${k}"><span class="tag">${tag}</span><h3>${t}</h3><p>${d}</p>${S.stamps[k]?'<span class="done">완료</span>':""}</button>`).join("")}</div>
+  </div>
+  <div class="panel">
+    <h2 style="font-size:22px; margin-bottom:10px">이렇게 공부해요</h2>
+    <div class="how">
+      <div><b>1. 개념 읽기</b>사진을 눌러 크게 보며 핵심 내용을 읽어요. 노란 형광펜 낱말이 꼭 기억할 말이에요.</div>
+      <div><b>2. 영상으로 보기</b>1~5분 정도의 짧은 영상으로 내용을 한 번 더 정리해요.</div>
+      <div><b>3. 빈칸 채우기</b>원래 학습지의 빈칸을 직접 채우고 채점해요. 막히면 초성 힌트를 써요.</div>
+      <div><b>4. 정리 놀이 → 평가</b>세 코스를 마치면 놀이로 복습하고, 평가를 풀어 인증서를 받아요.</div>
+    </div>
+    <p class="small muted" style="margin-top:12px">화면 위쪽 ‘내 도장’ 칸에는 코스 ①②③, 정리 놀이, 마무리 평가를 마칠 때마다 빨간 ‘참’ 도장이 찍혀요.</p>
+  </div>
+  <details class="teacher">
+    <summary>선생님께: 수업 활용 안내</summary>
+    <table><tr><th>차시</th><th>활동</th><th>운영 팁</th></tr>${D.TEACHER.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</table>
+    <p class="small muted" style="margin-top:8px">개별 과제, 보충 학습, 결석생 자기주도 학습용으로도 쓸 수 있어요. 기록은 저장되지 않으니 새로 열면 처음부터 시작돼요. 영상은 유튜브로 연결되니 학교 기기에서 유튜브가 열리는지 미리 확인해 주세요.</p>
+  </details>
+  <details class="credits panel">
+    <summary>사진·영상 출처</summary>
+    <p style="margin-top:6px">사진은 위키미디어 공용(Wikimedia Commons)의 자유 이용 자료를 사용했어요. 영상은 각 유튜브 채널로 연결돼요.</p>
+    <ol>${D.CREDITS.map(([a,b])=>`<li>${a} — ${b}</li>`).join("")}</ol>
+  </details>
+  </section>`;
+}
+
+function blankHTML(L,b,i,st){
+  let j=-1;
+  const sent = b.parts.map(p=>{
+    if(p.t!==undefined) return p.t;
+    j++; const key=`${i}-${j}`; const r=st.res?st.res[key]:undefined;
+    const val = st.reveal? p.a[0] : (st.vals[key]||"");
+    const w = Math.max(4, p.a[0].length+2);
+    return `( <input id="${L.id}-b${key}" data-bk="${key}" value="${esc(val)}" autocomplete="off" style="width:${w}em" class="${r===undefined?"":(r?"ok":"no")}" aria-label="${b.topic} 빈칸 ${j+1}"> )`;
+  }).join("");
+  const keys=b.ans.map((_,k)=>`${i}-${k}`);
+  let cls="",fb="";
+  if(st.res){ const ok=keys.every(k=>st.res[k]); cls=ok?"ok":"no"; fb= ok?"정답이에요!": (st.reveal?`정답: ${b.ans.map(a=>a[0]).join(", ")}`:"다시 생각해 봐요."); }
+  const hint = st.hints[i]? `힌트: ${b.ans.map(a=>`<b>${chosung(a[0])}</b>`).join(" / ")}`:"";
+  return `<div class="bl ${cls}"><span class="topic">${i+1}. ${b.topic}</span><p class="sent">${sent}</p>
+    <div class="row"><button type="button" class="btn ghost small" data-hint="${i}">초성 힌트</button><span class="hint">${hint}</span><span class="fb">${fb}</span></div></div>`;
+}
+
+function lessonView(L){
+  const st = S.blanks[L.id] || (S.blanks[L.id]={vals:{},res:null,hints:{},reveal:false});
+  const cards = L.cards.map(c=>{
+    const pics = c.pics&&c.pics.length ? `<div class="pics ${c.pics.length===2?"two":""}">${c.pics.map(fig).join("")}</div>`:"";
+    const grid = c.grid? `<div class="grid4">${c.grid.map(([t,d])=>`<div><b>${t}</b>${d}</div>`).join("")}</div>`:"";
+    return `<article class="card ${pics?"has-pics":""}"><div style="display:grid; gap:12px; align-content:start">
+      <header><h3>${c.t}</h3><span class="era">${c.era}</span></header>
+      ${c.pts?`<ul>${c.pts.map(p=>`<li>${p}</li>`).join("")}</ul>`:""}${grid}
+      ${c.easy?`<p class="easy"><b>쉽게 말하면</b>${c.easy}</p>`:""}</div>${pics}</article>`;
+  }).join("");
+  const tot = totalBlanks(L);
+  const score = st.res? Object.values(st.res).filter(Boolean).length : 0;
+  const all = st.res && score===tot;
+  return `<section class="screen" data-c="${L.c}" data-lesson="${L.id}">
+    <div class="lhead"><span class="k">${L.short} · ${D.UNIT}</span><h1>${L.title}</h1><p>${L.intro}</p>
+      <div class="steps"><a href="#read-${L.id}">1. 개념 읽기</a><a href="#vid-${L.id}">2. 영상으로 보기</a><a href="#blank-${L.id}">3. 빈칸 채우기</a><a href="#think-${L.id}">4. 생각 톡톡</a><a href="#more-${L.id}">5. 더 알아보기</a></div></div>
+    <div id="read-${L.id}" class="cards">${cards}</div>
+
+    <div id="vid-${L.id}" class="panel" style="display:grid; gap:12px">
+      <div class="sec-title"><span class="num" style="background:var(--c)">▶</span><h2 class="sub-h">영상으로 보기</h2></div>
+      <p class="muted small">짧은 영상(1~5분)으로 내용을 한 번 더 정리해요. 누르면 유튜브가 새 창으로 열려요.</p>
+      <div class="vids">${L.vids.map(v=>`<a class="vid" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener"><div class="th"><img src="thumbs/${v.id}.jpg" alt="" loading="lazy"><i></i><span>${v.len}</span></div><div class="meta"><b>${v.t}</b><small>${v.ch}</small></div></a>`).join("")}</div>
+    </div>
+
+    <div id="blank-${L.id}" class="blank-box">
+      <div class="hd"><h2>학습지 빈칸 채우기</h2><span class="chip">빈칸 ${tot}개</span>${st.res?`<span class="score">${score} / ${tot}</span>`:""}</div>
+      <p class="muted small">읽은 내용을 떠올리며 괄호 안에 알맞은 말을 써요. 띄어쓰기는 틀려도 괜찮아요.</p>
+      ${L.blanks.map((b,i)=>blankHTML(L,b,i,st)).join("")}
+      <div class="row">
+        <button type="button" class="btn" data-check="${L.id}">채점하기</button>
+        <button type="button" class="btn ghost" data-reset="${L.id}">다시 풀기</button>
+        ${st.res&&!all?`<button type="button" class="btn ghost" data-reveal="${L.id}">정답 보기</button>`:""}
+      </div>
+      ${all?`<p class="score" style="color:var(--ok)">모두 맞혔어요! ${L.short} 도장을 찍었어요.</p>`:(st.reveal?`<p class="small muted">정답을 확인했다면 ‘다시 풀기’를 눌러 스스로 한 번 더 풀어 보세요. 모두 맞히면 도장을 받아요.</p>`:"")}
+    </div>
+
+    <div id="think-${L.id}" class="think">
+      <h3>생각 톡톡</h3><p>${L.think.q}</p>
+      <textarea id="think-${L.id}-ta" placeholder="내 생각을 자유롭게 써 보세요.">${esc(S["think_"+L.id]||"")}</textarea>
+      <div class="row"><button type="button" class="btn ghost small" data-ex="${L.id}">예시 답 보기</button></div>
+      <p class="ex" id="ex-${L.id}" hidden>예시 답: ${L.think.ex}</p>
+    </div>
+
+    <div id="more-${L.id}">
+      <div class="sec-title" style="margin-bottom:12px"><span class="num" style="background:var(--c)">+</span><h2 class="sub-h">더 알아보기</h2></div>
+      <div class="links">${L.links.map(k=>`<a class="lk" href="${k.u}" target="_blank" rel="noopener"><span class="src">${k.src}</span><b>${k.t}</b><span>${k.d}</span></a>`).join("")}</div>
+    </div>
+
+    <div class="stampbar"><span class="disp" style="font-size:18px">${S.stamps[L.id]?"도장 완료! 다음 코스로 가 볼까요?":"빈칸을 모두 맞히면 도장을 받아요."}</span>
+      <button type="button" class="btn" data-go="${["l1","l2","l3","play"][L.n]}">${L.n<3?`다음: 코스 ${["①","②","③"][L.n]}`:"다음: 정리 놀이"} →</button></div>
+  </section>`;
+}
+
+function playView(){
+  if(!S.det.order) S.det.order=shuffle(D.DETECT.map((_,i)=>i));
+  if(!S.orderPool) S.orderPool=shuffle(D.ORDER);
+  if(!S.matchOpts) S.matchOpts=shuffle(D.PEOPLE.map(p=>p[1]));
+  const pick=S.orderPick, orderRes=S.orderChecked?pick.map((p,i)=>p===D.ORDER[i]):null;
+  const Dt=S.det; let det;
+  if(Dt.done){ det=`<p class="score">결과: ${Dt.score} / ${D.DETECT.length}</p><p>${Dt.score>=7?"대단해요! 사진만 보고도 척척 알아맞혔어요.":"헷갈린 사진은 코스 ①~③에서 다시 살펴봐요."}</p><div class="row"><button class="btn ghost" data-detreset>다시 도전</button></div>`; }
+  else{
+    const item=D.DETECT[Dt.order[Dt.i]];
+    if(!Dt.opts) Dt.opts=shuffle([item.a,...shuffle(D.DETECT.map(x=>x.a).filter(x=>x!==item.a)).slice(0,3)]);
+    det=`<div class="progress" aria-hidden="true"><i style="width:${Dt.i/D.DETECT.length*100}%"></i></div>
+      <div class="det" data-c="butter">${fig(item.img)}
+      <div style="display:grid; gap:10px"><p class="disp" style="font-size:19px">${Dt.i+1}번 사진! ${D.DETECT_Q}</p>
+      <div class="opts">${Dt.opts.map(o=>{let c=""; if(Dt.answered){ if(o===item.a)c="ok"; else if(o===Dt.picked)c="no";} return `<button type="button" class="${c}" data-det="${esc(o)}" ${Dt.answered?"disabled":""}>${o}</button>`;}).join("")}</div>
+      ${Dt.answered?`<p class="small">${Dt.picked===item.a?"<b style='color:var(--ok)'>정답!</b>":"<b style='color:var(--no)'>아쉬워요.</b> 정답은 "+item.a+"."} ${item.why}</p><button type="button" class="btn small" data-detnext>${Dt.i+1<D.DETECT.length?"다음 사진":"결과 보기"} →</button>`:""}
+      </div></div>`;
+  }
+  const mres=S.matchRes;
+  return `<section class="screen" data-c="butter">
+    <div class="lhead"><span class="k">코스 ④ · 단원 정리 놀이</span><h1>놀면서 단원 정리하기</h1><p>세 가지 놀이를 모두 성공하면 ‘놀이’ 도장을 받아요. 틀려도 괜찮으니 여러 번 도전해 보세요.</p></div>
+    <div class="game">
+      <div class="row"><h2>놀이 1. 사건 순서 맞추기</h2>${S.orderDone?'<span class="chip" style="background:var(--ok-bg);color:var(--ok)">성공</span>':""}</div>
+      <p class="muted small">먼저 일어난 일부터 차례대로 눌러 보세요.</p>
+      <div class="pool">${S.orderPool.map(o=>`<button type="button" data-ord="${esc(o)}" ${pick.includes(o)?"disabled":""}>${o}</button>`).join("")}</div>
+      <div class="slots">${pick.length?pick.map((p,i)=>`<span class="${orderRes?(orderRes[i]?"ok":"no"):""}">${p}</span>`).join(""):"<em>여기에 순서대로 놓여요.</em>"}</div>
+      <div class="row"><button type="button" class="btn" data-ordcheck ${pick.length<D.ORDER.length?"disabled":""}>확인하기</button><button type="button" class="btn ghost" data-ordreset>다시 하기</button>
+      ${orderRes?(S.orderDone?'<span class="score" style="color:var(--ok)">완벽해요!</span>':'<span class="small" style="color:var(--no)">빨간 칸의 순서를 다시 생각해 봐요.</span>'):""}</div>
+    </div>
+    <div class="game">
+      <div class="row"><h2>놀이 2. ${D.DETECT_TITLE}</h2>${Dt.done&&Dt.score>=7?'<span class="chip" style="background:var(--ok-bg);color:var(--ok)">성공</span>':""}</div>
+      <p class="muted small">사진을 보고 알맞은 것을 골라요. ${D.DETECT.length}문제 중 7개 이상 맞히면 성공! 사진을 누르면 크게 볼 수 있어요.</p>
+      ${det}
+    </div>
+    <div class="game">
+      <div class="row"><h2>놀이 3. 인물 짝 찾기</h2>${S.matchDone?'<span class="chip" style="background:var(--ok-bg);color:var(--ok)">성공</span>':""}</div>
+      <p class="muted small">인물과 알맞은 일을 골라 짝을 지어요.</p>
+      <div class="match">${D.PEOPLE.map((p,i)=>`<div class="m ${mres?(mres[i]?"ok":"no"):""}"><b>${p[0]}</b>
+        <select id="match-${i}" data-mi="${i}" aria-label="${p[0]}이 한 일"><option value="">한 일 고르기</option>${S.matchOpts.map(o=>`<option ${S["m"+i]===o?"selected":""}>${o}</option>`).join("")}</select>
+        <span class="mark">${mres?(mres[i]?"○":"✕"):""}</span></div>`).join("")}</div>
+      <div class="row"><button type="button" class="btn" data-matchcheck>확인하기</button></div>
+    </div>
+    <div class="stampbar"><span class="disp" style="font-size:18px">${S.stamps.play?"놀이 도장 완료! 이제 마무리 평가에 도전해요.":"세 놀이를 모두 성공하면 도장을 받아요."}</span><button type="button" class="btn" data-go="final">다음: 마무리 평가 →</button></div>
+  </section>`;
+}
+
+function finalView(){
+  const F=S.final, sub=F&&F.submitted, Q=D.FINAL;
+  const qs=Q.map((q,i)=>`<div class="q"><h3><span class="n">${i+1}.</span>${q.q}</h3>
+    ${q.o.map((o,j)=>{let c=""; if(sub){ if(j===q.a)c="right"; else if(F.ans[i]===j)c="wrong";} return `<label class="${c}"><input type="radio" name="fq${i}" value="${j}" ${F&&F.ans[i]===j?"checked":""} ${sub?"disabled":""}> <span>${o}</span></label>`;}).join("")}
+    ${sub?`<p class="exp">${F.ans[i]===q.a?"○ 정답!":"✕ 다시 보기:"} ${q.e}</p>`:""}</div>`).join("");
+  const score=sub?Q.filter((q,i)=>F.ans[i]===q.a).length:0;
+  const t=new Date(), ds=`${t.getFullYear()}년 ${t.getMonth()+1}월 ${t.getDate()}일`;
+  const cert=sub?`<div class="cert">
+      <svg viewBox="0 0 120 140" width="70" height="80" aria-hidden="true"><use href="#taegeuki"/></svg>
+      <h2>시간 여행 탐험 인증서</h2><p>${D.UNIT} 「${D.UNIT_NAME}」</p>
+      <label class="disp" for="certName">탐험가 이름</label>
+      <input id="certName" value="${esc(S.name)}" placeholder="이름을 쓰세요" autocomplete="off">
+      <p>위 탐험가는 ${D.CERT_RANGE} 시간 여행을 마치고<br>마무리 평가에서 <b style="font-family:var(--display);font-size:22px;color:var(--tang-d)">${score} / ${Q.length}</b>점을 받았기에 이 인증서를 드립니다.</p>
+      <div class="big-stamps">${[["l1","코스①"],["l2","코스②"],["l3","코스③"],["play","놀이"],["final","평가"]].map(([k,l])=>`<span class="${S.stamps[k]?"on":""}">${l}<br>${S.stamps[k]?"완료":""}</span>`).join("")}</div>
+      <p class="small muted">${ds} · 이 화면을 캡처해서 선생님께 제출하세요.</p></div>`:"";
+  return `<section class="screen" data-c="tang">
+    <div class="lhead"><span class="k">코스 ⑤ · 마무리 평가</span><h1>${D.UNIT_SHORT} 마무리 평가</h1><p>${Q.length}문제를 모두 풀고 ‘제출하기’를 누르면 바로 채점되고, 틀린 문제는 해설을 볼 수 있어요.</p></div>
+    ${qs}
+    <div class="row">${sub?`<span class="score">점수: ${score} / ${Q.length}</span><button type="button" class="btn ghost" data-finalreset>다시 풀기</button>`:`<button type="button" class="btn" data-finalsubmit>제출하기</button><span class="small muted" id="finalMsg"></span>`}</div>
+    ${sub?`<div class="panel"><h2 style="font-size:22px;margin-bottom:10px">스스로 평가하기</h2><div class="self">${D.SELF.map((s,i)=>`<div class="s"><span>${s}</span><span class="stars" role="group" aria-label="${s}">${[1,2,3].map(n=>`<button type="button" data-star="${i}-${n}" class="${S.self[i]>=n?"on":""}" aria-label="별 ${n}개">★</button>`).join("")}</span></div>`).join("")}</div></div>${cert}`:""}
+  </section>`;
+}
+
+function afterRender(){
+  document.querySelectorAll("[data-lesson] input[data-bk]").forEach(inp=>{
+    inp.addEventListener("input",()=>{ const L=inp.closest("[data-lesson]").dataset.lesson; S.blanks[L].vals[inp.dataset.bk]=inp.value; });
+    inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ checkBlanks(inp.closest("[data-lesson]").dataset.lesson); } });
+  });
+  document.querySelectorAll("textarea[id^=think-]").forEach(t=>t.addEventListener("input",()=>{ S["think_"+t.id.split("-")[1]]=t.value; }));
+  document.querySelectorAll("select[data-mi]").forEach(s=>s.addEventListener("change",()=>{ S["m"+s.dataset.mi]=s.value; }));
+  const cn=$("#certName"); if(cn) cn.addEventListener("input",()=>S.name=cn.value);
+  document.querySelectorAll("input[name^=fq]").forEach(r=>r.addEventListener("change",()=>{ if(!S.final) S.final={ans:{},submitted:false}; S.final.ans[r.name.slice(2)]=+r.value; }));
+}
+function syncVals(id){ const st=S.blanks[id]; document.querySelectorAll(`[data-lesson="${id}"] input[data-bk]`).forEach(el=>st.vals[el.dataset.bk]=el.value); }
+function checkBlanks(id){
+  const L=LESSONS.find(l=>l.id===id), st=S.blanks[id]; syncVals(id); st.reveal=false; st.res={};
+  L.blanks.forEach((b,i)=>b.ans.forEach((alts,j)=>{ st.res[`${i}-${j}`]=alts.some(a=>norm(a)===norm(st.vals[`${i}-${j}`])); }));
+  const vals=Object.values(st.res), ok=vals.filter(Boolean).length, all=ok===vals.length;
+  const first=all&&!S.stamps[id]; if(all) S.stamps[id]=true;
+  const y=window.scrollY; render(); window.scrollTo(0,y);
+  if(first){ renderTop(true,id); toast(`${L.short} 도장 쾅!`); } else if(!all) toast(`${ok}개 맞혔어요. 틀린 빈칸을 다시 채워 봐요!`);
+}
+function giveStamp(key,msg){ if(S.stamps[key]) return; S.stamps[key]=true; renderTop(true,key); toast(msg); }
+function checkPlay(){ if(S.orderDone&&S.detDone&&S.matchDone) giveStamp("play","놀이 도장 쾅! 모든 놀이 성공!"); }
+
+document.addEventListener("click",e=>{
+  if(e.target.classList&&e.target.classList.contains("lb")){ $("#overlay").innerHTML=""; return; }
+  const t=e.target.closest("button, a"); if(!t) return;
+  const d=t.dataset; const keep=()=>{const y=window.scrollY; render(); window.scrollTo(0,y);};
+  if(d.go){ go(d.go); return; }
+  if(d.zoom){ const m=IMG[d.zoom]; $("#overlay").innerHTML=`<div class="lb" role="dialog" aria-label="사진 크게 보기"><figure><img src="img/${d.zoom}.jpg" alt="${esc(m.cap)}"><figcaption>${m.cap}</figcaption></figure><button class="btn x" data-close>닫기</button></div>`; return; }
+  if(d.close!==undefined){ $("#overlay").innerHTML=""; return; }
+  if(d.hint!==undefined){ const L=t.closest("[data-lesson]").dataset.lesson; syncVals(L); S.blanks[L].hints[d.hint]=true; keep(); return; }
+  if(d.check){ checkBlanks(d.check); return; }
+  if(d.reset){ S.blanks[d.reset]={vals:{},res:null,hints:{},reveal:false}; keep(); return; }
+  if(d.reveal){ S.blanks[d.reveal].reveal=true; keep(); return; }
+  if(d.ex){ const el=$("#ex-"+d.ex); el.hidden=!el.hidden; t.textContent=el.hidden?"예시 답 보기":"예시 답 숨기기"; return; }
+  if(d.ord){ if(S.orderPick.length<D.ORDER.length){ S.orderPick.push(d.ord); S.orderChecked=false; } keep(); return; }
+  if(d.ordreset!==undefined){ S.orderPick=[]; S.orderChecked=false; S.orderPool=shuffle(D.ORDER); keep(); return; }
+  if(d.ordcheck!==undefined){ S.orderChecked=true; if(S.orderPick.every((p,i)=>p===D.ORDER[i])){ S.orderDone=true; toast("순서 완벽!"); checkPlay(); } keep(); return; }
+  if(d.det){ const Dt=S.det; Dt.answered=true; Dt.picked=d.det; if(d.det===D.DETECT[Dt.order[Dt.i]].a) Dt.score++; keep(); return; }
+  if(d.detnext!==undefined){ const Dt=S.det; Dt.i++; Dt.answered=false; Dt.opts=null; Dt.picked=null; if(Dt.i>=D.DETECT.length){ Dt.done=true; if(Dt.score>=7){ S.detDone=true; checkPlay(); } } keep(); return; }
+  if(d.detreset!==undefined){ S.det={i:0,score:0,answered:false,order:shuffle(D.DETECT.map((_,i)=>i)),done:false}; keep(); return; }
+  if(d.matchcheck!==undefined){ S.matchRes=D.PEOPLE.map((p,i)=>($("#match-"+i).value===p[1])); if(S.matchRes.every(Boolean)){ S.matchDone=true; toast("인물 짝 찾기 성공!"); checkPlay(); } keep(); return; }
+  if(d.finalsubmit!==undefined){ const F=S.final||{ans:{}}; const miss=D.FINAL.map((_,i)=>i).filter(i=>F.ans[i]===undefined); if(miss.length){ $("#finalMsg").textContent=`아직 안 푼 문제: ${miss.map(i=>i+1).join(", ")}번`; return; } F.submitted=true; S.final=F; const sc=D.FINAL.filter((q,i)=>F.ans[i]===q.a).length; const first=!S.stamps.final; S.stamps.final=true; render(); renderTop(first,"final"); toast(`${sc}점! 평가 도장을 받았어요.`); setTimeout(()=>{const c=$(".cert"); if(c) c.scrollIntoView({behavior:"smooth",block:"center"});},300); return; }
+  if(d.finalreset!==undefined){ S.final=null; render(); window.scrollTo(0,0); return; }
+  if(d.star){ const [i,n]=d.star.split("-").map(Number); S.self[i]=n; keep(); return; }
+});
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") $("#overlay").innerHTML=""; });
+renderTop(); render();
+
+</script>

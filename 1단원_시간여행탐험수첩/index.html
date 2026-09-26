@@ -1,0 +1,833 @@
+<title>시간 여행 탐험 수첩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#FFF7EA; --paper-2:#FFEFD6; --card:#FFFFFF;
+  --ink:#3E2A1E; --ink-soft:#7A5C48; --line:#EBD7BC;
+  --tang:#FF8A3D; --tang-d:#D9661A; --tang-bg:#FFE9D9;
+  --mint:#3FB987; --mint-d:#23895F; --mint-bg:#E1F6EC;
+  --sky:#4E9BE8; --sky-d:#2F74BD; --sky-bg:#E4F0FC;
+  --pink:#F2708F; --pink-d:#C94A69; --pink-bg:#FFE6EC;
+  --butter:#F5B800; --butter-d:#B88400; --butter-bg:#FFF3C7;
+  --ok:#23945E; --ok-bg:#DDF5E8; --no:#D9434A; --no-bg:#FDE3E3;
+  --display:"Jua", "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body:"Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  --r:18px;
+}
+*{box-sizing:border-box}
+html,body{background:var(--paper)}
+body{
+  margin:0; color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.7;
+  background-color:var(--paper);
+  background-image:radial-gradient(var(--line) 1.2px, transparent 1.3px);
+  background-size:22px 22px;
+  word-break:keep-all; overflow-wrap:break-word;
+}
+h1,h2,h3,h4,.disp{font-family:var(--display); font-weight:400; line-height:1.3; text-wrap:balance; margin:0}
+p{margin:0}
+a{color:inherit}
+button{font-family:var(--display); font-size:16px; cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--tang); outline-offset:2px}
+img{max-width:100%; display:block}
+.wrap{max-width:980px; margin:0 auto; padding-inline:16px}
+
+/* ---------- header ---------- */
+.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:30; background:rgba(255,247,234,.94); backdrop-filter:blur(6px); border-bottom:2px dashed var(--line)}
+.top .wrap{display:flex; align-items:center; gap:12px; padding-block:10px; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:8px; margin-right:auto; background:none; border:0; padding:0; color:var(--ink)}
+.brand svg{width:38px; height:44px}
+.brand b{font-family:var(--display); font-weight:400; font-size:21px}
+.stamps{display:flex; gap:5px; align-items:center}
+.stamps span{width:26px; height:26px; border-radius:50%; border:2px dashed #D8BFA0; display:grid; place-items:center; font-family:var(--display); font-size:12px; color:#B09077; transition:.3s}
+.stamps span.on{border:2px solid var(--no); color:var(--no); background:#FFF0F0; transform:rotate(-12deg)}
+.nav{display:flex; gap:6px; overflow-x:auto; width:100%; padding-bottom:2px; scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav button{flex:0 0 auto; border:2px solid var(--line); background:var(--card); color:var(--ink-soft); border-radius:999px; padding:4px 14px; font-size:15px}
+.nav button[aria-current="true"]{background:var(--ink); border-color:var(--ink); color:#fff}
+
+/* ---------- common ---------- */
+main{padding-block:24px 60px}
+.screen{display:grid; gap:22px}
+.btn{border:0; border-radius:14px; padding:10px 20px; background:var(--tang); color:#fff; box-shadow:0 4px 0 var(--tang-d); transition:transform .1s, box-shadow .1s}
+.btn:active{transform:translateY(3px); box-shadow:0 1px 0 var(--tang-d)}
+.btn.ghost{background:var(--card); color:var(--ink); box-shadow:0 4px 0 var(--line); border:2px solid var(--line)}
+.btn.small{padding:6px 14px; font-size:15px}
+.btn[disabled]{opacity:.45; cursor:not-allowed}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.chip{display:inline-block; font-family:var(--display); font-size:14px; padding:2px 12px; border-radius:999px; background:var(--paper-2); color:var(--ink-soft)}
+.panel{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:22px}
+.muted{color:var(--ink-soft)}
+.small{font-size:14px}
+mark{background:linear-gradient(transparent 55%, var(--butter-bg) 55%); color:inherit; font-weight:700; padding:0 2px}
+.sec-title{display:flex; align-items:center; gap:10px}
+.sec-title h2{font-size:26px}
+.sec-title .num{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; color:#fff; font-family:var(--display); font-size:20px; flex:0 0 auto}
+
+/* theme per lesson */
+[data-c="mint"]{--c:var(--mint); --cd:var(--mint-d); --cb:var(--mint-bg)}
+[data-c="sky"]{--c:var(--sky); --cd:var(--sky-d); --cb:var(--sky-bg)}
+[data-c="pink"]{--c:var(--pink); --cd:var(--pink-d); --cb:var(--pink-bg)}
+[data-c="butter"]{--c:var(--butter); --cd:var(--butter-d); --cb:var(--butter-bg)}
+[data-c="tang"]{--c:var(--tang); --cd:var(--tang-d); --cb:var(--tang-bg)}
+
+/* ---------- home ---------- */
+.hero{display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; background:var(--card); border:2px solid var(--line); border-radius:24px; padding:22px; position:relative; overflow:hidden}
+.hero .mascot{width:110px}
+.bubble{position:relative; background:var(--butter-bg); border-radius:18px; padding:12px 16px; font-size:16px}
+.bubble::before{content:""; position:absolute; left:-10px; top:22px; border:10px solid transparent; border-right-color:var(--butter-bg); border-left:0}
+.hero h1{font-size:clamp(26px,5vw,38px); margin-block:6px 8px}
+.hero .unit{font-family:var(--display); color:var(--tang-d); font-size:16px}
+.goals{display:grid; gap:8px; margin-top:12px; padding:0; list-style:none}
+.goals li{display:flex; gap:8px; align-items:flex-start; font-size:16px}
+.goals li::before{content:""; flex:0 0 18px; height:18px; margin-top:5px; border-radius:6px; border:2px solid var(--mint)}
+
+.timeline{overflow-x:auto; padding-bottom:6px}
+.tl{display:grid; grid-template-columns:repeat(6, minmax(130px,1fr)); gap:0; min-width:780px; position:relative; padding-top:14px}
+.tl::before{content:""; position:absolute; left:6%; right:6%; top:34px; height:6px; border-radius:3px; background:repeating-linear-gradient(90deg,var(--tang) 0 14px, transparent 14px 22px)}
+.tl .ev{text-align:center; display:grid; justify-items:center; gap:6px; padding-inline:4px; position:relative}
+.tl .dot{width:44px; height:44px; border-radius:50%; background:var(--card); border:4px solid var(--c); display:grid; place-items:center; font-family:var(--display); color:var(--cd); font-size:15px; z-index:1}
+.tl .ev b{font-family:var(--display); font-weight:400; font-size:17px}
+.tl .ev small{font-size:13px; color:var(--ink-soft); line-height:1.4}
+
+.courses{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px}
+.course{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:16px; text-align:left; color:var(--ink); display:grid; gap:6px; align-content:start; position:relative; box-shadow:0 5px 0 var(--cb); transition:transform .15s}
+.course:hover{transform:translateY(-3px)}
+.course .tag{font-family:var(--display); font-size:13px; color:#fff; background:var(--c); border-radius:999px; padding:1px 10px; justify-self:start}
+.course h3{font-size:19px}
+.course p{font-family:var(--body); font-size:14px; color:var(--ink-soft); line-height:1.5}
+.course .done{position:absolute; right:10px; top:10px; width:44px; height:44px; border-radius:50%; border:2px solid var(--no); color:var(--no); font-family:var(--display); font-size:12px; display:grid; place-items:center; transform:rotate(-14deg); background:#FFF0F0}
+.how{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px}
+.how div{background:var(--paper-2); border-radius:14px; padding:12px 14px; font-size:15px}
+.how b{font-family:var(--display); font-weight:400; font-size:17px; display:block}
+details.teacher{background:var(--card); border:2px dashed var(--line); border-radius:var(--r); padding:14px 18px}
+details.teacher summary{font-family:var(--display); font-size:18px; cursor:pointer}
+details.teacher table{border-collapse:collapse; width:100%; font-size:15px; margin-top:10px}
+details.teacher td,details.teacher th{border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top}
+details.teacher th{background:var(--paper-2); font-family:var(--display); font-weight:400}
+
+/* ---------- lesson ---------- */
+.lhead{background:var(--cb); border-radius:24px; padding:22px; display:grid; gap:8px}
+.lhead .k{font-family:var(--display); color:var(--cd)}
+.lhead h1{font-size:clamp(24px,4.4vw,34px)}
+.steps{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
+.steps a{font-family:var(--display); text-decoration:none; background:var(--card); border-radius:999px; padding:3px 14px; font-size:15px; color:var(--cd); border:2px solid var(--c)}
+.cards{display:grid; gap:18px}
+.card{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:20px; display:grid; grid-template-columns:1fr; gap:14px}
+.card.has-pics{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.card header{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.card h3{font-size:22px}
+.card .era{font-family:var(--display); font-size:13px; color:var(--cd); background:var(--cb); padding:2px 10px; border-radius:999px}
+.card ul{margin:0; padding-left:1.1em; display:grid; gap:6px}
+.card li::marker{color:var(--c)}
+.easy{background:var(--paper-2); border-radius:12px; padding:10px 14px; font-size:15px; margin-top:4px}
+.easy b{font-family:var(--display); font-weight:400; color:var(--tang-d); margin-right:4px}
+.pics{display:grid; gap:14px; align-content:start}
+.pics.two{grid-template-columns:1fr 1fr}
+figure{margin:0; background:#fff; padding:8px 8px 6px; border-radius:6px; box-shadow:0 2px 0 var(--line), 0 6px 14px rgba(62,42,30,.08); position:relative; transform:rotate(var(--rot,-1deg))}
+figure:nth-child(2n){--rot:1.2deg}
+figure::before{content:""; position:absolute; top:-9px; left:50%; width:70px; height:20px; transform:translateX(-50%) rotate(-3deg); background:color-mix(in srgb, var(--c, var(--butter)) 45%, transparent); border-radius:2px}
+figure button{border:0; padding:0; background:none; display:block; width:100%; cursor:zoom-in}
+figure img{width:100%; height:170px; object-fit:cover; border-radius:3px; background:var(--paper-2)}
+figure img.contain{object-fit:contain; background:#fff}
+figcaption{font-size:13px; line-height:1.45; padding-top:6px; color:var(--ink)}
+.law{display:grid; gap:10px}
+.law .item{background:var(--paper-2); border-radius:12px; padding:10px 14px; display:grid; gap:4px}
+.law .item p{font-weight:700}
+.law .item button{justify-self:start; border:0; background:none; color:var(--cd); font-family:var(--display); padding:0; font-size:15px; text-decoration:underline; text-underline-offset:3px}
+.law .item .ans{font-size:15px; color:var(--ink)}
+
+/* blanks */
+.blank-box{background:var(--card); border:3px solid var(--c); border-radius:24px; padding:22px; display:grid; gap:14px; position:relative}
+.blank-box .hd{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.blank-box h2{font-size:24px}
+.bl{display:grid; gap:4px; padding:12px 14px; border-radius:14px; background:var(--paper); border:2px solid transparent}
+.bl .topic{font-family:var(--display); font-size:13px; color:var(--cd)}
+.bl .sent{line-height:2.1}
+.bl input{font-family:var(--display); font-size:17px; width:9.5em; max-width:100%; padding:2px 10px; border:0; border-bottom:3px solid var(--c); background:var(--cb); border-radius:8px 8px 0 0; color:var(--ink); text-align:center}
+.bl.ok{border-color:var(--ok); background:var(--ok-bg)}
+.bl.no{border-color:var(--no); background:var(--no-bg)}
+.bl .fb{font-size:14px; min-height:0}
+.bl.ok .fb{color:var(--ok)} .bl.no .fb{color:var(--no)}
+.bl .hint{font-size:14px; color:var(--ink-soft)}
+.score{font-family:var(--display); font-size:20px}
+.think{background:var(--cb); border-radius:var(--r); padding:18px; display:grid; gap:10px}
+.think h3{font-size:20px}
+.think textarea{font-family:var(--body); font-size:16px; width:100%; min-height:90px; border:2px solid var(--line); border-radius:12px; padding:10px; background:#fff; color:var(--ink); resize:vertical}
+.think .ex{background:#fff; border-radius:12px; padding:10px 14px; font-size:15px}
+
+/* links */
+.links{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px}
+.lk{display:grid; gap:2px; text-decoration:none; background:var(--card); border:2px solid var(--line); border-radius:14px; padding:12px 14px; transition:border-color .15s, transform .15s}
+.lk:hover{border-color:var(--c); transform:translateY(-2px)}
+.lk .src{font-size:12px; font-family:var(--display); color:var(--cd)}
+.lk b{font-family:var(--display); font-weight:400; font-size:17px}
+.lk span{font-size:14px; color:var(--ink-soft); line-height:1.5}
+.lk::after{content:"새 창으로 열기 ↗"; font-size:12px; color:var(--ink-soft); margin-top:4px}
+.stampbar{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; background:var(--card); border:2px dashed var(--c); border-radius:var(--r); padding:14px 18px}
+
+/* play */
+.game{background:var(--card); border:2px solid var(--line); border-radius:24px; padding:22px; display:grid; gap:14px}
+.game h2{font-size:24px}
+.pool,.slots{display:flex; flex-wrap:wrap; gap:8px}
+.pool button{border:2px solid var(--butter); background:var(--butter-bg); border-radius:12px; padding:8px 14px; color:var(--ink)}
+.pool button[disabled]{opacity:.3}
+.slots{counter-reset:s; min-height:56px; background:var(--paper); border-radius:14px; padding:10px; align-items:center}
+.slots span{counter-increment:s; font-family:var(--display); background:#fff; border:2px solid var(--line); border-radius:12px; padding:6px 12px}
+.slots span::before{content:counter(s) ". "; color:var(--tang-d)}
+.slots span.ok{border-color:var(--ok); background:var(--ok-bg)} .slots span.no{border-color:var(--no); background:var(--no-bg)}
+.slots em{color:var(--ink-soft); font-style:normal; font-size:15px}
+.det{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; align-items:center}
+.det figure img{height:240px; object-fit:contain; background:#fff}
+.opts{display:grid; gap:8px}
+.opts button{border:2px solid var(--line); background:var(--card); border-radius:12px; padding:10px; text-align:left; color:var(--ink)}
+.opts button.ok{border-color:var(--ok); background:var(--ok-bg)} .opts button.no{border-color:var(--no); background:var(--no-bg)}
+.match{display:grid; gap:10px}
+.match .m{display:grid; grid-template-columns:130px 1fr auto; gap:10px; align-items:center; background:var(--paper); border-radius:12px; padding:8px 12px; border:2px solid transparent}
+.match .m b{font-family:var(--display); font-weight:400; font-size:18px}
+.match select{font-family:var(--body); font-size:15px; padding:6px 8px; border-radius:10px; border:2px solid var(--line); background:#fff; color:var(--ink); width:100%}
+.match .m.ok{border-color:var(--ok); background:var(--ok-bg)} .match .m.no{border-color:var(--no); background:var(--no-bg)}
+.match .mark{font-family:var(--display); width:24px; text-align:center}
+.progress{height:10px; background:var(--paper-2); border-radius:6px; overflow:hidden}
+.progress i{display:block; height:100%; background:var(--butter); transition:width .3s}
+
+/* final */
+.q{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:16px 18px; display:grid; gap:10px}
+.q h3{font-size:18px; font-family:var(--body); font-weight:700}
+.q h3 .n{font-family:var(--display); font-weight:400; color:var(--tang-d); margin-right:6px}
+.q label{display:flex; gap:10px; align-items:flex-start; padding:8px 12px; border-radius:10px; border:2px solid var(--paper-2); cursor:pointer; font-size:16px}
+.q label:has(input:checked){border-color:var(--tang); background:var(--tang-bg)}
+.q input{margin-top:6px; accent-color:var(--tang)}
+.q label.right{border-color:var(--ok); background:var(--ok-bg)}
+.q label.wrong{border-color:var(--no); background:var(--no-bg)}
+.q .exp{font-size:15px; background:var(--paper); border-radius:10px; padding:8px 12px}
+.self{display:grid; gap:10px}
+.self .s{display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; background:var(--paper); border-radius:12px; padding:10px 14px}
+.stars{display:flex; gap:4px}
+.stars button{border:0; background:none; font-size:26px; line-height:1; color:var(--line); padding:0 2px}
+.stars button.on{color:var(--butter)}
+.cert{background:#fff; border:3px double var(--tang); border-radius:24px; padding:26px 22px; text-align:center; display:grid; gap:12px; justify-items:center; position:relative; overflow:hidden}
+.cert::before,.cert::after{content:""; position:absolute; width:140px; height:140px; border-radius:50%; background:var(--butter-bg); z-index:0}
+.cert::before{left:-50px; top:-50px} .cert::after{right:-50px; bottom:-50px; background:var(--mint-bg)}
+.cert > *{position:relative; z-index:1}
+.cert h2{font-size:30px; color:var(--tang-d)}
+.cert input{font-family:var(--display); font-size:22px; text-align:center; border:0; border-bottom:3px dashed var(--tang); background:transparent; width:220px; max-width:100%; color:var(--ink)}
+.cert .big-stamps{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+.cert .big-stamps span{width:60px; height:60px; border-radius:50%; border:3px solid var(--line); display:grid; place-items:center; font-family:var(--display); font-size:13px; color:var(--line); line-height:1.1}
+.cert .big-stamps span.on{border-color:var(--no); color:var(--no); transform:rotate(-10deg); background:#FFF0F0}
+
+.credits{font-size:13px; color:var(--ink-soft)}
+.credits summary{font-family:var(--display); font-size:16px; cursor:pointer; color:var(--ink)}
+.credits ol{padding-left:1.3em; display:grid; gap:2px; margin:8px 0 0}
+
+.vids{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:14px}
+.vid{display:grid; grid-template-rows:auto 1fr; align-content:start; text-decoration:none; background:var(--card); border:2px solid var(--line); border-radius:14px; overflow:hidden; transition:transform .15s, border-color .15s; color:var(--ink)}
+.vid:hover{transform:translateY(-2px); border-color:var(--c)}
+.vid .th{position:relative; aspect-ratio:16/9; overflow:hidden; background:var(--paper-2)}
+.vid .th img{width:100%; height:100%; object-fit:cover}
+.vid .th span{position:absolute; right:6px; bottom:6px; background:rgba(0,0,0,.78); color:#fff; font-size:12px; font-family:var(--display); padding:1px 7px; border-radius:6px}
+.vid .th i{position:absolute; left:50%; top:50%; width:42px; height:30px; margin:-15px 0 0 -21px; background:rgba(230,33,23,.92); border-radius:9px}
+.vid .th i::after{content:""; position:absolute; left:17px; top:8px; border:7px solid transparent; border-left:11px solid #fff; border-right:0}
+.vid .meta{padding:10px 12px 12px; display:grid; gap:2px}
+.vid .meta b{font-family:var(--body); font-weight:700; font-size:15px; line-height:1.45}
+.vid .meta small{font-size:12px; color:var(--ink-soft)}
+.sub-h{font-size:22px}
+
+/* lightbox */
+.lb{position:fixed; inset:0; background:rgba(40,26,18,.82); z-index:50; display:grid; place-items:center; padding:20px}
+.lb figure{transform:none; max-width:min(92vw,720px)}
+.lb figure::before{display:none}
+.lb img{height:auto; max-height:72vh; object-fit:contain}
+.lb .x{position:absolute; top:16px; right:16px}
+
+.toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:#fff; font-family:var(--display); padding:10px 20px; border-radius:999px; z-index:60; font-size:16px; box-shadow:0 6px 18px rgba(0,0,0,.2)}
+@keyframes pop{0%{transform:scale(.3) rotate(-30deg);opacity:0}70%{transform:scale(1.15) rotate(-8deg);opacity:1}100%{transform:scale(1) rotate(-12deg)}}
+.pop{animation:pop .5s ease-out}
+@keyframes wob{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.hero .mascot{animation:wob 3s ease-in-out infinite; transform-origin:50% 90%}
+@media (prefers-reduced-motion: reduce){*{animation:none!important; transition:none!important}}
+
+@media (max-width:720px){
+  .card.has-pics{grid-template-columns:1fr}
+  .det{grid-template-columns:1fr}
+  .hero{grid-template-columns:1fr; text-align:left}
+  .hero .mascot{width:80px}
+  .bubble::before{display:none}
+  .match .m{grid-template-columns:1fr auto}
+  .match .m select{grid-column:1 / -1; grid-row:2}
+  .brand b{font-size:18px}
+}
+@media (max-width:420px){ .pics.two{grid-template-columns:1fr} }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="bitsal" viewBox="0 0 120 140">
+      <path d="M16 26 C16 72 38 118 60 134 C82 118 104 72 104 26 Z" fill="#E9B67C"/>
+      <g stroke="#B97A45" stroke-width="3" stroke-linecap="round" fill="none">
+        <path d="M24 38 l8 -8 M34 38 l8 -8 M44 38 l8 -8 M54 38 l8 -8 M64 38 l8 -8 M74 38 l8 -8 M84 38 l8 -8"/>
+        <path d="M36 98 l6 6 M46 98 l6 6 M56 98 l6 6 M66 98 l6 6 M76 98 l6 6" />
+        <path d="M50 116 l5 5 M60 116 l5 5"/>
+      </g>
+      <ellipse cx="60" cy="26" rx="46" ry="10" fill="#D99A5B"/>
+      <ellipse cx="60" cy="25" rx="38" ry="6" fill="#8C5530"/>
+      <circle cx="45" cy="64" r="6" fill="#3B2416"/><circle cx="75" cy="64" r="6" fill="#3B2416"/>
+      <circle cx="47" cy="62" r="2" fill="#fff"/><circle cx="77" cy="62" r="2" fill="#fff"/>
+      <ellipse cx="36" cy="76" rx="7" ry="4" fill="#FF9AA8" opacity=".8"/><ellipse cx="84" cy="76" rx="7" ry="4" fill="#FF9AA8" opacity=".8"/>
+      <path d="M52 76 Q60 84 68 76" stroke="#3B2416" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <button class="brand" data-go="home" aria-label="처음 화면으로"><svg><use href="#bitsal"/></svg><b>시간 여행 탐험 수첩</b></button>
+    <div class="stamps" id="stampsTop" aria-label="모은 도장"></div>
+    <nav class="nav" id="nav" aria-label="탐험 코스"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="main"></main>
+<div id="overlay"></div>
+
+<script>
+/* =================== DATA =================== */
+const IMG = {
+  handaxe:{src:"img/handaxe.jpg", cap:"주먹도끼(연천 전곡리 출토) — 대표적인 뗀석기", fit:"contain"},
+  pottery:{src:"img/pottery.jpg", cap:"빗살무늬 토기 — 곡식을 담아 두던 그릇", fit:"contain"},
+  stoneaxe:{src:"img/stoneaxe.jpg", cap:"돌을 갈아 만든 돌도끼·가락바퀴·반달돌칼(복제품)"},
+  dagmirror:{src:"img/dagmirror.jpg", cap:"청동으로 만든 검과 거울", fit:"contain"},
+  bipa2:{src:"img/bipa2.jpg", cap:"비파형 동검 — 악기 ‘비파’를 닮은 모양", fit:"contain"},
+  dolmen:{src:"img/dolmen.jpg", cap:"강화도의 탁자식 고인돌 — 탁자처럼 생긴 지배자의 무덤"},
+  suryeop:{src:"img/suryeop.jpg", cap:"무용총 ‘수렵도’ — 말을 타고 활을 쏘며 사냥하는 모습"},
+  muyong_guest:{src:"img/muyong_guest.jpg", cap:"무용총 ‘손님맞이 그림’"},
+  stele:{src:"img/stele.jpg", cap:"광개토 대왕릉비 — 아들 장수왕이 세웠어요"},
+  muryeong_inside:{src:"img/muryeong_inside.jpg", cap:"무령왕릉 내부(복원)", fit:"contain"},
+  muryeong:{src:"img/muryeong.jpg", cap:"벽돌을 쌓아 만든 무령왕릉 무덤방의 모습"},
+  incense:{src:"img/incense.jpg", cap:"백제 금동대향로 — 백제의 뛰어난 공예 기술", fit:"contain"},
+  crown:{src:"img/crown.jpg", cap:"신라의 금관 — 섬세한 금 세공 기술", fit:"contain"},
+  armor:{src:"img/armor.jpg", cap:"가야의 철 갑옷과 투구", fit:"contain"},
+  bulguksa:{src:"img/bulguksa.jpg", cap:"경주 불국사"},
+  seokguram:{src:"img/seokguram.jpg", cap:"경주 석굴암 본존불"},
+  silla_balhae:{src:"img/silla_balhae.jpg", cap:"8세기 지도 — 북쪽 연두색이 발해, 남쪽 보라색이 통일신라", fit:"contain"},
+  balhaetile:{src:"img/balhaetile.jpg", cap:"발해의 연꽃무늬 기와 — 고구려 기와와 많이 닮았어요"},
+  wanggeon:{src:"img/wanggeon.jpg", cap:"고려 태조 왕건 청동상", fit:"contain"},
+  goryeomap:{src:"img/goryeomap.jpg", cap:"11세기 고려의 영역(주황색)", fit:"contain"},
+  seohui:{src:"img/seohui.jpg", cap:"서희의 외교 담판(기록화)"},
+  celadon:{src:"img/celadon.jpg", cap:"청자 상감 구름 학 무늬 매병 — 상감 기법으로 학과 구름을 새겼어요", fit:"contain"},
+  tripitaka:{src:"img/tripitaka.jpg", cap:"팔만대장경판 — 나무판에 글자를 거꾸로 새겼어요"},
+  janggyeong:{src:"img/janggyeong.jpg", cap:"대장경판을 보관하는 합천 해인사 장경판전"},
+  jikji:{src:"img/jikji.jpg", cap:"직지심체요절(1377) — 지금 남아 있는 가장 오래된 금속 활자 책"}
+};
+
+const LESSONS = [
+ { id:"l1", n:1, c:"mint", short:"코스 ①", title:"선사 시대와 최초의 국가 고조선",
+   intro:"돌을 깨뜨려 쓰던 사람들이 농사를 짓고, 청동기를 만들고, 드디어 나라를 세우기까지! 도구와 집이 어떻게 바뀌었는지 살펴봐요.",
+   cards:[
+    {t:"구석기 시대", era:"약 70만 년 전부터", pics:["handaxe"], pts:[
+      "돌을 떼어 내거나 깨뜨려 만든 <mark>뗀석기</mark>를 사용하여 동물을 사냥했어요.",
+      "한데에 <mark>막집</mark>을 짓거나, <mark>동굴</mark>이나 바위 그늘에서 살았어요.",
+      "먹을 것을 찾아 무리 지어 <mark>이동 생활</mark>을 했어요."],
+      easy:"먹을 것이 떨어지면 다른 곳으로 옮겨 다녔기 때문에 튼튼한 집 대신 잠깐 머무는 막집이나 동굴에서 살았어요."},
+    {t:"신석기 시대", era:"약 1만 년 전부터", pics:["pottery","stoneaxe"], pts:[
+      "돌을 정교하게 갈아 만든 <mark>간석기</mark>를 사용하여 작은 동물을 사냥했어요.",
+      "강가나 바닷가에 <mark>움집</mark>을 짓고 한곳에 <mark>정착</mark>하여 살았어요.",
+      "점차 <mark>조나 기장</mark> 등 잡곡 농사를 짓기 시작했어요. 곡식을 담으려고 빗살무늬 토기를 만들었어요."],
+      easy:"농사를 짓기 시작하면서 한곳에 머물러 살게 되었어요. 그래서 땅을 파고 지붕을 얹은 움집을 지었지요."},
+    {t:"청동기 시대", era:"금속 도구의 등장", pics:["dagmirror"], pts:[
+      "청동과 같은 <mark>금속</mark>으로 도구를 만들기 시작했어요.",
+      "청동은 재료가 귀하고 다루기 어려워 주로 <mark>제사용 도구, 장신구, 무기</mark>를 만들었어요.",
+      "<mark>지배자</mark>가 등장하여 마을을 다스리고 하늘에 제사를 지냈어요."],
+      easy:"귀한 청동기를 가진 사람이 힘을 갖게 되면서, 마을을 이끄는 지배자가 나타났어요."},
+    {t:"고조선 건국", era:"우리나라 최초의 국가", pics:[], pts:[
+      "청동기 시대에 <mark>단군왕검</mark>이 우리나라 최초의 국가인 <mark>고조선</mark>을 세웠어요.",
+      "단군 이야기에는 하늘을 섬기고 농사를 중요하게 여긴 고조선 사람들의 생각이 담겨 있어요."]},
+    {t:"고조선의 발전", era:"문화 범위 짐작하기", pics:["bipa2","dolmen"], pts:[
+      "<mark>비파형 동검</mark>, <mark>탁자식 고인돌</mark> 등이 발견된 지역을 바탕으로 고조선의 문화 범위를 짐작할 수 있어요.",
+      "고인돌은 큰 돌을 옮길 만큼 많은 사람을 부릴 수 있었던 지배자의 무덤이에요."],
+      easy:"같은 모양의 동검과 고인돌이 나온 곳은 같은 문화를 가진 사람들이 살던 곳이라고 볼 수 있어요."},
+    {t:"고조선의 법(8조법)", era:"사회 질서를 지키는 약속", pics:[], law:[
+      ["사람을 죽인 사람은 사형에 처한다.","사람의 생명을 소중하게 여겼어요."],
+      ["남을 다치게 한 사람은 곡식으로 갚는다.","농사를 지었고, 곡식이 재산으로 중요했어요."],
+      ["도둑질한 사람을 데려다 노비로 삼는다. 용서받으려면 50만 전을 내야 한다.","개인의 재산을 인정했고, 노비와 같은 신분 차이가 있었어요. 돈(화폐)도 사용했어요."]],
+      pts:["여덟 개의 법 조항 가운데 <mark>세 개</mark>가 지금까지 전해져요. 법 조항을 누르면 무엇을 알 수 있는지 볼 수 있어요."]}
+   ],
+   blanks:[
+    {topic:"구석기 시대", pre:"돌을 떼어 내거나 깨뜨려 만든", post:"를 사용하여 동물을 사냥함.", a:["뗀석기"]},
+    {topic:"신석기 시대", pre:"돌을 정교하게 갈아 만든", post:"를 사용하여 작은 동물을 사냥함.", a:["간석기"]},
+    {topic:"금속 도구", pre:"청동과 같은 금속으로 도구를 만들기 시작한 때는", post:"시대임.", a:["청동기"]},
+    {topic:"고조선 건국", pre:"청동기 시대에 단군왕검이 우리나라 최초의 국가인", post:"을 건국하였음.", a:["고조선"]},
+    {topic:"고조선의 발전", pre:"비파형 동검,", post:"등이 발견된 지역을 바탕으로 고조선의 문화 범위를 짐작할 수 있음.", a:["탁자식 고인돌","탁자식고인돌","북방식 고인돌"]}
+   ],
+   vids:[
+    {id:"RaV5V4aAUYw", t:"한반도의 구석기인들은 어떻게 생활했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:56"},
+    {id:"cAFZVh2KUd8", t:"한반도의 신석기인들은 어떻게 생활했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:19"},
+    {id:"-uAmaUEQ6x8", t:"청동기와 고인돌을 만든 사람은 누구일까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:00"},
+    {id:"K8FK9oVcEhM", t:"고조선의 단군왕검 이야기는 정말 사실일까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:14"},
+    {id:"uvuAY7oE0SM", t:"고조선은 어떤 모습으로 발전했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:50"},
+    {id:"a8Pzi5g-V1g", t:"고조선 사람들은 어떻게 살았을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"3:11"}
+   ],
+   think:{q:"8조법 가운데 ‘남을 다치게 한 사람은 곡식으로 갚는다.’를 보고, 고조선이 어떤 사회였는지 짐작해 써 보세요.",
+     ex:"농사를 지어 곡식을 중요한 재산으로 여겼고, 다른 사람의 몸을 다치게 하는 것을 잘못으로 여긴 사회였어요."},
+   links:[
+    {src:"우리역사넷 · 재미있는 초등역사", t:"연천 전곡리 유적", d:"주먹도끼가 처음 발견된 구석기 유적 이야기", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0030_0010&code=eh_age_10"},
+    {src:"우리역사넷 · 교과서 용어 해설", t:"8조법", d:"고조선의 법을 더 자세히 알아봐요", u:"https://contents.history.go.kr/front/tg/view.do?levelId=tg_001_0500"},
+    {src:"국립중앙박물관", t:"선사·고대관 구석기실", d:"박물관에 전시된 구석기 유물 구경하기", u:"https://www.museum.go.kr/MUSEUM/contents/M0201030100.do?showHallId=760&showroomCode=DM0002"},
+    {src:"국립중앙박물관", t:"선사·고대관 청동기실", d:"비파형 동검과 청동 거울 살펴보기", u:"https://www.museum.go.kr/MUSEUM/contents/M0201030300.do?showHallId=760&showroomCode=DM0004"}
+   ]},
+ { id:"l2", n:2, c:"sky", short:"코스 ②", title:"삼국과 가야, 통일신라와 발해",
+   intro:"고구려·백제·신라·가야가 저마다 발전하고, 신라의 삼국 통일 뒤에는 남쪽의 통일신라와 북쪽의 발해가 함께했어요. 나라마다 남긴 유물을 보며 생활 모습을 알아봐요.",
+   cards:[
+    {t:"고구려", era:"5세기 전성기", pics:["suryeop","stele"], pts:[
+      "5세기 <mark>광개토 대왕</mark>과 <mark>장수왕</mark> 때 전성기를 맞이했어요.",
+      "<mark>고분 벽화</mark>: 무덤 속 그림을 보면 사냥하고 손님을 맞이하던 당시 사람들의 생활 모습을 알 수 있어요.",
+      "불교 문화유산: 금동 연가 7년명 여래 입상이 오늘날까지 전해져요."],
+      easy:"광개토 대왕은 넓은 땅을 차지했고, 아들 장수왕은 아버지의 업적을 기록한 광개토 대왕릉비를 세웠어요."},
+    {t:"백제", era:"4세기 전성기", pics:["muryeong_inside","incense"], pts:[
+      "4세기 <mark>근초고왕</mark> 때 삼국 가운데 가장 먼저 전성기를 맞이했어요.",
+      "<mark>무령왕릉</mark>: 발견된 유물로 주변 나라와 활발히 교류했다는 것을 알 수 있어요.",
+      "불교 문화유산: 익산 미륵사지 석탑을 세우고 서산 용현리 마애 삼존 불상을 새겼어요."],
+      easy:"무령왕릉은 중국에서 유행하던 벽돌무덤 방식으로 만들어졌고, 무덤 속 물건 중에는 다른 나라에서 온 것도 있어요."},
+    {t:"신라", era:"6세기 전성기", pics:["crown"], pts:[
+      "6세기 <mark>진흥왕</mark> 때 전성기를 맞이했어요.",
+      "<mark>경주 대릉원</mark>: 섬세한 공예 기술을 알 수 있는 유물과 다른 나라에서 들어온 물건들이 발견되었어요.",
+      "불교 문화유산: 나라에 위기가 찾아왔을 때 불교의 힘으로 이겨 내고자 <mark>황룡사 9층 목탑</mark> 등을 세웠어요."]},
+    {t:"가야", era:"철의 나라", pics:["armor"], pts:[
+      "여러 나라가 모여 <mark>연맹</mark>을 이루었으며, <mark>금관가야</mark>와 <mark>대가야</mark>가 중심이었어요.",
+      "질 좋은 <mark>철</mark>이 많이 생산되어 철제 무기와 갑옷을 만들었어요."],
+      easy:"가야는 풍부한 철로 튼튼한 갑옷과 무기를 만들고, 철을 다른 나라와 사고팔기도 했어요."},
+    {t:"통일신라", era:"삼국 통일", pics:["bulguksa","seokguram"], pts:[
+      "신라는 <mark>당</mark>과 연합하여 백제와 고구려를 멸망시키고 <mark>삼국 통일</mark>을 이룩했어요.",
+      "불교가 널리 퍼지면서 절, 탑, 불상 등이 많이 만들어졌어요. 대표적인 것이 <mark>불국사</mark>와 <mark>석굴암</mark>이에요."]},
+    {t:"발해", era:"고구려를 이은 나라", pics:["silla_balhae","balhaetile"], pts:[
+      "고구려 장수였던 <mark>대조영</mark>이 동모산 지역에 발해를 세웠어요.",
+      "스스로 <mark>고구려를 계승</mark>한 나라임을 내세웠으며, 고구려의 옛 땅을 대부분 되찾았어요."],
+      easy:"발해의 기와나 무덤 모양은 고구려의 것과 많이 닮았어요. 그래서 발해가 고구려를 이었다는 것을 알 수 있어요."}
+   ],
+   blanks:[
+    {topic:"고구려", pre:"5세기", post:"과 장수왕 때 전성기를 맞이함.", a:["광개토 대왕","광개토대왕","광개토왕"]},
+    {topic:"백제", pre:"", post:"에서 발견된 유물로 주변 나라와 활발히 교류했다는 것을 알 수 있음.", a:["무령왕릉"]},
+    {topic:"6세기의 전성기", pre:"", post:"는 6세기 진흥왕 때 전성기를 맞이함.", a:["신라"]},
+    {topic:"가야", pre:"질 좋은", post:"이 많이 생산되어 철제 무기와 갑옷을 만들었음.", a:["철","쇠"]},
+    {topic:"통일신라", pre:"신라는 당과 연합하여 백제와 고구려를 멸망시키고", post:"을 이룩함.", a:["삼국 통일","삼국통일","통일"]},
+    {topic:"발해", pre:"고구려 장수였던", post:"이 동모산 지역에 발해를 세움.", a:["대조영"]}
+   ],
+   vids:[
+    {id:"SaqN-5nssp8", t:"고구려의 전성기를 맞이한 왕은 누구일까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"0:52"},
+    {id:"X0LvkioUKFg", t:"한반도의 주도권을 잡은 백제의 왕은 누구일까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:47"},
+    {id:"hm4bWzYe4ag", t:"신라의 전성기를 가져온 진흥왕은 누구일까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:45"},
+    {id:"eag7jY0S9HY", t:"가야는 어떻게 성장하고 멸망하였을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:38"},
+    {id:"RKr7MjL-N7I", t:"통일 신라 사람들의 생활모습은 어땠을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:29"},
+    {id:"PGA5rXLKuN8", t:"발해는 어떻게 세워지게 되었을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:07"}
+   ],
+   think:{q:"무령왕릉에서 나온 유물을 보고, 백제가 주변 나라와 교류했다는 것을 어떻게 알 수 있을지 써 보세요.",
+     ex:"무령왕릉은 중국에서 유행하던 벽돌무덤 방식으로 만들어졌고, 중국에서 들어온 도자기와 일본에서 자라는 나무로 만든 관이 나왔어요. 그래서 백제가 중국, 일본과 활발히 교류했다는 것을 알 수 있어요."},
+   links:[
+    {src:"우리역사넷 · 재미있는 초등역사", t:"광개토 대왕", d:"고구려의 땅을 넓힌 광개토 대왕 이야기", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_n0070_0010&code=eh_age_10"},
+    {src:"우리역사넷 · 재미있는 초등역사", t:"무령왕릉", d:"도굴되지 않고 발견된 백제 왕의 무덤", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0110_0010"},
+    {src:"국립경주박물관", t:"신라역사관", d:"신라 금관과 대릉원 유물 살펴보기", u:"https://gyeongju.museum.go.kr/kor/html/sub02/0201.html?mode=VD&d_mng_no=10"},
+    {src:"국립김해박물관", t:"철의 왕국, 가야", d:"가야의 철 갑옷과 철기 문화", u:"https://gimhae.museum.go.kr/kr/html/sub02/020108.html"},
+    {src:"우리역사넷 · 재미있는 초등역사", t:"불국사와 석굴암", d:"부처님의 나라를 꿈꾼 통일신라 사람들", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0070_0010&code=eh_age_10"},
+    {src:"우리역사넷 · 재미있는 초등역사", t:"대조영", d:"발해를 세운 고구려 장수 이야기", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_n0180_0010&code=ganada"}
+   ]},
+ { id:"l3", n:3, c:"pink", short:"코스 ③", title:"고려 사회와 사람들의 생활 모습",
+   intro:"왕건이 세운 고려는 세계와 교류하고, 외적의 침입을 이겨 냈어요. 고려청자와 팔만대장경, 금속 활자처럼 세계에 자랑할 만한 문화유산도 남겼지요.",
+   cards:[
+    {t:"건국과 발전", era:"918년 건국", pics:["wanggeon","goryeomap"], pts:[
+      "태조 <mark>왕건</mark>이 고려를 건국하고 후삼국을 통일하여 나라의 기틀을 다졌어요.",
+      "<mark>과거제</mark>를 실시하여 능력에 따라 관리를 뽑았어요."]},
+    {t:"주변 나라와의 관계", era:"교류와 전쟁", pics:["seohui"], pts:[
+      "중국의 송, 거란, 여진, 일본 등 주변 나라와 활발히 교류했어요.",
+      "개경과 가까운 <mark>벽란도</mark>에는 송과 일본은 물론, 아라비아 상인들까지 드나들어 국제 무역항으로 발전했어요.",
+      "<mark>거란의 침입</mark>: 세 차례 침입에도 <mark>서희</mark>, 양규, 강감찬 등의 활약으로 거란군을 물리쳤어요.",
+      "<mark>몽골의 침입</mark>: 끝까지 맞서 싸웠고, 고려 정부도 강화도로 도읍을 옮기며 저항했어요."],
+      easy:"서희는 싸우지 않고 말(외교 담판)로 거란을 물러가게 했고, 강감찬은 귀주에서 거란군을 크게 무찔렀어요. 아라비아 상인들 덕분에 ‘고려(코리아)’라는 이름이 세계에 알려졌어요."},
+    {t:"고려 사람들의 생활", era:"신분과 가정", pics:[], pts:[
+      "신분: 법적으로 <mark>양인</mark>과 <mark>천인</mark>으로 구분되었으며, 양인에는 <mark>문벌</mark>, 중류층, 양민 등이 있었어요.",
+      "가정생활: 가정에서 남성과 여성의 지위가 거의 대등했어요."],
+      easy:"고려에서는 딸과 아들이 부모의 재산을 고르게 나누어 받기도 했어요."},
+    {t:"고려청자", era:"독창적인 상감 기법", pics:["celadon"], pts:[
+      "청자를 만드는 기술은 중국에서 전해졌지만 고려만의 독창적인 기술을 발전시켰어요.",
+      "<mark>상감 기법</mark>으로 구름, 학, 국화 등 다양한 무늬를 넣은 아름다운 청자를 만들었어요.",
+      "만들기 어렵고 귀한 물건이어서 주로 <mark>왕실과 문벌</mark>들이 사용했어요."],
+      easy:"상감 기법이란 그릇 겉면에 무늬를 파낸 뒤, 그 홈에 다른 색 흙을 메워 넣고 구워 무늬가 드러나게 하는 방법이에요."},
+    {t:"고려 사람들과 불교", era:"나라의 종교", pics:[], pts:[
+      "불교는 왕실에서부터 일반 백성들까지 대부분이 믿는 종교였어요.",
+      "불교가 널리 퍼지면서 곳곳에 다양한 불교 유적이 만들어졌어요.",
+      "매년 <mark>팔관회</mark>와 <mark>연등회</mark> 등의 불교 행사를 성대하게 열었어요."]},
+    {t:"고려의 인쇄술", era:"세계가 인정한 기술", pics:["tripitaka","janggyeong","jikji"], pts:[
+      "<mark>팔만대장경</mark>: 부처의 힘으로 몽골을 물리치려는 마음을 담아 8만여 장의 목판에 불교 경전을 새겼어요.",
+      "<mark>금속 활자</mark>: 짧은 시간에 다양한 책을 인쇄할 수 있는 금속 활자를 세계 최초로 발명했어요.",
+      "지금 남아 있는 가장 오래된 금속 활자 책은 고려의 <mark>직지심체요절</mark>이에요."]}
+   ],
+   blanks:[
+    {topic:"건국", pre:"태조", post:"이 고려를 건국하고 후삼국을 통일하여 나라의 기틀을 다짐.", a:["왕건"]},
+    {topic:"국제 무역항", pre:"개경과 가까운", post:"에는 송과 일본은 물론, 아라비아 상인들까지 드나들었음.", a:["벽란도"]},
+    {topic:"거란의 침입", pre:"세 차례에 걸친 거란의 침입에도 고려는", post:", 양규, 강감찬 등의 활약으로 거란군을 물리쳤음.", a:["서희"]},
+    {topic:"신분", pre:"양인에는", post:", 중류층, 양민 등이 있었음.", a:["문벌","문벌 귀족","문벌귀족"]},
+    {topic:"고려청자", pre:"", post:"기법으로 구름, 학, 국화 등 다양한 무늬를 넣은 아름다운 청자를 만듦.", a:["상감"]},
+    {topic:"불교 행사", pre:"매년", post:"와 연등회 등의 불교 행사를 성대하게 열었음.", a:["팔관회"]},
+    {topic:"인쇄술", pre:"몽골을 물리치려는 마음을 담아 8만여 장의 목판에 불교 경전을 새긴 것은", post:"임.", a:["팔만대장경","팔만 대장경","팔만대장경판","대장경판","대장경"]}
+   ],
+   vids:[
+    {id:"vOq2CR82yM4", t:"고려는 후삼국을 어떻게 통일했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"3:34"},
+    {id:"IGeQJQi32DQ", t:"거란은 왜 고려를 침입했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:45"},
+    {id:"Yv7zafjuOyI", t:"몽골의 침입에 고려는 어떻게 저항했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:28"},
+    {id:"bbCxtHMuJTo", t:"고려가 잘 만든 것은 무엇일까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:23"},
+    {id:"7xIt_p0RnT8", t:"불교문화가 꽃 핀 나라가 있다고요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:13"},
+    {id:"n72QjGpcR9E", t:"팔만대장경은 왜 만들었을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:01"}
+   ],
+   think:{q:"고려 사람들이 팔만대장경을 만든 마음을 생각해 보고, 오늘날 우리가 어려움을 이겨 내는 모습과 비교해 써 보세요.",
+     ex:"고려 사람들은 몽골의 침입이라는 큰 어려움 속에서도 힘을 모아 오랜 시간 정성껏 경판을 새겼어요. 오늘날에도 어려운 일이 생기면 서로 돕고 마음을 모아 이겨 내려고 노력하는 모습과 닮았어요."},
+   links:[
+    {src:"우리역사넷 · 재미있는 초등역사", t:"왕건", d:"고려를 세우고 후삼국을 통일한 왕건", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_n0220_0010&code=eh_age_20"},
+    {src:"우리역사넷 · 재미있는 초등역사", t:"서희", d:"말로 거란을 물리친 외교 담판", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_n0250_0010&code=ganada"},
+    {src:"우리역사넷 · 재미있는 초등역사", t:"고려청자", d:"비취색 고려청자와 상감 기법", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0140_0010&code=eh_age_20"},
+    {src:"우리역사넷 · 재미있는 초등역사", t:"팔만대장경판", d:"나라의 위기를 이겨 내려고 만든 경판", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0150_0010&code=eh_age_20"},
+    {src:"우리역사넷 · 재미있는 초등역사", t:"직지심체요절", d:"인쇄술의 혁명, 금속 활자 이야기", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0160_0010"},
+    {src:"문화체육관광부 어린이 누리집", t:"해인사 장경판전", d:"대장경판을 800년 가까이 지켜 온 건물", u:"https://www.mcst.go.kr/usr/child/cultureStory/traditional/heritage.jsp?pMenuCD=4102020202"}
+   ]}
+];
+
+const ORDER = ["구석기 시대","신석기 시대","청동기 시대·고조선","삼국과 가야","통일신라와 발해","고려"];
+const DETECT = [
+  {img:"handaxe", a:"구석기 시대", why:"돌을 깨뜨려 만든 뗀석기, 주먹도끼예요."},
+  {img:"pottery", a:"신석기 시대", why:"농사를 지으며 곡식을 담던 빗살무늬 토기예요."},
+  {img:"bipa2", a:"고조선(청동기 시대)", why:"비파를 닮은 비파형 동검은 고조선의 문화 범위를 알려 줘요."},
+  {img:"suryeop", a:"고구려", why:"고구려 무용총의 벽화 ‘수렵도’예요."},
+  {img:"incense", a:"백제", why:"백제의 뛰어난 공예 기술을 보여 주는 금동대향로예요."},
+  {img:"crown", a:"신라", why:"섬세한 금 세공 기술을 보여 주는 신라의 금관이에요."},
+  {img:"armor", a:"가야", why:"철이 풍부했던 가야의 철 갑옷이에요."},
+  {img:"seokguram", a:"통일신라", why:"불교문화가 꽃핀 통일신라의 석굴암이에요."},
+  {img:"balhaetile", a:"발해", why:"고구려 기와와 닮은 발해의 연꽃무늬 기와예요."},
+  {img:"celadon", a:"고려", why:"상감 기법으로 무늬를 넣은 고려청자예요."}
+];
+const DETECT_OPTS = ["구석기 시대","신석기 시대","고조선(청동기 시대)","고구려","백제","신라","가야","통일신라","발해","고려"];
+const PEOPLE = [
+  ["단군왕검","우리나라 최초의 국가 고조선을 세웠어요."],
+  ["광개토 대왕","5세기에 고구려의 영토를 크게 넓혔어요."],
+  ["근초고왕","4세기에 백제의 전성기를 이끌었어요."],
+  ["진흥왕","6세기에 신라의 전성기를 이끌었어요."],
+  ["대조영","고구려를 계승한 발해를 세웠어요."],
+  ["왕건","고려를 세우고 후삼국을 통일했어요."],
+  ["서희","외교 담판으로 거란을 물러가게 했어요."]
+];
+const FINAL = [
+  {q:"구석기 시대 사람들의 생활 모습으로 알맞은 것은?", o:["강가에 움집을 짓고 한곳에 정착했다.","먹을 것을 찾아 무리 지어 이동하며 살았다.","청동으로 만든 거울을 제사에 사용했다.","벼와 보리 농사를 크게 지었다."], a:1, e:"구석기 사람들은 뗀석기로 사냥하고, 먹을 것을 찾아 이동하며 막집·동굴에서 살았어요."},
+  {q:"신석기 시대에 새롭게 나타난 모습은?", o:["뗀석기를 처음 사용했다.","금속 활자로 책을 찍었다.","조나 기장 같은 잡곡 농사를 짓기 시작했다.","과거제로 관리를 뽑았다."], a:2, e:"신석기 사람들은 간석기를 쓰고 움집에 정착하며 잡곡 농사를 짓기 시작했어요."},
+  {q:"청동기 시대에 청동으로 주로 만든 물건이 아닌 것은?", o:["제사용 도구","장신구","무기","모든 사람이 쓰는 농사 도구"], a:3, e:"청동은 귀하고 다루기 어려워 제사용 도구, 장신구, 무기를 주로 만들었어요."},
+  {q:"고조선의 8조법으로 알 수 있는 사실이 아닌 것은?", o:["사람의 생명을 소중히 여겼다.","곡식을 중요한 재산으로 여겼다.","개인의 재산을 인정했다.","모든 사람의 신분이 똑같았다."], a:3, e:"도둑질한 사람을 노비로 삼는다는 조항을 보면 노비와 같은 신분 차이가 있었다는 것을 알 수 있어요."},
+  {q:"삼국 가운데 가장 먼저 전성기를 맞이한 나라와 왕은?", o:["고구려 - 광개토 대왕","백제 - 근초고왕","신라 - 진흥왕","가야 - 대조영"], a:1, e:"백제는 4세기 근초고왕 때, 고구려는 5세기, 신라는 6세기에 전성기를 맞았어요."},
+  {q:"가야에 대한 설명으로 옳은 것은?", o:["당과 연합하여 삼국을 통일했다.","질 좋은 철이 많이 생산되어 철제 무기와 갑옷을 만들었다.","고구려 장수가 세운 나라이다.","벽란도를 국제 무역항으로 발전시켰다."], a:1, e:"가야는 여러 나라가 모인 연맹으로, 풍부한 철로 유명했어요."},
+  {q:"발해에 대한 설명으로 옳은 것은?", o:["단군왕검이 세웠다.","신라의 왕족이 세운 나라이다.","고구려를 계승한 나라임을 내세웠다.","고려를 세운 나라이다."], a:2, e:"고구려 장수였던 대조영이 세운 발해는 고구려를 계승했다고 내세웠어요."},
+  {q:"고려의 국제 무역항으로, 아라비아 상인까지 드나들던 곳은?", o:["벽란도","강화도","동모산","대릉원"], a:0, e:"개경과 가까운 벽란도는 송, 일본, 아라비아 상인까지 드나든 국제 무역항이었어요."},
+  {q:"고려청자에 대한 설명으로 옳지 않은 것은?", o:["상감 기법으로 무늬를 넣었다.","고려만의 독창적인 기술을 발전시켰다.","주로 왕실과 문벌이 사용했다.","만들기 쉬워서 모든 백성이 흔하게 썼다."], a:3, e:"고려청자는 만들기 어렵고 귀해서 주로 왕실과 문벌이 사용했어요."},
+  {q:"고려 사람들이 팔만대장경을 만든 까닭은?", o:["중국에 수출하려고","부처의 힘으로 몽골의 침입을 물리치려고","과거 시험 문제를 만들려고","금속 활자를 시험해 보려고"], a:1, e:"몽골의 침입 속에서 부처의 힘으로 나라를 지키려는 마음을 담아 8만여 장의 목판에 경전을 새겼어요."}
+];
+const SELF = ["선사 시대 사람들의 도구와 생활 모습을 비교하여 설명할 수 있어요.","삼국, 가야, 통일신라, 발해의 발전 모습과 문화유산을 말할 수 있어요.","고려의 대외 관계와 문화유산(청자, 대장경, 금속 활자)을 설명할 수 있어요."];
+const STAMP_KEYS = [["l1","①","코스①"],["l2","②","코스②"],["l3","③","코스③"],["play","놀","놀이"],["final","평","평가"]];
+const CREDITS = [
+  ["주먹도끼","Ismoon, CC BY-SA 4.0"],["빗살무늬 토기","국립중앙박물관, 공공누리 제1유형"],["돌도끼·가락바퀴·반달돌칼","Wikimedia Commons 사용자 ‘고려’, CC BY 4.0"],
+  ["청동 검과 거울","Ismoon, CC BY-SA 4.0"],["비파형 동검","Gary Lee Todd, CC BY-SA 4.0"],["강화 탁자식 고인돌","Taewangkorea, CC BY-SA 4.0"],
+  ["무용총 수렵도","공공누리 제1유형"],["무용총 손님맞이 그림, 무령왕릉 내부(복원)","원본 학습지 수록 자료"],["광개토 대왕릉비","Yumeto, CC BY-SA 4.0"],
+  ["백제 금동대향로","Wikimedia Commons, CC BY-SA 2.5"],["신라 금관","Gary Todd, CC0"],["가야 철 갑옷과 투구","Gary Lee Todd, CC0"],
+  ["경주 불국사","Basile Morin, CC BY-SA 4.0"],["석굴암","한석홍, 공공누리 제1유형"],["통일신라와 발해 지도, 고려 지도","Korea.net(해외문화홍보원), CC BY-SA 2.0"],
+  ["발해 연꽃무늬 기와","Gary Todd, CC0"],["왕건 청동상","한국문화유산정책연구소, 저작자 표시"],["서희의 외교 담판","전쟁기념관·한국문화정보원, 공공누리 제1유형"],
+  ["청자 상감 구름 학 무늬 매병","The Metropolitan Museum of Art, CC0"],["팔만대장경판","Steve46814, CC BY-SA 3.0"],["해인사 장경판전","SpongeFan0304, CC BY-SA 4.0"],["직지심체요절","퍼블릭 도메인"]
+];
+
+/* =================== STATE =================== */
+const S = { screen:"home", stamps:{}, blanks:{}, orderPick:[], orderDone:false, det:{i:0, score:0, answered:false, order:null, done:false}, matchDone:false, final:null, self:[0,0,0], name:"" };
+
+/* =================== HELPERS =================== */
+const $ = (s,el=document)=>el.querySelector(s);
+const h = (s)=>s;
+const norm = s=>String(s||"").replace(/[\s·.,()]/g,"").toLowerCase();
+const CHO = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+const chosung = w=>[...w].map(ch=>{const c=ch.charCodeAt(0)-44032; return (c>=0&&c<=11171)?CHO[Math.floor(c/588)]:ch;}).join("");
+const shuffle = a=>{a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a;};
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(msg){const t=document.createElement("div"); t.className="toast"; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2200);}
+function fig(k){const m=IMG[k]; if(!m) return ""; return `<figure><button type="button" data-zoom="${k}" aria-label="${esc(m.cap)} 크게 보기"><img src="${m.src}" alt="${esc(m.cap)}" loading="lazy" class="${m.fit==="contain"?"contain":""}"></button><figcaption>${m.cap}</figcaption></figure>`;}
+function giveStamp(key,msg){ if(S.stamps[key]) return; S.stamps[key]=true; renderTop(true, key); toast(msg||"도장을 받았어요!"); }
+
+/* =================== TOP =================== */
+const NAV = [["home","처음"],["l1","① 선사~고조선"],["l2","② 삼국~남북국"],["l3","③ 고려"],["play","④ 정리 놀이"],["final","⑤ 마무리 평가"]];
+function renderTop(anim, key){
+  $("#stampsTop").innerHTML = STAMP_KEYS.map(([k,l])=>`<span class="${S.stamps[k]?"on":""} ${anim&&key===k?"pop":""}" title="${l}">${S.stamps[k]?"참":l}</span>`).join("");
+  $("#nav").innerHTML = NAV.map(([k,l])=>`<button data-go="${k}" aria-current="${S.screen===k}">${l}</button>`).join("");
+}
+function go(k){ S.screen=k; renderTop(); render(); window.scrollTo(0,0); }
+
+/* =================== SCREENS =================== */
+function render(){
+  const m = $("#main");
+  if(S.screen==="home") m.innerHTML = homeView();
+  else if(S.screen==="play") m.innerHTML = playView();
+  else if(S.screen==="final") m.innerHTML = finalView();
+  else m.innerHTML = lessonView(LESSONS.find(l=>l.id===S.screen));
+  afterRender();
+}
+
+function homeView(){
+  const tl = [["구석기","약 70만 년 전","mint"],["신석기","약 1만 년 전","mint"],["청동기·고조선","최초의 국가","mint"],["삼국·가야","고구려·백제·신라·가야","sky"],["통일신라·발해","676 통일 · 698 발해","sky"],["고려","918 건국","pink"]];
+  const courses = [
+    ["l1","mint","코스 ①","선사 시대와 최초의 국가 고조선","뗀석기·간석기·청동기, 고조선과 8조법"],
+    ["l2","sky","코스 ②","삼국과 가야, 통일신라와 발해","나라별 전성기와 문화유산"],
+    ["l3","pink","코스 ③","고려 사회와 사람들의 생활 모습","벽란도, 고려청자, 팔만대장경"],
+    ["play","butter","코스 ④","단원 정리 놀이","시대 순서·유물 탐정·인물 짝 찾기"],
+    ["final","tang","코스 ⑤","마무리 평가와 인증서","10문제 풀고 탐험 인증서 받기"]];
+  return `<section class="screen">
+  <div class="hero">
+    <svg class="mascot" viewBox="0 0 120 140" role="img" aria-label="빗살무늬 토기 캐릭터 빗살이"><use href="#bitsal"/></svg>
+    <div>
+      <p class="unit">사회 5-2 · 1단원</p>
+      <h1>유적과 유물로 본<br>옛 사람들의 생활</h1>
+      <p class="bubble">안녕! 나는 신석기 시대에서 온 <b>빗살이</b>야. 유물 사진을 보고, 빈칸을 채우고, 놀이를 하면서 구석기 시대부터 고려까지 시간 여행을 떠나 보자. 코스를 하나씩 마칠 때마다 도장을 찍어 줄게!</p>
+      <ul class="goals">
+        <li>유적과 유물을 통해 선사 시대와 고조선 사람들의 생활 모습을 알 수 있어요.</li>
+        <li>삼국, 가야, 통일신라, 발해의 발전 모습과 문화유산을 설명할 수 있어요.</li>
+        <li>고려의 대외 관계와 사람들의 생활, 문화유산을 설명할 수 있어요.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="sec-title" style="margin-bottom:6px"><span class="num" style="background:var(--tang)">✦</span><h2>한눈에 보는 시간 여행 길</h2></div>
+    <p class="muted small">왼쪽에서 오른쪽으로 갈수록 오늘날과 가까워져요. 옆으로 밀어서 볼 수 있어요.</p>
+    <div class="timeline"><div class="tl">${tl.map(([a,b,c],i)=>`<div class="ev" data-c="${c}"><span class="dot">${i+1}</span><b>${a}</b><small>${b}</small></div>`).join("")}</div></div>
+  </div>
+
+  <div>
+    <div class="sec-title" style="margin-bottom:12px"><span class="num" style="background:var(--mint)">➜</span><h2>탐험 코스 고르기</h2></div>
+    <div class="courses">${courses.map(([k,c,tag,t,d])=>`<button class="course" data-c="${c}" data-go="${k}"><span class="tag">${tag}</span><h3>${t}</h3><p>${d}</p>${S.stamps[k]?'<span class="done">완료</span>':""}</button>`).join("")}</div>
+  </div>
+
+  <div class="panel">
+    <h2 style="font-size:22px; margin-bottom:10px">이렇게 공부해요</h2>
+    <div class="how">
+      <div><b>1. 개념 읽기</b>유물 사진을 눌러 크게 보며 핵심 내용을 읽어요. 노란 형광펜 낱말이 꼭 기억할 말이에요.</div>
+      <div><b>2. 영상으로 보기</b>1~5분 정도의 짧은 영상으로 내용을 한 번 더 정리해요.</div>
+      <div><b>3. 빈칸 채우기</b>원래 학습지의 빈칸을 직접 채우고 채점해요. 막히면 초성 힌트를 써요.</div>
+      <div><b>4. 생각 톡톡 · 더 알아보기</b>내 생각을 써 보고, 링크로 박물관과 역사 사이트를 탐험해요.</div>
+      <div><b>5. 정리 놀이 → 평가</b>세 코스를 마치면 놀이로 복습하고, 평가를 풀어 인증서를 받아요.</div>
+    </div>
+  </div>
+
+  <details class="teacher">
+    <summary>선생님께: 수업 활용 안내</summary>
+    <table>
+      <tr><th>차시</th><th>활동</th><th>운영 팁</th></tr>
+      <tr><td>1차시</td><td>코스 ① 선사 시대와 고조선</td><td>도입에서 타임라인으로 단원 전체 흐름을 먼저 보여 주세요. 8조법 카드는 모둠 토의 자료로 좋아요.</td></tr>
+      <tr><td>2차시</td><td>코스 ② 삼국·가야·통일신라·발해</td><td>나라별 카드를 모둠에 나눠 맡기고 ‘유물 해설사’ 발표로 이어갈 수 있어요.</td></tr>
+      <tr><td>3차시</td><td>코스 ③ 고려</td><td>‘생각 톡톡’ 답을 발표하며 고려 사람들의 마음을 함께 이야기해 보세요.</td></tr>
+      <tr><td>4차시</td><td>코스 ④ 정리 놀이 + ⑤ 평가</td><td>평가 후 나오는 탐험 인증서 화면을 캡처해 제출하게 하면 학습 확인이 쉬워요.</td></tr>
+    </table>
+    <p class="small muted" style="margin-top:8px">개별 과제, 보충 학습, 결석생 자기주도 학습용으로도 쓸 수 있어요. 기록은 저장되지 않으니 새로 열면 처음부터 시작돼요. 영상은 유튜브로 연결되니 학교 기기에서 유튜브가 열리는지 미리 확인해 주세요.</p>
+  </details>
+
+  <details class="credits panel">
+    <summary>사진·영상 출처</summary>
+    <p style="margin-top:6px">사진은 위키미디어 공용(Wikimedia Commons)의 자유 이용 자료와 원본 학습지 자료를 사용했어요. 영상은 참쌤스쿨 유튜브 채널로 연결돼요.</p>
+    <ol>${CREDITS.map(([a,b])=>`<li>${a} — ${b}</li>`).join("")}</ol>
+  </details>
+  </section>`;
+}
+
+function lessonView(L){
+  const st = S.blanks[L.id] || (S.blanks[L.id]={vals:{}, res:null, hints:{}, reveal:false});
+  const cards = L.cards.map(c=>{
+    const pics = c.pics && c.pics.length ? `<div class="pics ${c.pics.length>1&&c.pics.length<3?"two":""}">${c.pics.map(fig).join("")}</div>`:"";
+    const law = c.law ? `<div class="law">${c.law.map((x,i)=>`<div class="item"><p>“${x[0]}”</p><button type="button" data-law="${L.id}-${i}">무엇을 알 수 있을까?</button><div class="ans" id="law-${L.id}-${i}" hidden>→ ${x[1]}</div></div>`).join("")}</div>`:"";
+    return `<article class="card ${pics?"has-pics":""}">
+      <div style="display:grid; gap:12px; align-content:start">
+        <header><h3>${c.t}</h3><span class="era">${c.era}</span></header>
+        <ul>${c.pts.map(p=>`<li>${p}</li>`).join("")}</ul>
+        ${law}
+        ${c.easy?`<p class="easy"><b>쉽게 말하면</b>${c.easy}</p>`:""}
+      </div>${pics}</article>`;
+  }).join("");
+  const res = st.res;
+  const score = res? res.filter(Boolean).length : 0;
+  const blanks = L.blanks.map((b,i)=>{
+    const cls = res? (res[i]?"ok":"no") : "";
+    const val = st.reveal? b.a[0] : (st.vals[i]||"");
+    const fb = res? (res[i]?"정답이에요!": (st.reveal?`정답: ${b.a[0]}`:"다시 생각해 봐요.")) : "";
+    return `<div class="bl ${cls}"><span class="topic">${i+1}. ${b.topic}</span>
+      <p class="sent">${b.pre} ( <input id="${L.id}-b${i}" data-bi="${i}" value="${esc(val)}" autocomplete="off" aria-label="${b.topic} 빈칸"> ) ${b.post}</p>
+      <div class="row"><button type="button" class="btn ghost small" data-hint="${i}">초성 힌트</button><span class="hint">${st.hints[i]?`힌트: <b>${chosung(b.a[0])}</b> (${b.a[0].replace(/\s/g,"").length}글자)`:""}</span><span class="fb">${fb}</span></div></div>`;
+  }).join("");
+  const all = res && score===L.blanks.length;
+  return `<section class="screen" data-c="${L.c}" data-lesson="${L.id}">
+    <div class="lhead"><span class="k">${L.short} · 사회 5-2 1단원</span><h1>${L.title}</h1><p>${L.intro}</p>
+      <div class="steps"><a href="#read-${L.id}">1. 개념 읽기</a><a href="#vid-${L.id}">2. 영상으로 보기</a><a href="#blank-${L.id}">3. 빈칸 채우기</a><a href="#think-${L.id}">4. 생각 톡톡</a><a href="#more-${L.id}">5. 더 알아보기</a></div></div>
+    <div id="read-${L.id}" class="cards">${cards}</div>
+
+    <div id="vid-${L.id}" class="panel" style="display:grid; gap:12px">
+      <div class="sec-title"><span class="num" style="background:var(--c)">▶</span><h2 class="sub-h">영상으로 보기</h2></div>
+      <p class="muted small">짧은 영상(1~5분)으로 내용을 한 번 더 정리해요. 누르면 유튜브가 새 창으로 열려요.</p>
+      <div class="vids">${L.vids.map(v=>`<a class="vid" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener"><div class="th"><img src="thumbs/${v.id}.jpg" alt="" loading="lazy"><i></i><span>${v.len}</span></div><div class="meta"><b>${v.t}</b><small>${v.ch}</small></div></a>`).join("")}</div>
+    </div>
+
+    <div id="blank-${L.id}" class="blank-box">
+      <div class="hd"><h2>학습지 빈칸 채우기</h2><span class="chip">${L.blanks.length}문제</span>${res?`<span class="score">${score} / ${L.blanks.length}</span>`:""}</div>
+      <p class="muted small">위에서 읽은 내용을 떠올리며 괄호 안에 알맞은 말을 써요. 띄어쓰기는 틀려도 괜찮아요.</p>
+      ${blanks}
+      <div class="row">
+        <button type="button" class="btn" data-check="${L.id}">채점하기</button>
+        <button type="button" class="btn ghost" data-reset="${L.id}">다시 풀기</button>
+        ${res && !all ? `<button type="button" class="btn ghost" data-reveal="${L.id}">정답 보기</button>`:""}
+      </div>
+      ${all?`<p class="score" style="color:var(--ok)">모두 맞혔어요! ${L.short} 도장을 찍었어요.</p>`: (st.reveal?`<p class="small muted">정답을 확인했다면 ‘다시 풀기’를 눌러 스스로 한 번 더 풀어 보세요. 모두 맞히면 도장을 받아요.</p>`:"")}
+    </div>
+
+    <div id="think-${L.id}" class="think">
+      <h3>생각 톡톡</h3>
+      <p>${L.think.q}</p>
+      <textarea id="think-${L.id}-ta" placeholder="내 생각을 자유롭게 써 보세요.">${esc(S["think_"+L.id]||"")}</textarea>
+      <div class="row"><button type="button" class="btn ghost small" data-ex="${L.id}">예시 답 보기</button></div>
+      <p class="ex" id="ex-${L.id}" hidden>예시 답: ${L.think.ex}</p>
+    </div>
+
+    <div id="more-${L.id}">
+      <div class="sec-title" style="margin-bottom:12px"><span class="num" style="background:var(--c)">+</span><h2>더 알아보기</h2></div>
+      <div class="links">${L.links.map(k=>`<a class="lk" href="${k.u}" target="_blank" rel="noopener"><span class="src">${k.src}</span><b>${k.t}</b><span>${k.d}</span></a>`).join("")}</div>
+    </div>
+
+    <div class="stampbar"><span class="disp" style="font-size:18px">${S.stamps[L.id]?"도장 완료! 다음 코스로 가 볼까요?":"빈칸을 모두 맞히면 도장을 받아요."}</span>
+      <button type="button" class="btn" data-go="${["l1","l2","l3","play"][L.n]}">${L.n<3?`다음: 코스 ${["①","②","③"][L.n]}`:"다음: 정리 놀이"} →</button></div>
+  </section>`;
+}
+
+function playView(){
+  if(!S.det.order) S.det.order = shuffle(DETECT.map((_,i)=>i));
+  if(!S.orderPool) S.orderPool = shuffle(ORDER);
+  if(!S.matchOpts) S.matchOpts = shuffle(PEOPLE.map(p=>p[1]));
+  const pick = S.orderPick;
+  const orderRes = S.orderChecked ? pick.map((p,i)=>p===ORDER[i]) : null;
+  // detective
+  const D = S.det; let det;
+  if(D.done){ det = `<p class="score">유물 탐정 결과: ${D.score} / ${DETECT.length}</p><p>${D.score>=8?"대단해요! 유물만 보고도 시대를 척척 알아맞혔어요.":"헷갈린 유물은 코스 ①~③에서 다시 사진을 살펴봐요."}</p><div class="row"><button class="btn ghost" data-detreset>다시 도전</button></div>`; }
+  else{
+    const item = DETECT[D.order[D.i]];
+    if(!D.opts) D.opts = shuffle([item.a, ...shuffle(DETECT_OPTS.filter(x=>x!==item.a)).slice(0,3)]);
+    det = `<div class="progress" aria-hidden="true"><i style="width:${D.i/DETECT.length*100}%"></i></div>
+      <div class="det" data-c="butter">${fig(item.img)}
+      <div style="display:grid; gap:10px"><p class="disp" style="font-size:19px">${D.i+1}번 유물! 어느 시대(나라)의 것일까요?</p>
+      <div class="opts">${D.opts.map(o=>{let c=""; if(D.answered){ if(o===item.a)c="ok"; else if(o===D.picked)c="no";} return `<button type="button" class="${c}" data-det="${esc(o)}" ${D.answered?"disabled":""}>${o}</button>`;}).join("")}</div>
+      ${D.answered?`<p class="small">${D.picked===item.a?"<b style='color:var(--ok)'>정답!</b>":"<b style='color:var(--no)'>아쉬워요.</b> 정답은 "+item.a+"."} ${item.why}</p><button type="button" class="btn small" data-detnext>${D.i+1<DETECT.length?"다음 유물":"결과 보기"} →</button>`:""}
+      </div></div>`;
+  }
+  const mres = S.matchRes;
+  return `<section class="screen" data-c="butter">
+    <div class="lhead"><span class="k">코스 ④ · 단원 정리 놀이</span><h1>놀면서 1단원 정리하기</h1><p>세 가지 놀이를 모두 성공하면 ‘놀이’ 도장을 받아요. 틀려도 괜찮으니 여러 번 도전해 보세요.</p></div>
+
+    <div class="game">
+      <div class="row"><h2>놀이 1. 시대 순서 맞추기</h2>${S.orderDone?'<span class="chip" style="background:var(--ok-bg);color:var(--ok)">성공</span>':""}</div>
+      <p class="muted small">오래된 것부터 차례대로 눌러 보세요.</p>
+      <div class="pool">${S.orderPool.map(o=>`<button type="button" data-ord="${esc(o)}" ${pick.includes(o)?"disabled":""}>${o}</button>`).join("")}</div>
+      <div class="slots">${pick.length?pick.map((p,i)=>`<span class="${orderRes?(orderRes[i]?"ok":"no"):""}">${p}</span>`).join(""):"<em>여기에 순서대로 놓여요.</em>"}</div>
+      <div class="row"><button type="button" class="btn" data-ordcheck ${pick.length<ORDER.length?"disabled":""}>확인하기</button><button type="button" class="btn ghost" data-ordreset>다시 하기</button>
+      ${orderRes?(S.orderDone?'<span class="score" style="color:var(--ok)">완벽해요!</span>':'<span class="small" style="color:var(--no)">빨간 칸의 순서를 다시 생각해 봐요.</span>'):""}</div>
+    </div>
+
+    <div class="game">
+      <div class="row"><h2>놀이 2. 유물 탐정</h2>${D.done&&D.score>=7?'<span class="chip" style="background:var(--ok-bg);color:var(--ok)">성공</span>':""}</div>
+      <p class="muted small">사진 속 유물이 어느 시대(나라)의 것인지 골라요. 10문제 중 7개 이상 맞히면 성공! 사진을 누르면 크게 볼 수 있어요.</p>
+      ${det}
+    </div>
+
+    <div class="game">
+      <div class="row"><h2>놀이 3. 인물 짝 찾기</h2>${S.matchDone?'<span class="chip" style="background:var(--ok-bg);color:var(--ok)">성공</span>':""}</div>
+      <p class="muted small">인물과 알맞은 업적을 골라 짝을 지어요.</p>
+      <div class="match">${PEOPLE.map((p,i)=>`<div class="m ${mres?(mres[i]?"ok":"no"):""}"><b>${p[0]}</b>
+        <select id="match-${i}" data-mi="${i}" aria-label="${p[0]}의 업적"><option value="">업적 고르기</option>${S.matchOpts.map(o=>`<option ${S["m"+i]===o?"selected":""}>${o}</option>`).join("")}</select>
+        <span class="mark">${mres?(mres[i]?"○":"✕"):""}</span></div>`).join("")}</div>
+      <div class="row"><button type="button" class="btn" data-matchcheck>확인하기</button></div>
+    </div>
+
+    <div class="stampbar"><span class="disp" style="font-size:18px">${S.stamps.play?"놀이 도장 완료! 이제 마무리 평가에 도전해요.":"세 놀이를 모두 성공하면 도장을 받아요."}</span><button type="button" class="btn" data-go="final">다음: 마무리 평가 →</button></div>
+  </section>`;
+}
+
+function finalView(){
+  const F = S.final; const sub = F && F.submitted;
+  const qs = FINAL.map((q,i)=>`<div class="q"><h3><span class="n">${i+1}.</span>${q.q}</h3>
+    ${q.o.map((o,j)=>{let c=""; if(sub){ if(j===q.a)c="right"; else if(F.ans[i]===j)c="wrong";} return `<label class="${c}"><input type="radio" name="fq${i}" value="${j}" ${F&&F.ans[i]===j?"checked":""} ${sub?"disabled":""}> <span>${o}</span></label>`;}).join("")}
+    ${sub?`<p class="exp">${F.ans[i]===q.a?"○ 정답!":"✕ 다시 보기:"} ${q.e}</p>`:""}</div>`).join("");
+  const score = sub? FINAL.filter((q,i)=>F.ans[i]===q.a).length : 0;
+  const today = new Date(); const ds = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  const cert = sub? `<div class="cert">
+      <svg viewBox="0 0 120 140" width="70" height="80" aria-hidden="true"><use href="#bitsal"/></svg>
+      <h2>시간 여행 탐험 인증서</h2>
+      <p>사회 5-2 · 1단원 「유적과 유물로 본 옛 사람들의 생활」</p>
+      <label class="disp" for="certName">탐험가 이름</label>
+      <input id="certName" value="${esc(S.name)}" placeholder="이름을 쓰세요" autocomplete="off">
+      <p>위 탐험가는 구석기 시대부터 고려까지 시간 여행을 마치고<br>마무리 평가에서 <b style="font-family:var(--display);font-size:22px;color:var(--tang-d)">${score} / ${FINAL.length}</b>점을 받았기에 이 인증서를 드립니다.</p>
+      <div class="big-stamps">${STAMP_KEYS.map(([k,s,l])=>`<span class="${S.stamps[k]?"on":""}">${l}<br>${S.stamps[k]?"완료":""}</span>`).join("")}</div>
+      <p class="small muted">${ds} · 이 화면을 캡처해서 선생님께 제출하세요.</p>
+    </div>`:"";
+  return `<section class="screen" data-c="tang">
+    <div class="lhead"><span class="k">코스 ⑤ · 마무리 평가</span><h1>1단원 마무리 평가</h1><p>10문제를 모두 풀고 ‘제출하기’를 누르면 바로 채점되고, 틀린 문제는 해설을 볼 수 있어요.</p></div>
+    ${qs}
+    <div class="row">${sub?`<span class="score">점수: ${score} / ${FINAL.length}</span><button type="button" class="btn ghost" data-finalreset>다시 풀기</button>`:`<button type="button" class="btn" data-finalsubmit>제출하기</button><span class="small muted" id="finalMsg"></span>`}</div>
+    ${sub?`<div class="panel"><h2 style="font-size:22px;margin-bottom:10px">스스로 평가하기</h2><div class="self">${SELF.map((s,i)=>`<div class="s"><span>${s}</span><span class="stars" role="group" aria-label="${s}">${[1,2,3].map(n=>`<button type="button" data-star="${i}-${n}" class="${S.self[i]>=n?"on":""}" aria-label="별 ${n}개">★</button>`).join("")}</span></div>`).join("")}</div></div>${cert}`:""}
+  </section>`;
+}
+
+/* =================== EVENTS =================== */
+function afterRender(){
+  document.querySelectorAll("[data-lesson] input[data-bi]").forEach(inp=>{
+    inp.addEventListener("input",e=>{ const L=inp.closest("[data-lesson]").dataset.lesson; S.blanks[L].vals[inp.dataset.bi]=inp.value; });
+    inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ const L=inp.closest("[data-lesson]").dataset.lesson; checkBlanks(L); } });
+  });
+  document.querySelectorAll("textarea[id^=think-]").forEach(t=>t.addEventListener("input",()=>{ S["think_"+t.id.split("-")[1]]=t.value; }));
+  document.querySelectorAll("select[data-mi]").forEach(s=>s.addEventListener("change",()=>{ S["m"+s.dataset.mi]=s.value; }));
+  const cn=$("#certName"); if(cn) cn.addEventListener("input",()=>S.name=cn.value);
+  document.querySelectorAll("input[name^=fq]").forEach(r=>r.addEventListener("change",()=>{ if(!S.final) S.final={ans:{},submitted:false}; S.final.ans[r.name.slice(2)]=+r.value; }));
+}
+
+function checkBlanks(id){
+  const L = LESSONS.find(l=>l.id===id); const st=S.blanks[id];
+  L.blanks.forEach((b,i)=>{ const el=$("#"+id+"-b"+i); if(el) st.vals[i]=el.value; });
+  st.reveal=false;
+  st.res = L.blanks.map((b,i)=> b.a.some(a=>norm(a)===norm(st.vals[i])));
+  const all = st.res.every(Boolean);
+  const first = all && !S.stamps[id];
+  if(all) S.stamps[id]=true;
+  const y = window.scrollY; render(); window.scrollTo(0,y);
+  if(first){ renderTop(true,id); toast(`${L.short} 도장 쾅!`); }
+  else if(!all) toast(`${st.res.filter(Boolean).length}개 맞혔어요. 틀린 빈칸을 다시 채워 봐요!`);
+}
+
+document.addEventListener("click", e=>{
+  if(e.target.classList && e.target.classList.contains("lb")){ $("#overlay").innerHTML=""; return; }
+  const t = e.target.closest("button, a"); if(!t) return;
+  const d = t.dataset; const keep=()=>{const y=window.scrollY; render(); window.scrollTo(0,y);};
+  if(d.go){ go(d.go); return; }
+  if(d.zoom){ const m=IMG[d.zoom]; $("#overlay").innerHTML=`<div class="lb" role="dialog" aria-label="사진 크게 보기" data-close><figure><img src="${m.src}" alt="${esc(m.cap)}"><figcaption>${m.cap}</figcaption></figure><button class="btn x" data-close>닫기</button></div>`; return; }
+  if(d.close!==undefined){ $("#overlay").innerHTML=""; return; }
+  if(d.law){ const el=$("#law-"+d.law); el.hidden=!el.hidden; return; }
+  if(d.hint!==undefined){ const L=t.closest("[data-lesson]").dataset.lesson; const st=S.blanks[L]; LESSONS.find(l=>l.id===L).blanks.forEach((b,i)=>{const el=$("#"+L+"-b"+i); if(el) st.vals[i]=el.value;}); st.hints[d.hint]=true; keep(); return; }
+  if(d.check){ checkBlanks(d.check); return; }
+  if(d.reset){ S.blanks[d.reset]={vals:{},res:null,hints:{},reveal:false}; keep(); return; }
+  if(d.reveal){ const st=S.blanks[d.reveal]; st.reveal=true; keep(); return; }
+  if(d.ex){ const el=$("#ex-"+d.ex); el.hidden=!el.hidden; t.textContent=el.hidden?"예시 답 보기":"예시 답 숨기기"; return; }
+  if(d.ord){ if(S.orderPick.length<ORDER.length){ S.orderPick.push(d.ord); S.orderChecked=false; } keep(); return; }
+  if(d.ordreset!==undefined){ S.orderPick=[]; S.orderChecked=false; S.orderPool=shuffle(ORDER); keep(); return; }
+  if(d.ordcheck!==undefined){ S.orderChecked=true; if(S.orderPick.every((p,i)=>p===ORDER[i])){ S.orderDone=true; toast("시대 순서 완벽!"); checkPlay(); } keep(); return; }
+  if(d.det){ const D=S.det; D.answered=true; D.picked=d.det; if(d.det===DETECT[D.order[D.i]].a) D.score++; keep(); return; }
+  if(d.detnext!==undefined){ const D=S.det; D.i++; D.answered=false; D.opts=null; D.picked=null; if(D.i>=DETECT.length){ D.done=true; if(D.score>=7){ S.detDone=true; checkPlay(); } } keep(); return; }
+  if(d.detreset!==undefined){ S.det={i:0,score:0,answered:false,order:shuffle(DETECT.map((_,i)=>i)),done:false}; keep(); return; }
+  if(d.matchcheck!==undefined){ S.matchRes=PEOPLE.map((p,i)=>($("#match-"+i).value===p[1])); if(S.matchRes.every(Boolean)){ S.matchDone=true; toast("인물 짝 찾기 성공!"); checkPlay(); } keep(); return; }
+  if(d.finalsubmit!==undefined){ const F=S.final||{ans:{}}; const miss=FINAL.map((_,i)=>i).filter(i=>F.ans[i]===undefined); if(miss.length){ $("#finalMsg").textContent=`아직 안 푼 문제: ${miss.map(i=>i+1).join(", ")}번`; return; } F.submitted=true; S.final=F; const sc=FINAL.filter((q,i)=>F.ans[i]===q.a).length; const firstF=!S.stamps.final; S.stamps.final=true; render(); renderTop(firstF,"final"); toast(`${sc}점! 평가 도장을 받았어요.`); setTimeout(()=>{const c=$(".cert"); if(c) c.scrollIntoView({behavior:"smooth",block:"center"});},300); return; }
+  if(d.finalreset!==undefined){ S.final=null; render(); window.scrollTo(0,0); return; }
+  if(d.star){ const [i,n]=d.star.split("-").map(Number); S.self[i]=n; keep(); return; }
+});
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") $("#overlay").innerHTML=""; });
+function checkPlay(){ if(S.orderDone && S.detDone && S.matchDone) giveStamp("play","놀이 도장 쾅! 모든 놀이 성공!"); }
+
+renderTop(); render();
+</script>

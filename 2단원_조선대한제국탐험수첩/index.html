@@ -1,0 +1,811 @@
+<title>조선·대한 제국 탐험 수첩</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#FFF7EA; --paper-2:#FFEFD6; --card:#FFFFFF;
+  --ink:#3E2A1E; --ink-soft:#7A5C48; --line:#EBD7BC;
+  --tang:#FF8A3D; --tang-d:#D9661A; --tang-bg:#FFE9D9;
+  --mint:#3FB987; --mint-d:#23895F; --mint-bg:#E1F6EC;
+  --sky:#4E9BE8; --sky-d:#2F74BD; --sky-bg:#E4F0FC;
+  --pink:#F2708F; --pink-d:#C94A69; --pink-bg:#FFE6EC;
+  --butter:#F5B800; --butter-d:#B88400; --butter-bg:#FFF3C7;
+  --ok:#23945E; --ok-bg:#DDF5E8; --no:#D9434A; --no-bg:#FDE3E3;
+  --display:"Jua", "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body:"Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+  --r:18px;
+}
+*{box-sizing:border-box}
+html,body{background:var(--paper)}
+body{
+  margin:0; color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.7;
+  background-color:var(--paper);
+  background-image:radial-gradient(var(--line) 1.2px, transparent 1.3px);
+  background-size:22px 22px;
+  word-break:keep-all; overflow-wrap:break-word;
+}
+h1,h2,h3,h4,.disp{font-family:var(--display); font-weight:400; line-height:1.3; text-wrap:balance; margin:0}
+p{margin:0}
+a{color:inherit}
+button{font-family:var(--display); font-size:16px; cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--tang); outline-offset:2px}
+img{max-width:100%; display:block}
+.wrap{max-width:980px; margin:0 auto; padding-inline:16px}
+
+/* ---------- header ---------- */
+.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:30; background:rgba(255,247,234,.94); backdrop-filter:blur(6px); border-bottom:2px dashed var(--line)}
+.top .wrap{display:flex; align-items:center; gap:12px; padding-block:10px; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:8px; margin-right:auto; background:none; border:0; padding:0; color:var(--ink)}
+.brand svg{width:38px; height:44px}
+.brand b{font-family:var(--display); font-weight:400; font-size:21px}
+.stamps{display:flex; gap:5px; align-items:center}
+.stamps span{width:26px; height:26px; border-radius:50%; border:2px dashed #D8BFA0; display:grid; place-items:center; font-family:var(--display); font-size:12px; color:#B09077; transition:.3s}
+.stamps span.on{border:2px solid var(--no); color:var(--no); background:#FFF0F0; transform:rotate(-12deg)}
+.nav{display:flex; gap:6px; overflow-x:auto; width:100%; padding-bottom:2px; scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav button{flex:0 0 auto; border:2px solid var(--line); background:var(--card); color:var(--ink-soft); border-radius:999px; padding:4px 14px; font-size:15px}
+.nav button[aria-current="true"]{background:var(--ink); border-color:var(--ink); color:#fff}
+
+/* ---------- common ---------- */
+main{padding-block:24px 60px}
+.screen{display:grid; gap:22px}
+.btn{border:0; border-radius:14px; padding:10px 20px; background:var(--tang); color:#fff; box-shadow:0 4px 0 var(--tang-d); transition:transform .1s, box-shadow .1s}
+.btn:active{transform:translateY(3px); box-shadow:0 1px 0 var(--tang-d)}
+.btn.ghost{background:var(--card); color:var(--ink); box-shadow:0 4px 0 var(--line); border:2px solid var(--line)}
+.btn.small{padding:6px 14px; font-size:15px}
+.btn[disabled]{opacity:.45; cursor:not-allowed}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.chip{display:inline-block; font-family:var(--display); font-size:14px; padding:2px 12px; border-radius:999px; background:var(--paper-2); color:var(--ink-soft)}
+.panel{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:22px}
+.muted{color:var(--ink-soft)}
+.small{font-size:14px}
+mark{background:linear-gradient(transparent 55%, var(--butter-bg) 55%); color:inherit; font-weight:700; padding:0 2px}
+.sec-title{display:flex; align-items:center; gap:10px}
+.sec-title h2{font-size:26px}
+.sec-title .num{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; color:#fff; font-family:var(--display); font-size:20px; flex:0 0 auto}
+
+/* theme per lesson */
+[data-c="mint"]{--c:var(--mint); --cd:var(--mint-d); --cb:var(--mint-bg)}
+[data-c="sky"]{--c:var(--sky); --cd:var(--sky-d); --cb:var(--sky-bg)}
+[data-c="pink"]{--c:var(--pink); --cd:var(--pink-d); --cb:var(--pink-bg)}
+[data-c="butter"]{--c:var(--butter); --cd:var(--butter-d); --cb:var(--butter-bg)}
+[data-c="tang"]{--c:var(--tang); --cd:var(--tang-d); --cb:var(--tang-bg)}
+
+/* ---------- home ---------- */
+.hero{display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; background:var(--card); border:2px solid var(--line); border-radius:24px; padding:22px; position:relative; overflow:hidden}
+.hero .mascot{width:110px}
+.bubble{position:relative; background:var(--butter-bg); border-radius:18px; padding:12px 16px; font-size:16px}
+.bubble::before{content:""; position:absolute; left:-10px; top:22px; border:10px solid transparent; border-right-color:var(--butter-bg); border-left:0}
+.hero h1{font-size:clamp(26px,5vw,38px); margin-block:6px 8px}
+.hero .unit{font-family:var(--display); color:var(--tang-d); font-size:16px}
+.goals{display:grid; gap:8px; margin-top:12px; padding:0; list-style:none}
+.goals li{display:flex; gap:8px; align-items:flex-start; font-size:16px}
+.goals li::before{content:""; flex:0 0 18px; height:18px; margin-top:5px; border-radius:6px; border:2px solid var(--mint)}
+
+.timeline{overflow-x:auto; padding-bottom:6px}
+.tl{display:grid; grid-template-columns:repeat(6, minmax(130px,1fr)); gap:0; min-width:780px; position:relative; padding-top:14px}
+.tl::before{content:""; position:absolute; left:6%; right:6%; top:34px; height:6px; border-radius:3px; background:repeating-linear-gradient(90deg,var(--tang) 0 14px, transparent 14px 22px)}
+.tl .ev{text-align:center; display:grid; justify-items:center; gap:6px; padding-inline:4px; position:relative}
+.tl .dot{width:44px; height:44px; border-radius:50%; background:var(--card); border:4px solid var(--c); display:grid; place-items:center; font-family:var(--display); color:var(--cd); font-size:15px; z-index:1}
+.tl .ev b{font-family:var(--display); font-weight:400; font-size:17px}
+.tl .ev small{font-size:13px; color:var(--ink-soft); line-height:1.4}
+
+.courses{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:14px}
+.course{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:16px; text-align:left; color:var(--ink); display:grid; gap:6px; align-content:start; position:relative; box-shadow:0 5px 0 var(--cb); transition:transform .15s}
+.course:hover{transform:translateY(-3px)}
+.course .tag{font-family:var(--display); font-size:13px; color:#fff; background:var(--c); border-radius:999px; padding:1px 10px; justify-self:start}
+.course h3{font-size:19px}
+.course p{font-family:var(--body); font-size:14px; color:var(--ink-soft); line-height:1.5}
+.course .done{position:absolute; right:10px; top:10px; width:44px; height:44px; border-radius:50%; border:2px solid var(--no); color:var(--no); font-family:var(--display); font-size:12px; display:grid; place-items:center; transform:rotate(-14deg); background:#FFF0F0}
+.how{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px}
+.how div{background:var(--paper-2); border-radius:14px; padding:12px 14px; font-size:15px}
+.how b{font-family:var(--display); font-weight:400; font-size:17px; display:block}
+details.teacher{background:var(--card); border:2px dashed var(--line); border-radius:var(--r); padding:14px 18px}
+details.teacher summary{font-family:var(--display); font-size:18px; cursor:pointer}
+details.teacher table{border-collapse:collapse; width:100%; font-size:15px; margin-top:10px}
+details.teacher td,details.teacher th{border:1px solid var(--line); padding:6px 10px; text-align:left; vertical-align:top}
+details.teacher th{background:var(--paper-2); font-family:var(--display); font-weight:400}
+
+/* ---------- lesson ---------- */
+.lhead{background:var(--cb); border-radius:24px; padding:22px; display:grid; gap:8px}
+.lhead .k{font-family:var(--display); color:var(--cd)}
+.lhead h1{font-size:clamp(24px,4.4vw,34px)}
+.steps{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px}
+.steps a{font-family:var(--display); text-decoration:none; background:var(--card); border-radius:999px; padding:3px 14px; font-size:15px; color:var(--cd); border:2px solid var(--c)}
+.cards{display:grid; gap:18px}
+.card{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:20px; display:grid; grid-template-columns:1fr; gap:14px}
+.card.has-pics{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
+.card header{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.card h3{font-size:22px}
+.card .era{font-family:var(--display); font-size:13px; color:var(--cd); background:var(--cb); padding:2px 10px; border-radius:999px}
+.card ul{margin:0; padding-left:1.1em; display:grid; gap:6px}
+.card li::marker{color:var(--c)}
+.easy{background:var(--paper-2); border-radius:12px; padding:10px 14px; font-size:15px; margin-top:4px}
+.easy b{font-family:var(--display); font-weight:400; color:var(--tang-d); margin-right:4px}
+.pics{display:grid; gap:14px; align-content:start}
+.pics.two{grid-template-columns:1fr 1fr}
+figure{margin:0; background:#fff; padding:8px 8px 6px; border-radius:6px; box-shadow:0 2px 0 var(--line), 0 6px 14px rgba(62,42,30,.08); position:relative; transform:rotate(var(--rot,-1deg))}
+figure:nth-child(2n){--rot:1.2deg}
+figure::before{content:""; position:absolute; top:-9px; left:50%; width:70px; height:20px; transform:translateX(-50%) rotate(-3deg); background:color-mix(in srgb, var(--c, var(--butter)) 45%, transparent); border-radius:2px}
+figure button{border:0; padding:0; background:none; display:block; width:100%; cursor:zoom-in}
+figure img{width:100%; height:170px; object-fit:cover; border-radius:3px; background:var(--paper-2)}
+figure img.contain{object-fit:contain; background:#fff}
+figcaption{font-size:13px; line-height:1.45; padding-top:6px; color:var(--ink)}
+.law{display:grid; gap:10px}
+.law .item{background:var(--paper-2); border-radius:12px; padding:10px 14px; display:grid; gap:4px}
+.law .item p{font-weight:700}
+.law .item button{justify-self:start; border:0; background:none; color:var(--cd); font-family:var(--display); padding:0; font-size:15px; text-decoration:underline; text-underline-offset:3px}
+.law .item .ans{font-size:15px; color:var(--ink)}
+
+/* blanks */
+.blank-box{background:var(--card); border:3px solid var(--c); border-radius:24px; padding:22px; display:grid; gap:14px; position:relative}
+.blank-box .hd{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.blank-box h2{font-size:24px}
+.bl{display:grid; gap:4px; padding:12px 14px; border-radius:14px; background:var(--paper); border:2px solid transparent}
+.bl .topic{font-family:var(--display); font-size:13px; color:var(--cd)}
+.bl .sent{line-height:2.1}
+.bl input{font-family:var(--display); font-size:17px; width:9.5em; max-width:100%; padding:2px 10px; border:0; border-bottom:3px solid var(--c); background:var(--cb); border-radius:8px 8px 0 0; color:var(--ink); text-align:center}
+.bl.ok{border-color:var(--ok); background:var(--ok-bg)}
+.bl.no{border-color:var(--no); background:var(--no-bg)}
+.bl .fb{font-size:14px; min-height:0}
+.bl.ok .fb{color:var(--ok)} .bl.no .fb{color:var(--no)}
+.bl .hint{font-size:14px; color:var(--ink-soft)}
+.score{font-family:var(--display); font-size:20px}
+.think{background:var(--cb); border-radius:var(--r); padding:18px; display:grid; gap:10px}
+.think h3{font-size:20px}
+.think textarea{font-family:var(--body); font-size:16px; width:100%; min-height:90px; border:2px solid var(--line); border-radius:12px; padding:10px; background:#fff; color:var(--ink); resize:vertical}
+.think .ex{background:#fff; border-radius:12px; padding:10px 14px; font-size:15px}
+
+/* links */
+.links{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px}
+.lk{display:grid; gap:2px; text-decoration:none; background:var(--card); border:2px solid var(--line); border-radius:14px; padding:12px 14px; transition:border-color .15s, transform .15s}
+.lk:hover{border-color:var(--c); transform:translateY(-2px)}
+.lk .src{font-size:12px; font-family:var(--display); color:var(--cd)}
+.lk b{font-family:var(--display); font-weight:400; font-size:17px}
+.lk span{font-size:14px; color:var(--ink-soft); line-height:1.5}
+.lk::after{content:"새 창으로 열기 ↗"; font-size:12px; color:var(--ink-soft); margin-top:4px}
+.stampbar{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; background:var(--card); border:2px dashed var(--c); border-radius:var(--r); padding:14px 18px}
+
+/* play */
+.game{background:var(--card); border:2px solid var(--line); border-radius:24px; padding:22px; display:grid; gap:14px}
+.game h2{font-size:24px}
+.pool,.slots{display:flex; flex-wrap:wrap; gap:8px}
+.pool button{border:2px solid var(--butter); background:var(--butter-bg); border-radius:12px; padding:8px 14px; color:var(--ink)}
+.pool button[disabled]{opacity:.3}
+.slots{counter-reset:s; min-height:56px; background:var(--paper); border-radius:14px; padding:10px; align-items:center}
+.slots span{counter-increment:s; font-family:var(--display); background:#fff; border:2px solid var(--line); border-radius:12px; padding:6px 12px}
+.slots span::before{content:counter(s) ". "; color:var(--tang-d)}
+.slots span.ok{border-color:var(--ok); background:var(--ok-bg)} .slots span.no{border-color:var(--no); background:var(--no-bg)}
+.slots em{color:var(--ink-soft); font-style:normal; font-size:15px}
+.det{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:18px; align-items:center}
+.det figure img{height:240px; object-fit:contain; background:#fff}
+.opts{display:grid; gap:8px}
+.opts button{border:2px solid var(--line); background:var(--card); border-radius:12px; padding:10px; text-align:left; color:var(--ink)}
+.opts button.ok{border-color:var(--ok); background:var(--ok-bg)} .opts button.no{border-color:var(--no); background:var(--no-bg)}
+.match{display:grid; gap:10px}
+.match .m{display:grid; grid-template-columns:130px 1fr auto; gap:10px; align-items:center; background:var(--paper); border-radius:12px; padding:8px 12px; border:2px solid transparent}
+.match .m b{font-family:var(--display); font-weight:400; font-size:18px}
+.match select{font-family:var(--body); font-size:15px; padding:6px 8px; border-radius:10px; border:2px solid var(--line); background:#fff; color:var(--ink); width:100%}
+.match .m.ok{border-color:var(--ok); background:var(--ok-bg)} .match .m.no{border-color:var(--no); background:var(--no-bg)}
+.match .mark{font-family:var(--display); width:24px; text-align:center}
+.progress{height:10px; background:var(--paper-2); border-radius:6px; overflow:hidden}
+.progress i{display:block; height:100%; background:var(--butter); transition:width .3s}
+
+/* final */
+.q{background:var(--card); border:2px solid var(--line); border-radius:var(--r); padding:16px 18px; display:grid; gap:10px}
+.q h3{font-size:18px; font-family:var(--body); font-weight:700}
+.q h3 .n{font-family:var(--display); font-weight:400; color:var(--tang-d); margin-right:6px}
+.q label{display:flex; gap:10px; align-items:flex-start; padding:8px 12px; border-radius:10px; border:2px solid var(--paper-2); cursor:pointer; font-size:16px}
+.q label:has(input:checked){border-color:var(--tang); background:var(--tang-bg)}
+.q input{margin-top:6px; accent-color:var(--tang)}
+.q label.right{border-color:var(--ok); background:var(--ok-bg)}
+.q label.wrong{border-color:var(--no); background:var(--no-bg)}
+.q .exp{font-size:15px; background:var(--paper); border-radius:10px; padding:8px 12px}
+.self{display:grid; gap:10px}
+.self .s{display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center; background:var(--paper); border-radius:12px; padding:10px 14px}
+.stars{display:flex; gap:4px}
+.stars button{border:0; background:none; font-size:26px; line-height:1; color:var(--line); padding:0 2px}
+.stars button.on{color:var(--butter)}
+.cert{background:#fff; border:3px double var(--tang); border-radius:24px; padding:26px 22px; text-align:center; display:grid; gap:12px; justify-items:center; position:relative; overflow:hidden}
+.cert::before,.cert::after{content:""; position:absolute; width:140px; height:140px; border-radius:50%; background:var(--butter-bg); z-index:0}
+.cert::before{left:-50px; top:-50px} .cert::after{right:-50px; bottom:-50px; background:var(--mint-bg)}
+.cert > *{position:relative; z-index:1}
+.cert h2{font-size:30px; color:var(--tang-d)}
+.cert input{font-family:var(--display); font-size:22px; text-align:center; border:0; border-bottom:3px dashed var(--tang); background:transparent; width:220px; max-width:100%; color:var(--ink)}
+.cert .big-stamps{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+.cert .big-stamps span{width:60px; height:60px; border-radius:50%; border:3px solid var(--line); display:grid; place-items:center; font-family:var(--display); font-size:13px; color:var(--line); line-height:1.1}
+.cert .big-stamps span.on{border-color:var(--no); color:var(--no); transform:rotate(-10deg); background:#FFF0F0}
+
+.credits{font-size:13px; color:var(--ink-soft)}
+.credits summary{font-family:var(--display); font-size:16px; cursor:pointer; color:var(--ink)}
+.credits ol{padding-left:1.3em; display:grid; gap:2px; margin:8px 0 0}
+
+/* lightbox */
+.lb{position:fixed; inset:0; background:rgba(40,26,18,.82); z-index:50; display:grid; place-items:center; padding:20px}
+.lb figure{transform:none; max-width:min(92vw,720px)}
+.lb figure::before{display:none}
+.lb img{height:auto; max-height:72vh; object-fit:contain}
+.lb .x{position:absolute; top:16px; right:16px}
+
+.toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--ink); color:#fff; font-family:var(--display); padding:10px 20px; border-radius:999px; z-index:60; font-size:16px; box-shadow:0 6px 18px rgba(0,0,0,.2)}
+@keyframes pop{0%{transform:scale(.3) rotate(-30deg);opacity:0}70%{transform:scale(1.15) rotate(-8deg);opacity:1}100%{transform:scale(1) rotate(-12deg)}}
+.pop{animation:pop .5s ease-out}
+@keyframes wob{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.hero .mascot{animation:wob 3s ease-in-out infinite; transform-origin:50% 90%}
+@media (prefers-reduced-motion: reduce){*{animation:none!important; transition:none!important}}
+
+@media (max-width:720px){
+  .card.has-pics{grid-template-columns:1fr}
+  .det{grid-template-columns:1fr}
+  .hero{grid-template-columns:1fr; text-align:left}
+  .hero .mascot{width:80px}
+  .bubble::before{display:none}
+  .match .m{grid-template-columns:1fr auto}
+  .match .m select{grid-column:1 / -1; grid-row:2}
+  .brand b{font-size:18px}
+}
+@media (max-width:420px){ .pics.two{grid-template-columns:1fr} }
+
+/* ---- additions for unit 2·3 ---- */
+.stampbox{display:flex; align-items:center; gap:8px; background:var(--card); border:2px solid var(--line); border-radius:999px; padding:3px 10px 3px 12px}
+.stampbox > b{font-family:var(--display); font-weight:400; font-size:14px; color:var(--ink-soft); white-space:nowrap}
+.stamps span{width:auto; min-width:30px; height:26px; border-radius:999px; padding:0 8px; font-size:12px}
+.stamps span.on{transform:rotate(-6deg)}
+.vids{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:14px}
+.vid{display:grid; grid-template-rows:auto 1fr; align-content:start; text-decoration:none; background:var(--card); border:2px solid var(--line); border-radius:14px; overflow:hidden; transition:transform .15s, border-color .15s; color:var(--ink)}
+.vid:hover{transform:translateY(-2px); border-color:var(--c)}
+.vid .th{position:relative; aspect-ratio:16/9; overflow:hidden; background:var(--paper-2)}
+.vid .th img{width:100%; height:100%; object-fit:cover}
+.vid .th span{position:absolute; right:6px; bottom:6px; background:rgba(0,0,0,.78); color:#fff; font-size:12px; font-family:var(--display); padding:1px 7px; border-radius:6px}
+.vid .th i{position:absolute; left:50%; top:50%; width:42px; height:30px; margin:-15px 0 0 -21px; background:rgba(230,33,23,.92); border-radius:9px}
+.vid .th i::after{content:""; position:absolute; left:17px; top:8px; border:7px solid transparent; border-left:11px solid #fff; border-right:0}
+.vid .meta{padding:10px 12px 12px; display:grid; gap:2px}
+.vid .meta b{font-family:var(--body); font-weight:700; font-size:15px; line-height:1.45}
+.vid .meta small{font-size:12px; color:var(--ink-soft)}
+.grid4{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px}
+.grid4 div{background:var(--cb); border-radius:12px; padding:10px 12px; display:grid; gap:2px; font-size:15px; line-height:1.55}
+.grid4 b{font-family:var(--display); font-weight:400; font-size:18px; color:var(--cd)}
+.bl .sent input{margin-inline:2px}
+.bl .sent input.ok{border-bottom-color:var(--ok); background:#fff}
+.bl .sent input.no{border-bottom-color:var(--no); background:#fff}
+.sub-h{font-size:22px}
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="seonbi" viewBox="0 0 120 140">
+      <ellipse cx="60" cy="34" rx="34" ry="6" fill="#2b2b2b"/>
+      <path d="M40 34 C40 14 80 14 80 34 C80 40 40 40 40 34 Z" fill="#333"/>
+      <rect x="52" y="10" width="16" height="16" rx="3" fill="#333"/>
+      <ellipse cx="60" cy="52" rx="20" ry="18" fill="#FBDCB0"/>
+      <path d="M30 128 C30 90 42 66 60 66 C78 66 90 90 90 128 Z" fill="#AFC9D6"/>
+      <path d="M60 66 L60 128" stroke="#8FB0C0" stroke-width="2"/>
+      <path d="M44 78 Q60 88 76 78" stroke="#8FB0C0" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M48 68 L60 80 L72 68" stroke="#3B2416" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M54 64 Q60 72 66 64" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="52" cy="50" r="3.2" fill="#3B2416"/><circle cx="68" cy="50" r="3.2" fill="#3B2416"/>
+      <circle cx="53.2" cy="48.7" r="1.1" fill="#fff"/><circle cx="69.2" cy="48.7" r="1.1" fill="#fff"/>
+      <ellipse cx="46" cy="58" rx="6" ry="3.5" fill="#FF9AA8" opacity=".7"/><ellipse cx="74" cy="58" rx="6" ry="3.5" fill="#FF9AA8" opacity=".7"/>
+      <path d="M52 60 Q60 66 68 60" stroke="#3B2416" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+      <path d="M86 100 L100 88" stroke="#B97A45" stroke-width="3" stroke-linecap="round"/>
+      <path d="M92 82 Q104 78 108 88 Q98 96 92 82 Z" fill="#F4E7C9" stroke="#D9BD86" stroke-width="1.5"/>
+    </symbol>
+  </defs>
+</svg>
+<header class="top">
+  <div class="wrap">
+    <button class="brand" data-go="home" aria-label="처음 화면으로"><svg><use href="#seonbi"/></svg><b>조선·대한 제국 탐험 수첩</b></button>
+    <div class="stampbox"><b>내 도장</b><div class="stamps" id="stampsTop" aria-label="모은 도장"></div></div>
+    <nav class="nav" id="nav" aria-label="탐험 코스"></nav>
+  </div>
+</header>
+<main class="wrap" id="main"></main>
+<div id="overlay"></div>
+<script>
+const D = {
+UNIT:"사회 5-2 · 2단원", UNIT_SHORT:"2단원", UNIT_NAME:"달라지는 시대, 변화하는 생활 모습",
+TITLE_HTML:"달라지는 시대,<br>변화하는 생활 모습",
+BUBBLE:"안녕! 나는 조선 시대에서 온 선비, <b>선비</b>야. 이번에는 <b>조선의 건국</b>부터 <b>대한 제국</b>까지 약 500년을 여행할 거야. 유교가 사람들의 생활을 어떻게 바꾸었는지, 전쟁과 개항 뒤에 세상이 어떻게 달라졌는지 함께 살펴보자!",
+GOALS:["조선의 건국 과정과 유교 문화가 사람들의 생활에 미친 영향을 설명할 수 있어요.","임진왜란과 병자호란 이후 조선 후기 사회와 생활의 변화를 알 수 있어요.","개항 이후 근대 국가를 만들기 위한 사람들의 노력과 생활의 변화를 설명할 수 있어요."],
+CERT_RANGE:"조선의 건국부터 대한 제국까지",
+PLAY_SUM:"사건 순서·사진 탐정·인물 짝 찾기",
+TL:[["조선 건국","1392년","mint"],["경국대전 완성","1485년","mint"],["임진왜란","1592년","sky"],["병자호란","1636년","sky"],["강화도 조약","1876년","pink"],["갑신정변","1884년","pink"],["동학 농민 운동","1894년","pink"],["대한 제국","1897년","pink"]],
+IMG:{
+ taejo:{cap:"태조 이성계의 초상(어진)", fit:"contain"},
+ sungnye:{cap:"숭례문 — ‘예(禮)’를 높인다는 뜻을 담은 한양 도성의 남쪽 문"},
+ geunjeong:{cap:"경복궁 근정전 — ‘부지런히 정치하라’는 뜻"},
+ gyeongguk:{cap:"경국대전", fit:"contain"},
+ samgang:{cap:"삼강행실도 — 그림과 함께 이야기를 실었어요"},
+ myeongnyun:{cap:"성균관 명륜당 — 유생들이 공부하던 곳"},
+ seodang:{cap:"김홍도의 ‘서당’ — 훈장님께 공부하는 아이들", fit:"contain"},
+ turtle:{cap:"통영항에 있는 거북선(복원)"},
+ namhan:{cap:"남한산성 — 병자호란 때 인조가 피란한 곳"},
+ nongali:{cap:"김홍도의 ‘논갈이’ — 조선 후기 농사 모습", fit:"contain"},
+ jeongyy:{cap:"실학자 정약용", fit:"contain"},
+ hwaseong:{cap:"수원 화성 팔달문 — 정약용의 거중기가 쓰였어요", fit:"contain"},
+ mudong:{cap:"김홍도의 ‘무동’ — 풍속화에 담긴 서민의 흥", fit:"contain"},
+ mask:{cap:"탈놀이에 쓰던 탈(안동)", fit:"contain"},
+ minhwa:{cap:"민화 ‘까치와 호랑이’", fit:"contain"},
+ cheokhwa:{cap:"척화비 — 서양과 교류하지 않겠다는 뜻을 새긴 비석"},
+ ganghwa:{cap:"강화도 조약 체결 모습을 그린 그림", fit:"contain"},
+ kimokgyun:{cap:"갑신정변을 이끈 김옥균", fit:"contain"},
+ jeonbj:{cap:"붙잡혀 가는 전봉준(1895)", fit:"contain"},
+ dongnip:{cap:"독립신문 — 한글로 펴낸 신문", fit:"contain"},
+ gojong:{cap:"대한 제국의 황제가 된 고종", fit:"contain"},
+ seokjo:{cap:"덕수궁 석조전 — 대한 제국 때 지은 서양식 건물"},
+ streetcar:{cap:"대한 제국 시기 서울의 전차", fit:"contain"}
+},
+LESSONS:[
+{ id:"l1", n:1, c:"mint", short:"코스 ①", nav:"① 조선의 건국", title:"조선의 건국과 유교 문화", sum:"이성계와 신진 사대부, 한양, 경국대전, 신분 제도",
+  intro:"고려 말 혼란 속에서 새 나라 조선이 세워졌어요. 조선은 유교의 가르침으로 나라를 다스리고, 사람들의 생활 곳곳에도 유교 문화가 자리 잡았어요.",
+  cards:[
+   {t:"고려 말의 상황", era:"14세기 말", pics:["taejo"], pts:[
+     "<mark>신진 사대부</mark>: 정몽주, 정도전 등 고려 말 유교의 한 갈래인 <mark>성리학</mark>을 공부해 과거에 합격하여 관리가 된 사람들이에요.",
+     "<mark>이성계</mark>는 <mark>위화도</mark>에서 군사를 돌려 개경으로 돌아와 반대 세력을 몰아내고 권력을 잡았어요."],
+     easy:"위화도에서 군대를 돌린 일을 ‘위화도 회군’이라고 해요. 이 일로 이성계가 나라의 실권을 쥐게 되었어요."},
+   {t:"조선의 건국", era:"1392년", pics:[], pts:[
+     "권력을 잡은 이성계와 신진 사대부는 새로운 나라를 세우는 것을 반대한 정몽주 등을 제거했어요.",
+     "그리고 새로운 나라인 <mark>조선</mark>을 세웠어요."]},
+   {t:"유교의 가르침에 따라 세워진 도읍, 한양", era:"조선의 수도", pics:["sungnye","geunjeong"], pts:[
+     "<mark>한양</mark>은 유교의 가르침을 실현하기 위한 도읍으로 설계되었어요.",
+     "주요 건축물에는 유교의 덕목을 담아 이름을 붙였어요.",
+     "유교의 주요 덕목: <mark>어짊(인), 옳음(의), 예의 바름(예), 지혜로움(지), 믿음(신)</mark>"],
+     easy:"한양 도성의 문 이름을 보면 흥인지문(동대문)에는 ‘인’, 돈의문(서대문)에는 ‘의’, 숭례문(남대문)에는 ‘예’, 한가운데 보신각에는 ‘신’이 들어 있어요."},
+   {t:"유교의 가르침이 담긴 법전, 경국대전", era:"나라를 다스리는 기준", pics:["gyeongguk"], pts:[
+     "<mark>경국대전</mark>에는 유교의 가르침을 바탕으로 나라를 다스리고 백성들을 보호하는 법과 정책이 담겨 있어요.",
+     "정치, 경제, 사회 등 다양한 분야에서 조선을 다스리는 기본적인 방향을 제시했어요."]},
+   {t:"유교의 가르침을 백성에게 전한 삼강행실도", era:"그림으로 배우는 유교", pics:["samgang"], pts:[
+     "<mark>삼강행실도</mark>에는 유교의 주요 가르침인 나라에 충성하는 마음(<mark>충</mark>), 부모와 어른을 공경하는 마음(<mark>효</mark>), 사람 사이에 지켜야 할 예절(<mark>예</mark>)을 실천한 사람들의 이야기가 담겨 있어요."],
+     easy:"글을 모르는 백성도 이해할 수 있도록 이야기마다 그림을 함께 넣었어요."},
+   {t:"유교를 가르치는 교육 기관", era:"성균관·향교·서당", pics:["myeongnyun","seodang"], pts:[
+     "조선은 한양에 <mark>성균관</mark>, 지방에는 <mark>향교</mark>를 세워 사람들이 유교의 가르침을 배우도록 했어요.",
+     "조선 시대 사람들은 어릴 때부터 <mark>서당</mark>에서 한자와 유교의 기초를 배웠어요."]},
+   {t:"신분에 따른 사람들의 생활 모습", era:"양반·중인·상민·천민", pics:[], grid:[
+     ["양반","유교의 가르침을 공부하여 나랏일을 하는 관리가 되어 세금과 역을 면제받을 수 있었어요."],
+     ["중인","관청에서 일하거나 의학, 통역 등 전문적인 기술이 필요한 일을 했어요."],
+     ["상민","주로 농사를 짓고 어업, 상업, 수공업 등의 일을 했어요. 세금과 역의 대부분을 부담했어요."],
+     ["천민","가장 낮은 신분으로, 대부분 노비였어요. 관청이나 양반의 집에서 허드렛일을 했어요."]]},
+   {t:"일상생활에 자리 잡은 유교 예절과 마을 공동체", era:"관혼상제", pics:[], pts:[
+     "조선 시대 사람들은 유교의 예절에 따라 네 가지 큰 예식인 <mark>관혼상제</mark>를 치렀어요.",
+     "유교의 가르침을 바탕으로 마을 공동체의 질서를 유지했어요.",
+     "마을 사람들이 힘을 합쳐 농사일을 하고 풍년을 기원하는 마을 행사를 함께 즐겼어요."],
+     easy:"관례는 어른이 되는 의식, 혼례는 결혼식, 상례는 장례, 제례는 조상에게 지내는 제사예요."},
+   {t:"유교 문화와 여성의 역할", era:"조선 후기로 갈수록", pics:[], pts:[
+     "유교 문화가 퍼질수록 조상의 제사가 집안의 중요한 행사가 되었어요.",
+     "조선 사회에서 여성의 지위는 점차 낮아지고, 조선 후기로 갈수록 제사가 남성을 중심으로 치러지고 아들에게만 부모의 재산을 물려주었어요."],
+     easy:"1단원에서 배운 고려 때는 딸과 아들이 재산을 고르게 나누어 받았던 것과 비교해 보세요."}
+  ],
+  blanks:[
+   {topic:"고려 말의 상황", s:"{신진 사대부|신진사대부}: 정몽주, 정도전 등 성리학을 공부해 과거에 합격하여 관리가 된 사람들"},
+   {topic:"위화도 회군", s:"{이성계}은/는 위화도에서 군사를 돌려 개경으로 돌아와 반대 세력을 몰아내고 권력을 잡음."},
+   {topic:"새 나라의 건국", s:"이성계와 신진 사대부는 새로운 나라를 세우는 것을 반대한 정몽주 등을 제거하고 새로운 나라인 {조선}을/를 세움."},
+   {topic:"도읍", s:"{한양|한성}은/는 유교의 가르침을 실현하기 위한 도읍으로 설계됨."},
+   {topic:"법전", s:"{경국대전}에는 유교의 가르침을 바탕으로 나라를 다스리고 백성들을 보호하는 법과 정책이 담겨 있음."},
+   {topic:"유교의 가르침을 전한 책", s:"{삼강행실도}에는 나라에 충성하는 마음({충}), 부모와 어른을 공경하는 마음({효}), 사람 사이에 지켜야 할 예절({예|열})을/를 실천한 사람들의 이야기가 담겨 있음."},
+   {topic:"교육 기관", s:"조선은 한양에 {성균관}, 지방에는 {향교}을/를 세워 사람들이 유교의 가르침을 배우도록 했음. 어릴 때부터 {서당}에서 한자와 유교의 기초를 배웠음."},
+   {topic:"신분 ①", s:"{양반}: 관리가 되어 세금과 역을 면제받음. / {중인}: 의학, 통역 등 전문적인 기술이 필요한 일을 함."},
+   {topic:"신분 ②", s:"{상민|양민|평민}: 주로 농사를 짓고 세금과 역의 대부분을 부담함. / {천민|노비}: 가장 낮은 신분으로, 대부분 노비임."},
+   {topic:"유교 예절", s:"조선 시대 사람들은 유교의 예절에 따라 네 가지 큰 예식인 {관혼상제}을/를 치름."}
+  ],
+  vids:[
+   {id:"HadFlhTGbGI", t:"고려를 무너뜨리고 새롭게 등장한 나라는 어디일까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:27"},
+   {id:"djRoP02ki58", t:"한양이 조선의 도읍이 된 까닭은 무엇일까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:33"},
+   {id:"hZiYgnpVQOk", t:"유교 정신으로 나라를 다스리다, 경국대전", ch:"참쌤스쿨", len:"3:43"},
+   {id:"HYGAigD1VhQ", t:"조선에는 어떤 신분 제도가 있었을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:04"},
+   {id:"P5Y-VyjoUlA", t:"조선 시대 교육 기관 — 서당편", ch:"한밭교육박물관", len:"1:34"},
+   {id:"7rgjEnuDAa8", t:"조선 시대 사람들의 생활 모습은 어떠했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:05"}
+  ],
+  think:{q:"한양의 문과 건물에 유교 덕목을 담은 이름을 붙인 까닭은 무엇일까요? 우리 학교나 교실에 이름을 붙인다면 어떤 덕목을 담고 싶은지도 써 보세요.",
+    ex:"도읍을 오가는 사람들이 늘 유교의 가르침을 떠올리고 실천하게 하려고 이름을 붙였어요. 우리 교실에는 서로를 믿는 마음을 담아 ‘믿음(신)’ 반이라는 이름을 붙이고 싶어요."},
+  links:[
+   {src:"우리역사넷 · 재미있는 초등역사", t:"한양도성", d:"유교의 뜻을 담아 쌓은 조선의 도읍", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0220_0010&code=ganada"},
+   {src:"우리역사넷 · 재미있는 초등역사", t:"경국대전", d:"조선을 다스린 기본 법전 이야기", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0275_0010&code=ganada"},
+   {src:"서울 한양도성", t:"서울 한양도성 누리집", d:"한양도성의 성곽과 문을 살펴봐요", u:"https://seoulcitywall.seoul.go.kr/index.do"},
+   {src:"우리역사넷 · 재미있는 초등역사", t:"조선 시대 이야기 모음", d:"조선 시대의 인물과 문화유산을 더 찾아봐요", u:"https://contents.history.go.kr/front/newEh/list.do?code=eh_age_30"}
+  ]},
+{ id:"l2", n:2, c:"sky", short:"코스 ②", nav:"② 조선 후기", title:"조선 후기 사회의 변화와 사람들의 생활", sum:"임진왜란·병자호란, 모내기법, 실학, 장시, 서민 문화",
+  intro:"두 차례의 큰 전쟁을 겪은 뒤 조선 사회는 크게 달라졌어요. 농사짓는 방법이 바뀌고 시장이 커지면서 신분 제도가 흔들리고, 서민들의 문화가 꽃피었어요.",
+  cards:[
+   {t:"두 차례의 큰 전쟁", era:"1592년 · 1636년", pics:["turtle","namhan"], pts:[
+     "<mark>임진왜란</mark>: 일본의 침략으로 큰 피해를 입은 7년에 걸친 전쟁이에요. <mark>이순신</mark>이 이끄는 조선 수군과 <mark>의병</mark>이 활약했어요.",
+     "<mark>병자호란</mark>: 청의 조공 요구를 거절하자 청이 한양까지 쳐들어온 전쟁이에요. 인조는 남한산성에서 버티다 끝내 항복하고 청에 인질과 조공을 바쳐야 했어요."]},
+   {t:"전쟁 이후 사람들의 생활", era:"농업과 상공업의 발달", pics:["nongali"], pts:[
+     "<mark>모내기법</mark>이 널리 사용되고 다양한 농작물이 재배되어 농업 생산력이 높아지고 상공업이 발달했어요.",
+     "경제적으로 여유가 생긴 백성은 <mark>공명첩</mark>이나 족보를 사서 양반이 되기도 하며 <mark>신분 제도가 흔들렸어요</mark>."],
+     easy:"모내기법은 모판에서 어린 벼를 키운 뒤 논에 옮겨 심는 방법이에요. 같은 논에서 더 많은 쌀을 얻을 수 있었어요. 공명첩은 이름을 쓰는 칸이 비어 있는 관직 임명장이에요."},
+   {t:"실학의 발달", era:"현실을 바꾸는 학문", pics:["jeongyy","hwaseong"], pts:[
+     "전쟁 이후 현실 문제에 관심을 가지고 백성의 어려움을 돕고자 한 학문인 <mark>실학</mark>이 발달했어요.",
+     "실학자들은 농업, 상업, 지리 등 다양한 분야를 연구했어요."],
+     easy:"대표적인 실학자 정약용은 무거운 돌을 쉽게 들어 올리는 거중기를 만들어 수원 화성을 쌓는 데 도움을 주었어요."},
+   {t:"장시의 성장", era:"사람과 물건이 모이는 곳", pics:[], pts:[
+     "조선 후기 농업과 상공업의 발달로 <mark>장시</mark>가 성장했어요.",
+     "사람들은 장시에서 다양한 물건을 사고팔고 정보를 나누고 문화를 즐겼어요."],
+     easy:"장시는 보통 5일마다 열리는 시장이었어요. 오늘날에도 ‘5일장’이라는 이름으로 남아 있어요."},
+   {t:"서민 문화의 발달", era:"자유롭고 솔직한 문화", pics:["mudong","mask","minhwa"], pts:[
+     "서민들의 자유롭고 솔직한 생활 모습과 생각이 담긴 <mark>탈놀이, 판소리, 한글 소설, 풍속화와 민화</mark> 등의 <mark>서민 문화</mark>가 발달했어요."],
+     easy:"김홍도와 신윤복은 사람들의 생활 모습을 그린 풍속화로 유명해요. ‘홍길동전’, ‘춘향전’ 같은 한글 소설도 널리 읽혔어요."}
+  ],
+  blanks:[
+   {topic:"첫 번째 전쟁", s:"{임진왜란}: 일본의 침략으로 큰 피해를 입은 7년에 걸친 전쟁. 이순신이 이끄는 조선 수군과 의병이 활약함."},
+   {topic:"두 번째 전쟁", s:"{병자호란}: 청의 조공 요구를 거절하자 청이 한양까지 쳐들어온 전쟁. 인조는 끝내 항복함."},
+   {topic:"농사법의 변화", s:"{모내기법|모내기}이/가 널리 사용되고 다양한 농작물이 재배되어 농업 생산력이 높아짐."},
+   {topic:"흔들리는 신분 제도", s:"경제적으로 여유가 생긴 백성은 {공명첩}(이)나 족보를 사서 양반이 되기도 함."},
+   {topic:"새로운 학문", s:"현실 문제에 관심을 가지고 백성의 어려움을 돕고자 한 학문인 {실학}이/가 발달함."},
+   {topic:"시장", s:"조선 후기 농업과 상공업의 발달로 {장시}이/가 성장함."},
+   {topic:"문화", s:"탈놀이, 판소리, 한글 소설, 풍속화와 민화 등의 {서민 문화|서민문화}이/가 발달함."}
+  ],
+  vids:[
+   {id:"9CCfgaYquE4", t:"임진왜란은 왜 일어났을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"1:20"},
+   {id:"id_H9XV3QnY", t:"나라를 지키기 위해 조선 수군은 어떤 활약을 했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:43"},
+   {id:"cNZNJG0jF7I", t:"병자호란은 왜 일어났을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"1:26"},
+   {id:"3zVDNyM2tXM", t:"농사짓는 방법은 어떻게 변화했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:35"},
+   {id:"jJdCnjnGgcg", t:"신분제는 왜 흔들렸고 조선 시대 여성은 어떤 삶을 살았을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"2:18"},
+   {id:"-tbdNWXhsxI", t:"실학은 어떻게 발전했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"1:57"},
+   {id:"snHpXBNswg4", t:"조선 후기의 시장은 어떤 모습이었을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"1:28"},
+   {id:"cQHyYloxr0k", t:"서민 문화는 어떻게 발달했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:21"}
+  ],
+  think:{q:"조선 후기에 공명첩이나 족보를 사서 양반이 되려는 사람들이 많아진 까닭은 무엇일까요? 이런 일이 조선 사회에 어떤 변화를 가져왔을지 써 보세요.",
+    ex:"양반이 되면 세금과 역을 면제받고 대접을 받을 수 있었기 때문이에요. 양반이 크게 늘어나면서 양반과 상민을 나누던 신분 제도가 점점 흔들리게 되었어요."},
+  links:[
+   {src:"우리역사넷 · 재미있는 초등역사", t:"이순신", d:"임진왜란에서 나라를 지킨 이순신 장군", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_n0470_0010&code=eh_age_30"},
+   {src:"우리역사넷 · 한국사 연대기", t:"거북선", d:"임진왜란에서 활약한 거북선", u:"https://contents.history.go.kr/mobile/kc/view.do?levelId=kc_r300020&code=kc_age_30"},
+   {src:"우리역사넷 · 재미있는 초등역사", t:"수원 화성", d:"실학의 성과가 담긴 계획 도시", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_r0310_0010&code=eh_age_30"}
+  ]},
+{ id:"l3", n:3, c:"pink", short:"코스 ③", nav:"③ 개항과 근대", title:"개항과 근대 국가를 향한 노력", sum:"척화비, 강화도 조약, 갑신정변, 동학 농민 운동, 대한 제국",
+  intro:"서양과 일본이 문을 두드리자 조선은 문을 열고(개항) 새로운 세상과 만나게 되었어요. 사람들은 저마다의 방법으로 나라를 새롭게 바꾸고 스스로 지키려고 노력했어요.",
+  cards:[
+   {t:"흥선 대원군과 척화비", era:"문을 닫은 조선", pics:["cheokhwa"], pts:[
+     "조선 후기 <mark>흥선 대원군</mark>은 전국에 <mark>척화비</mark>를 세워 서양과 교류하지 않겠다는 의지를 널리 알렸어요."]},
+   {t:"강화도 조약으로 개항한 조선", era:"1876년", pics:["ganghwa"], pts:[
+     "일본이 군대를 이끌고 개항을 요구하자 조선은 <mark>강화도 조약</mark>을 맺고 개항했어요.",
+     "조선이 외국과 맺은 <mark>최초의 근대적 조약</mark>이었으나 조선에 <mark>불리한 내용</mark>이 담겨 있었어요."],
+     easy:"개항은 항구를 열어 다른 나라와 교류하고 무역을 하는 것을 말해요."},
+   {t:"개화를 꿈꾸는 사람들", era:"1884년 갑신정변", pics:["kimokgyun"], pts:[
+     "개항 이후 조선 정부는 <mark>개화</mark> 정책을 펼쳐 외국의 근대 문물을 받아들이고 사회를 발전시키고자 했어요.",
+     "김옥균을 비롯해 빠른 개혁을 원한 일부 사람들은 <mark>갑신정변</mark>을 일으켜 새로운 정부를 조직하고 개혁 방안을 발표했지만 <mark>3일 만에 실패</mark>했어요."]},
+   {t:"새로운 세상을 만들고자 한 백성들", era:"1894년", pics:["jeonbj"], pts:[
+     "전라도에서 <mark>전봉준</mark>을 중심으로 시작된 <mark>동학 농민 운동</mark>은 부패한 관리의 횡포와 외국 군대의 개입에 저항했지만 결국 진압되었어요.",
+     "신분제 폐지와 같은 동학 농민군의 요구 일부는 <mark>갑오개혁</mark>에 반영되었어요."]},
+   {t:"독립 협회의 활동", era:"나라를 스스로 지키려는 노력", pics:["dongnip"], pts:[
+     "개항 이후 사람들은 서양의 강대국들과 일본으로부터 나라를 스스로 지키고자 노력했어요.",
+     "<mark>독립 협회</mark>는 한글로 <mark>독립신문</mark>을 펴내 나라 안팎의 소식을 알리고 <mark>만민 공동회</mark>를 열어 신분에 상관없이 누구나 사회 문제에 대해 토론하도록 했어요."]},
+   {t:"근대 시설이 세워지는 대한 제국", era:"1897년", pics:["gojong","seokjo"], pts:[
+     "고종은 나라의 힘을 키우기 위해 나라 이름을 <mark>대한 제국</mark>으로 바꾸고 <mark>황제</mark>로 즉위했어요.",
+     "전기, 병원 등 근대 시설을 도입하고 영어, 수학 등 새로운 학문을 가르치는 근대식 학교를 세우며 여러 개혁을 추진했어요."]},
+   {t:"근대 문물로 달라진 생활 모습", era:"새로운 물건과 풍경", pics:["streetcar"], pts:[
+     "<mark>단발령</mark>이 시행되고 서양식 옷을 입는 사람이 늘어났어요.",
+     "<mark>커피, 가로등, 전차</mark> 등 근대 문물이 들어오면서 사람들의 생활 모습이 달라졌어요.",
+     "일부 사람들은 근대 문물을 반대하거나, 우리 문화에 맞게 바꾸어 사용하기도 했어요."]}
+  ],
+  blanks:[
+   {topic:"흥선 대원군", s:"흥선 대원군은 전국에 {척화비}을/를 세워 서양과 교류하지 않겠다는 의지를 널리 알림."},
+   {topic:"개항", s:"일본이 군대를 이끌고 개항을 요구하자 조선은 {강화도 조약|강화도조약}을/를 맺고 개항함."},
+   {topic:"개화 정책", s:"개항 이후 조선 정부는 {개화} 정책을 펼쳐 외국의 근대 문물을 받아들이고자 함."},
+   {topic:"빠른 개혁", s:"김옥균을 비롯해 빠른 개혁을 원한 사람들은 {갑신정변}을/를 일으켰지만 3일 만에 실패함."},
+   {topic:"백성들의 저항", s:"전라도에서 전봉준을 중심으로 시작된 {동학 농민 운동|동학농민운동|동학 농민 혁명}은/는 부패한 관리와 외국 군대의 개입에 저항함."},
+   {topic:"개혁", s:"신분제 폐지와 같은 동학 농민군의 요구 일부는 {갑오개혁}에 반영됨."},
+   {topic:"독립 협회", s:"{독립 협회|독립협회}은/는 한글로 『독립신문』을 펴내고 {만민 공동회|만민공동회}을/를 열어 누구나 사회 문제를 토론하도록 함."},
+   {topic:"새 나라 이름", s:"고종은 나라 이름을 {대한 제국|대한제국}(으)로 바꾸고 황제로 즉위함."}
+  ],
+  vids:[
+   {id:"6fi8CQQR6Xs", t:"흥선 대원군은 어떤 개혁을 했을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:43"},
+   {id:"m-0HDHT41_o", t:"조선은 어떻게 개항하게 되었을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"2:37"},
+   {id:"phJiePDkHJk", t:"갑신정변은 왜 삼일천하로 끝났을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:37"},
+   {id:"-zQTNusTqqI", t:"동학 농민 운동은 어떻게 일어났을까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:50"},
+   {id:"OlxxoRQiPS8", t:"독립 협회에서 한 일은 무엇일까요?", ch:"참쌤스쿨 · 초능력 비주얼씽킹 한국사", len:"2:41"},
+   {id:"41QT6T4TF4Y", t:"조선은 근대화를 위하여 어떤 개혁을 추진하였을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"2:42"},
+   {id:"0ejT-XsXCRQ", t:"근대 문물의 수용으로 생활 모습은 어떻게 변화하였을까?", ch:"최태성 초등TV · 하루한장 한국사", len:"1:26"}
+  ],
+  think:{q:"독립 협회가 연 만민 공동회에서는 신분에 상관없이 누구나 사회 문제를 토론했어요. 이것이 그전의 조선 사회와 어떻게 다른지, 오늘날 우리 생활의 어떤 모습과 닮았는지 써 보세요.",
+    ex:"조선은 신분에 따라 할 수 있는 일이 정해져 있었지만, 만민 공동회에서는 백정과 같은 사람도 자기 생각을 말할 수 있었어요. 오늘날 학급 회의에서 누구나 의견을 내고 함께 결정하는 모습과 닮았어요."},
+  links:[
+   {src:"우리역사넷 · 재미있는 초등역사", t:"흥선 대원군", d:"문을 굳게 닫은 흥선 대원군 이야기", u:"https://contents.history.go.kr/mobile/eh/view.do?levelId=eh_n0625_0010&code="},
+   {src:"우리역사넷 · 한국사 연대기", t:"강화도 조약(1876)", d:"조선이 문을 연 첫 근대적 조약", u:"https://contents.history.go.kr/mobile/kc/view.do?levelId=kc_i400800&code=kc_age_40"},
+   {src:"우리역사넷 · 교과서 용어 해설", t:"독립신문", d:"한글로 펴낸 신문과 독립 협회", u:"https://contents.history.go.kr/mobile/tg/view.do?subjectCode=tg_ty_030&tabId=02&levelId=tg_004_2080&ganada=&pageUnit=10"}
+  ]}
+],
+ORDER:["조선 건국","임진왜란","병자호란","강화도 조약","갑신정변","동학 농민 운동","대한 제국 선포"],
+DETECT_TITLE:"사진 탐정", DETECT_Q:"무엇일까요?",
+DETECT:[
+ {img:"gyeongguk", a:"경국대전", why:"유교의 가르침을 바탕으로 만든 조선의 기본 법전이에요."},
+ {img:"samgang", a:"삼강행실도", why:"충·효 등 유교의 가르침을 실천한 이야기를 그림과 함께 담은 책이에요."},
+ {img:"seodang", a:"서당", why:"아이들이 한자와 유교의 기초를 배우던 서당의 모습이에요."},
+ {img:"turtle", a:"거북선", why:"임진왜란 때 이순신이 이끈 조선 수군의 배예요."},
+ {img:"hwaseong", a:"수원 화성", why:"정약용의 거중기를 이용해 쌓은 성이에요."},
+ {img:"mask", a:"탈놀이의 탈", why:"서민 문화인 탈놀이에서 쓰던 탈이에요."},
+ {img:"cheokhwa", a:"척화비", why:"흥선 대원군이 서양과 교류하지 않겠다는 뜻으로 세운 비석이에요."},
+ {img:"dongnip", a:"독립신문", why:"독립 협회가 한글로 펴낸 신문이에요."},
+ {img:"gojong", a:"대한 제국의 황제 고종", why:"나라 이름을 대한 제국으로 바꾸고 황제가 된 고종이에요."},
+ {img:"streetcar", a:"전차", why:"대한 제국 시기에 들어온 근대 문물이에요."}
+],
+PEOPLE:[
+ ["이성계","위화도에서 군사를 돌려 권력을 잡고 조선을 세웠어요."],
+ ["이순신","임진왜란 때 조선 수군을 이끌고 일본군을 물리쳤어요."],
+ ["인조","병자호란 때 남한산성에서 버티다 청에 항복했어요."],
+ ["흥선 대원군","전국에 척화비를 세웠어요."],
+ ["김옥균","빠른 개혁을 원해 갑신정변을 일으켰어요."],
+ ["전봉준","동학 농민 운동을 이끌었어요."],
+ ["고종","나라 이름을 대한 제국으로 바꾸고 황제가 되었어요."]
+],
+FINAL:[
+ {q:"고려 말 성리학을 공부해 과거에 합격하여 관리가 된 정몽주, 정도전 같은 사람들을 무엇이라고 하나요?", o:["신진 사대부","중인","의병","실학자"], a:0, e:"신진 사대부는 성리학을 공부한 새로운 관리들로, 이성계와 함께 조선 건국에 참여한 사람도 있었어요."},
+ {q:"한양의 숭례문, 흥인지문 같은 건축물 이름에 담긴 것은?", o:["왕의 이름","유교의 덕목","불교의 가르침","외국의 지명"], a:1, e:"한양은 유교의 가르침을 실현하려고 설계되었고, 주요 건축물에 인·의·예·지·신 같은 덕목을 담아 이름을 붙였어요."},
+ {q:"유교의 가르침을 바탕으로 나라를 다스리는 법과 정책을 담은 조선의 법전은?", o:["삼강행실도","독립신문","경국대전","팔만대장경"], a:2, e:"경국대전은 조선을 다스리는 기본 방향을 제시한 법전이에요."},
+ {q:"조선 시대 아이들이 어릴 때부터 한자와 유교의 기초를 배운 곳은?", o:["성균관","향교","서당","장시"], a:2, e:"성균관은 한양, 향교는 지방의 교육 기관이고, 서당은 어린이들이 기초를 배우던 곳이에요."},
+ {q:"주로 농사를 짓고 세금과 역의 대부분을 부담한 신분은?", o:["양반","중인","상민","천민"], a:2, e:"상민은 농사와 어업, 상업, 수공업 등을 하며 세금과 역의 대부분을 부담했어요."},
+ {q:"임진왜란에 대한 설명으로 옳은 것은?", o:["청이 한양까지 쳐들어온 전쟁이다.","이순신이 이끄는 수군과 의병이 활약했다.","인조가 남한산성에서 항복했다.","3일 만에 끝났다."], a:1, e:"임진왜란은 일본의 침략으로 7년 동안 이어진 전쟁으로, 이순신의 수군과 의병이 활약했어요. 인조의 항복은 병자호란 때의 일이에요."},
+ {q:"조선 후기 사회의 변화로 알맞지 않은 것은?", o:["모내기법이 널리 퍼졌다.","장시가 성장했다.","공명첩을 사서 양반이 되기도 했다.","신분 제도가 더욱 굳건해졌다."], a:3, e:"공명첩이나 족보를 사서 양반이 되는 사람이 늘면서 신분 제도는 오히려 흔들렸어요."},
+ {q:"조선 후기 서민 문화에 해당하지 않는 것은?", o:["탈놀이","판소리","한글 소설","경국대전"], a:3, e:"경국대전은 조선 전기에 만든 법전이에요. 탈놀이, 판소리, 한글 소설, 풍속화, 민화가 서민 문화예요."},
+ {q:"강화도 조약에 대한 설명으로 옳은 것은?", o:["서양과 교류하지 않겠다는 뜻을 알렸다.","조선이 외국과 맺은 최초의 근대적 조약이지만 조선에 불리했다.","동학 농민군의 요구가 반영되었다.","고종이 황제로 즉위했다."], a:1, e:"강화도 조약으로 조선은 개항했지만, 조약에는 조선에 불리한 내용이 담겨 있었어요."},
+ {q:"대한 제국에 대한 설명으로 옳은 것은?", o:["흥선 대원군이 세웠다.","고종이 황제로 즉위하고 근대 시설을 도입했다.","3일 만에 실패했다.","전봉준이 이끌었다."], a:1, e:"고종은 나라 이름을 대한 제국으로 바꾸고 황제가 되어 전기, 병원, 근대식 학교 등 여러 개혁을 추진했어요."}
+],
+SELF:["조선의 건국 과정과 유교 문화가 생활에 미친 영향을 설명할 수 있어요.","조선 후기 농업, 시장, 학문, 문화가 어떻게 달라졌는지 말할 수 있어요.","개항 이후 나라를 지키고 바꾸려는 사람들의 노력을 설명할 수 있어요."],
+TEACHER:[["1차시","코스 ① 조선의 건국과 유교 문화","한양 도성 문 이름과 유교 덕목을 연결해 보는 활동으로 시작해 보세요."],["2차시","코스 ② 조선 후기 사회의 변화","풍속화와 민화 사진을 보며 서민들의 생활을 이야기 나누기 좋아요."],["3차시","코스 ③ 개항과 근대 국가를 향한 노력","만민 공동회 ‘생각 톡톡’을 학급 회의와 연결해 토의해 보세요."],["4차시","코스 ④ 정리 놀이 + ⑤ 평가","평가 후 나오는 탐험 인증서 화면을 캡처해 제출하게 하면 학습 확인이 쉬워요."]],
+CREDITS:[["태조 어진","퍼블릭 도메인"],["숭례문","Bernard Gagnon, CC0"],["경복궁 근정전","kallerna, CC BY-SA 4.0"],["경국대전","국립민속박물관, 공공누리 제1유형"],["삼강행실도","국가유산청, 공공누리 제1유형"],["성균관 명륜당","GN Coordinator, CC BY-SA 4.0"],["김홍도 ‘서당’·‘논갈이’·‘무동’","퍼블릭 도메인"],["거북선(복원)","Junho Jung, CC BY-SA 3.0"],["남한산성","Steve46814, CC BY-SA 3.0"],["정약용 초상","퍼블릭 도메인"],["수원 화성 팔달문","Jpbarrass, 퍼블릭 도메인"],["탈","Bernard Gagnon, CC0"],["민화 ‘까치와 호랑이’","퍼블릭 도메인"],["척화비(청주)","Neoalpha, CC0"],["강화도 조약 그림, 김옥균, 전봉준, 고종, 전차","퍼블릭 도메인"],["독립신문","국립중앙박물관, 공공누리 제1유형"],["덕수궁 석조전","Pip1024, CC BY-SA 4.0"],["영상","참쌤스쿨, 최태성 초등TV, 한밭교육박물관 유튜브 채널"]]
+};
+
+/* =================== ENGINE (uses global D) =================== */
+const IMG = D.IMG, LESSONS = D.LESSONS;
+const STAMP_KEYS = [["l1","①"],["l2","②"],["l3","③"],["play","놀이"],["final","평가"]];
+const S = { screen:"home", stamps:{}, blanks:{}, orderPick:[], det:{i:0,score:0,answered:false,order:null,done:false}, final:null, self:D.SELF.map(()=>0), name:"" };
+
+const $ = (s,el=document)=>el.querySelector(s);
+const norm = s=>String(s||"").replace(/[\s·.,()'"‧・ㆍ\-]/g,"").toLowerCase();
+const CHO = ["ㄱ","ㄲ","ㄴ","ㄷ","ㄸ","ㄹ","ㅁ","ㅂ","ㅃ","ㅅ","ㅆ","ㅇ","ㅈ","ㅉ","ㅊ","ㅋ","ㅌ","ㅍ","ㅎ"];
+const chosung = w=>[...w].map(ch=>{const c=ch.charCodeAt(0)-44032; return (c>=0&&c<=11171)?CHO[Math.floor(c/588)]:ch;}).join("");
+const shuffle = a=>{a=[...a]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a;};
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(msg){const t=document.createElement("div"); t.className="toast"; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2200);}
+function fig(k){const m=IMG[k]; if(!m) return ""; return `<figure><button type="button" data-zoom="${k}" aria-label="${esc(m.cap)} 크게 보기"><img src="img/${k}.jpg" alt="${esc(m.cap)}" loading="lazy" class="${m.fit==="contain"?"contain":""}"></button><figcaption>${m.cap}</figcaption></figure>`;}
+/* parse "text {ans|alt} text" into parts */
+function parseSent(s){ const parts=[]; const re=/\{([^}]+)\}/g; let last=0,m; while((m=re.exec(s))){ parts.push({t:s.slice(last,m.index)}); parts.push({a:m[1].split("|")}); last=re.lastIndex; } parts.push({t:s.slice(last)}); parts.forEach((p,i)=>{ if(p.a){ const pr=parts[i-1], nx=parts[i+1]; if(pr&&/\(\s*$/.test(pr.t)&&nx&&/^\s*\)/.test(nx.t)){ pr.t=pr.t.replace(/\(\s*$/,""); nx.t=nx.t.replace(/^\s*\)/,""); } } }); return parts; }
+LESSONS.forEach(L=>L.blanks.forEach(b=>{ b.parts=parseSent(b.s); b.ans=b.parts.filter(p=>p.a).map(p=>p.a); }));
+const totalBlanks = L=>L.blanks.reduce((n,b)=>n+b.ans.length,0);
+
+const NAV = [["home","처음"], ...LESSONS.map(L=>[L.id, L.nav]), ["play","④ 정리 놀이"],["final","⑤ 마무리 평가"]];
+function renderTop(anim,key){
+  $("#stampsTop").innerHTML = STAMP_KEYS.map(([k,l])=>`<span class="${S.stamps[k]?"on":""} ${anim&&key===k?"pop":""}" title="${l} 도장">${S.stamps[k]?"참":l}</span>`).join("");
+  $("#nav").innerHTML = NAV.map(([k,l])=>`<button data-go="${k}" aria-current="${S.screen===k}">${l}</button>`).join("");
+}
+function go(k){ S.screen=k; renderTop(); render(); window.scrollTo(0,0); }
+function render(){
+  const m=$("#main");
+  if(S.screen==="home") m.innerHTML=homeView();
+  else if(S.screen==="play") m.innerHTML=playView();
+  else if(S.screen==="final") m.innerHTML=finalView();
+  else m.innerHTML=lessonView(LESSONS.find(l=>l.id===S.screen));
+  afterRender();
+}
+
+function homeView(){
+  const courses=[...LESSONS.map(L=>[L.id,L.c,L.short,L.title,L.sum]),["play","butter","코스 ④","단원 정리 놀이",D.PLAY_SUM],["final","tang","코스 ⑤","마무리 평가와 인증서","10문제 풀고 탐험 인증서 받기"]];
+  return `<section class="screen">
+  <div class="hero">
+    <svg class="mascot" viewBox="0 0 120 140" role="img" aria-label="조선 선비 캐릭터 선비"><use href="#seonbi"/></svg>
+    <div>
+      <p class="unit">${D.UNIT}</p>
+      <h1>${D.TITLE_HTML}</h1>
+      <p class="bubble">${D.BUBBLE}</p>
+      <ul class="goals">${D.GOALS.map(g=>`<li>${g}</li>`).join("")}</ul>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="sec-title" style="margin-bottom:6px"><span class="num" style="background:var(--tang)">✦</span><h2>한눈에 보는 시간 여행 길</h2></div>
+    <p class="muted small">왼쪽에서 오른쪽으로 갈수록 오늘날과 가까워져요. 옆으로 밀어서 볼 수 있어요.</p>
+    <div class="timeline"><div class="tl" style="grid-template-columns:repeat(${D.TL.length}, minmax(118px,1fr)); min-width:${D.TL.length*118}px">${D.TL.map(([a,b,c],i)=>`<div class="ev" data-c="${c}"><span class="dot">${i+1}</span><b>${a}</b><small>${b}</small></div>`).join("")}</div></div>
+  </div>
+  <div>
+    <div class="sec-title" style="margin-bottom:12px"><span class="num" style="background:var(--mint)">➜</span><h2>탐험 코스 고르기</h2></div>
+    <div class="courses">${courses.map(([k,c,tag,t,d])=>`<button class="course" data-c="${c}" data-go="${k}"><span class="tag">${tag}</span><h3>${t}</h3><p>${d}</p>${S.stamps[k]?'<span class="done">완료</span>':""}</button>`).join("")}</div>
+  </div>
+  <div class="panel">
+    <h2 style="font-size:22px; margin-bottom:10px">이렇게 공부해요</h2>
+    <div class="how">
+      <div><b>1. 개념 읽기</b>사진을 눌러 크게 보며 핵심 내용을 읽어요. 노란 형광펜 낱말이 꼭 기억할 말이에요.</div>
+      <div><b>2. 영상으로 보기</b>1~5분 정도의 짧은 영상으로 내용을 한 번 더 정리해요.</div>
+      <div><b>3. 빈칸 채우기</b>원래 학습지의 빈칸을 직접 채우고 채점해요. 막히면 초성 힌트를 써요.</div>
+      <div><b>4. 정리 놀이 → 평가</b>세 코스를 마치면 놀이로 복습하고, 평가를 풀어 인증서를 받아요.</div>
+    </div>
+    <p class="small muted" style="margin-top:12px">화면 위쪽 ‘내 도장’ 칸에는 코스 ①②③, 정리 놀이, 마무리 평가를 마칠 때마다 빨간 ‘참’ 도장이 찍혀요.</p>
+  </div>
+  <details class="teacher">
+    <summary>선생님께: 수업 활용 안내</summary>
+    <table><tr><th>차시</th><th>활동</th><th>운영 팁</th></tr>${D.TEACHER.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("")}</table>
+    <p class="small muted" style="margin-top:8px">개별 과제, 보충 학습, 결석생 자기주도 학습용으로도 쓸 수 있어요. 기록은 저장되지 않으니 새로 열면 처음부터 시작돼요. 영상은 유튜브로 연결되니 학교 기기에서 유튜브가 열리는지 미리 확인해 주세요.</p>
+  </details>
+  <details class="credits panel">
+    <summary>사진·영상 출처</summary>
+    <p style="margin-top:6px">사진은 위키미디어 공용(Wikimedia Commons)의 자유 이용 자료를 사용했어요. 영상은 각 유튜브 채널로 연결돼요.</p>
+    <ol>${D.CREDITS.map(([a,b])=>`<li>${a} — ${b}</li>`).join("")}</ol>
+  </details>
+  </section>`;
+}
+
+function blankHTML(L,b,i,st){
+  let j=-1;
+  const sent = b.parts.map(p=>{
+    if(p.t!==undefined) return p.t;
+    j++; const key=`${i}-${j}`; const r=st.res?st.res[key]:undefined;
+    const val = st.reveal? p.a[0] : (st.vals[key]||"");
+    const w = Math.max(4, p.a[0].length+2);
+    return `( <input id="${L.id}-b${key}" data-bk="${key}" value="${esc(val)}" autocomplete="off" style="width:${w}em" class="${r===undefined?"":(r?"ok":"no")}" aria-label="${b.topic} 빈칸 ${j+1}"> )`;
+  }).join("");
+  const keys=b.ans.map((_,k)=>`${i}-${k}`);
+  let cls="",fb="";
+  if(st.res){ const ok=keys.every(k=>st.res[k]); cls=ok?"ok":"no"; fb= ok?"정답이에요!": (st.reveal?`정답: ${b.ans.map(a=>a[0]).join(", ")}`:"다시 생각해 봐요."); }
+  const hint = st.hints[i]? `힌트: ${b.ans.map(a=>`<b>${chosung(a[0])}</b>`).join(" / ")}`:"";
+  return `<div class="bl ${cls}"><span class="topic">${i+1}. ${b.topic}</span><p class="sent">${sent}</p>
+    <div class="row"><button type="button" class="btn ghost small" data-hint="${i}">초성 힌트</button><span class="hint">${hint}</span><span class="fb">${fb}</span></div></div>`;
+}
+
+function lessonView(L){
+  const st = S.blanks[L.id] || (S.blanks[L.id]={vals:{},res:null,hints:{},reveal:false});
+  const cards = L.cards.map(c=>{
+    const pics = c.pics&&c.pics.length ? `<div class="pics ${c.pics.length===2?"two":""}">${c.pics.map(fig).join("")}</div>`:"";
+    const grid = c.grid? `<div class="grid4">${c.grid.map(([t,d])=>`<div><b>${t}</b>${d}</div>`).join("")}</div>`:"";
+    return `<article class="card ${pics?"has-pics":""}"><div style="display:grid; gap:12px; align-content:start">
+      <header><h3>${c.t}</h3><span class="era">${c.era}</span></header>
+      ${c.pts?`<ul>${c.pts.map(p=>`<li>${p}</li>`).join("")}</ul>`:""}${grid}
+      ${c.easy?`<p class="easy"><b>쉽게 말하면</b>${c.easy}</p>`:""}</div>${pics}</article>`;
+  }).join("");
+  const tot = totalBlanks(L);
+  const score = st.res? Object.values(st.res).filter(Boolean).length : 0;
+  const all = st.res && score===tot;
+  return `<section class="screen" data-c="${L.c}" data-lesson="${L.id}">
+    <div class="lhead"><span class="k">${L.short} · ${D.UNIT}</span><h1>${L.title}</h1><p>${L.intro}</p>
+      <div class="steps"><a href="#read-${L.id}">1. 개념 읽기</a><a href="#vid-${L.id}">2. 영상으로 보기</a><a href="#blank-${L.id}">3. 빈칸 채우기</a><a href="#think-${L.id}">4. 생각 톡톡</a><a href="#more-${L.id}">5. 더 알아보기</a></div></div>
+    <div id="read-${L.id}" class="cards">${cards}</div>
+
+    <div id="vid-${L.id}" class="panel" style="display:grid; gap:12px">
+      <div class="sec-title"><span class="num" style="background:var(--c)">▶</span><h2 class="sub-h">영상으로 보기</h2></div>
+      <p class="muted small">짧은 영상(1~5분)으로 내용을 한 번 더 정리해요. 누르면 유튜브가 새 창으로 열려요.</p>
+      <div class="vids">${L.vids.map(v=>`<a class="vid" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener"><div class="th"><img src="thumbs/${v.id}.jpg" alt="" loading="lazy"><i></i><span>${v.len}</span></div><div class="meta"><b>${v.t}</b><small>${v.ch}</small></div></a>`).join("")}</div>
+    </div>
+
+    <div id="blank-${L.id}" class="blank-box">
+      <div class="hd"><h2>학습지 빈칸 채우기</h2><span class="chip">빈칸 ${tot}개</span>${st.res?`<span class="score">${score} / ${tot}</span>`:""}</div>
+      <p class="muted small">읽은 내용을 떠올리며 괄호 안에 알맞은 말을 써요. 띄어쓰기는 틀려도 괜찮아요.</p>
+      ${L.blanks.map((b,i)=>blankHTML(L,b,i,st)).join("")}
+      <div class="row">
+        <button type="button" class="btn" data-check="${L.id}">채점하기</button>
+        <button type="button" class="btn ghost" data-reset="${L.id}">다시 풀기</button>
+        ${st.res&&!all?`<button type="button" class="btn ghost" data-reveal="${L.id}">정답 보기</button>`:""}
+      </div>
+      ${all?`<p class="score" style="color:var(--ok)">모두 맞혔어요! ${L.short} 도장을 찍었어요.</p>`:(st.reveal?`<p class="small muted">정답을 확인했다면 ‘다시 풀기’를 눌러 스스로 한 번 더 풀어 보세요. 모두 맞히면 도장을 받아요.</p>`:"")}
+    </div>
+
+    <div id="think-${L.id}" class="think">
+      <h3>생각 톡톡</h3><p>${L.think.q}</p>
+      <textarea id="think-${L.id}-ta" placeholder="내 생각을 자유롭게 써 보세요.">${esc(S["think_"+L.id]||"")}</textarea>
+      <div class="row"><button type="button" class="btn ghost small" data-ex="${L.id}">예시 답 보기</button></div>
+      <p class="ex" id="ex-${L.id}" hidden>예시 답: ${L.think.ex}</p>
+    </div>
+
+    <div id="more-${L.id}">
+      <div class="sec-title" style="margin-bottom:12px"><span class="num" style="background:var(--c)">+</span><h2 class="sub-h">더 알아보기</h2></div>
+      <div class="links">${L.links.map(k=>`<a class="lk" href="${k.u}" target="_blank" rel="noopener"><span class="src">${k.src}</span><b>${k.t}</b><span>${k.d}</span></a>`).join("")}</div>
+    </div>
+
+    <div class="stampbar"><span class="disp" style="font-size:18px">${S.stamps[L.id]?"도장 완료! 다음 코스로 가 볼까요?":"빈칸을 모두 맞히면 도장을 받아요."}</span>
+      <button type="button" class="btn" data-go="${["l1","l2","l3","play"][L.n]}">${L.n<3?`다음: 코스 ${["①","②","③"][L.n]}`:"다음: 정리 놀이"} →</button></div>
+  </section>`;
+}
+
+function playView(){
+  if(!S.det.order) S.det.order=shuffle(D.DETECT.map((_,i)=>i));
+  if(!S.orderPool) S.orderPool=shuffle(D.ORDER);
+  if(!S.matchOpts) S.matchOpts=shuffle(D.PEOPLE.map(p=>p[1]));
+  const pick=S.orderPick, orderRes=S.orderChecked?pick.map((p,i)=>p===D.ORDER[i]):null;
+  const Dt=S.det; let det;
+  if(Dt.done){ det=`<p class="score">결과: ${Dt.score} / ${D.DETECT.length}</p><p>${Dt.score>=7?"대단해요! 사진만 보고도 척척 알아맞혔어요.":"헷갈린 사진은 코스 ①~③에서 다시 살펴봐요."}</p><div class="row"><button class="btn ghost" data-detreset>다시 도전</button></div>`; }
+  else{
+    const item=D.DETECT[Dt.order[Dt.i]];
+    if(!Dt.opts) Dt.opts=shuffle([item.a,...shuffle(D.DETECT.map(x=>x.a).filter(x=>x!==item.a)).slice(0,3)]);
+    det=`<div class="progress" aria-hidden="true"><i style="width:${Dt.i/D.DETECT.length*100}%"></i></div>
+      <div class="det" data-c="butter">${fig(item.img)}
+      <div style="display:grid; gap:10px"><p class="disp" style="font-size:19px">${Dt.i+1}번 사진! ${D.DETECT_Q}</p>
+      <div class="opts">${Dt.opts.map(o=>{let c=""; if(Dt.answered){ if(o===item.a)c="ok"; else if(o===Dt.picked)c="no";} return `<button type="button" class="${c}" data-det="${esc(o)}" ${Dt.answered?"disabled":""}>${o}</button>`;}).join("")}</div>
+      ${Dt.answered?`<p class="small">${Dt.picked===item.a?"<b style='color:var(--ok)'>정답!</b>":"<b style='color:var(--no)'>아쉬워요.</b> 정답은 "+item.a+"."} ${item.why}</p><button type="button" class="btn small" data-detnext>${Dt.i+1<D.DETECT.length?"다음 사진":"결과 보기"} →</button>`:""}
+      </div></div>`;
+  }
+  const mres=S.matchRes;
+  return `<section class="screen" data-c="butter">
+    <div class="lhead"><span class="k">코스 ④ · 단원 정리 놀이</span><h1>놀면서 단원 정리하기</h1><p>세 가지 놀이를 모두 성공하면 ‘놀이’ 도장을 받아요. 틀려도 괜찮으니 여러 번 도전해 보세요.</p></div>
+    <div class="game">
+      <div class="row"><h2>놀이 1. 사건 순서 맞추기</h2>${S.orderDone?'<span class="chip" style="background:var(--ok-bg);color:var(--ok)">성공</span>':""}</div>
+      <p class="muted small">먼저 일어난 일부터 차례대로 눌러 보세요.</p>
+      <div class="pool">${S.orderPool.map(o=>`<button type="button" data-ord="${esc(o)}" ${pick.includes(o)?"disabled":""}>${o}</button>`).join("")}</div>
+      <div class="slots">${pick.length?pick.map((p,i)=>`<span class="${orderRes?(orderRes[i]?"ok":"no"):""}">${p}</span>`).join(""):"<em>여기에 순서대로 놓여요.</em>"}</div>
+      <div class="row"><button type="button" class="btn" data-ordcheck ${pick.length<D.ORDER.length?"disabled":""}>확인하기</button><button type="button" class="btn ghost" data-ordreset>다시 하기</button>
+      ${orderRes?(S.orderDone?'<span class="score" style="color:var(--ok)">완벽해요!</span>':'<span class="small" style="color:var(--no)">빨간 칸의 순서를 다시 생각해 봐요.</span>'):""}</div>
+    </div>
+    <div class="game">
+      <div class="row"><h2>놀이 2. ${D.DETECT_TITLE}</h2>${Dt.done&&Dt.score>=7?'<span class="chip" style="background:var(--ok-bg);color:var(--ok)">성공</span>':""}</div>
+      <p class="muted small">사진을 보고 알맞은 것을 골라요. ${D.DETECT.length}문제 중 7개 이상 맞히면 성공! 사진을 누르면 크게 볼 수 있어요.</p>
+      ${det}
+    </div>
+    <div class="game">
+      <div class="row"><h2>놀이 3. 인물 짝 찾기</h2>${S.matchDone?'<span class="chip" style="background:var(--ok-bg);color:var(--ok)">성공</span>':""}</div>
+      <p class="muted small">인물과 알맞은 일을 골라 짝을 지어요.</p>
+      <div class="match">${D.PEOPLE.map((p,i)=>`<div class="m ${mres?(mres[i]?"ok":"no"):""}"><b>${p[0]}</b>
+        <select id="match-${i}" data-mi="${i}" aria-label="${p[0]}이 한 일"><option value="">한 일 고르기</option>${S.matchOpts.map(o=>`<option ${S["m"+i]===o?"selected":""}>${o}</option>`).join("")}</select>
+        <span class="mark">${mres?(mres[i]?"○":"✕"):""}</span></div>`).join("")}</div>
+      <div class="row"><button type="button" class="btn" data-matchcheck>확인하기</button></div>
+    </div>
+    <div class="stampbar"><span class="disp" style="font-size:18px">${S.stamps.play?"놀이 도장 완료! 이제 마무리 평가에 도전해요.":"세 놀이를 모두 성공하면 도장을 받아요."}</span><button type="button" class="btn" data-go="final">다음: 마무리 평가 →</button></div>
+  </section>`;
+}
+
+function finalView(){
+  const F=S.final, sub=F&&F.submitted, Q=D.FINAL;
+  const qs=Q.map((q,i)=>`<div class="q"><h3><span class="n">${i+1}.</span>${q.q}</h3>
+    ${q.o.map((o,j)=>{let c=""; if(sub){ if(j===q.a)c="right"; else if(F.ans[i]===j)c="wrong";} return `<label class="${c}"><input type="radio" name="fq${i}" value="${j}" ${F&&F.ans[i]===j?"checked":""} ${sub?"disabled":""}> <span>${o}</span></label>`;}).join("")}
+    ${sub?`<p class="exp">${F.ans[i]===q.a?"○ 정답!":"✕ 다시 보기:"} ${q.e}</p>`:""}</div>`).join("");
+  const score=sub?Q.filter((q,i)=>F.ans[i]===q.a).length:0;
+  const t=new Date(), ds=`${t.getFullYear()}년 ${t.getMonth()+1}월 ${t.getDate()}일`;
+  const cert=sub?`<div class="cert">
+      <svg viewBox="0 0 120 140" width="70" height="80" aria-hidden="true"><use href="#seonbi"/></svg>
+      <h2>시간 여행 탐험 인증서</h2><p>${D.UNIT} 「${D.UNIT_NAME}」</p>
+      <label class="disp" for="certName">탐험가 이름</label>
+      <input id="certName" value="${esc(S.name)}" placeholder="이름을 쓰세요" autocomplete="off">
+      <p>위 탐험가는 ${D.CERT_RANGE} 시간 여행을 마치고<br>마무리 평가에서 <b style="font-family:var(--display);font-size:22px;color:var(--tang-d)">${score} / ${Q.length}</b>점을 받았기에 이 인증서를 드립니다.</p>
+      <div class="big-stamps">${[["l1","코스①"],["l2","코스②"],["l3","코스③"],["play","놀이"],["final","평가"]].map(([k,l])=>`<span class="${S.stamps[k]?"on":""}">${l}<br>${S.stamps[k]?"완료":""}</span>`).join("")}</div>
+      <p class="small muted">${ds} · 이 화면을 캡처해서 선생님께 제출하세요.</p></div>`:"";
+  return `<section class="screen" data-c="tang">
+    <div class="lhead"><span class="k">코스 ⑤ · 마무리 평가</span><h1>${D.UNIT_SHORT} 마무리 평가</h1><p>${Q.length}문제를 모두 풀고 ‘제출하기’를 누르면 바로 채점되고, 틀린 문제는 해설을 볼 수 있어요.</p></div>
+    ${qs}
+    <div class="row">${sub?`<span class="score">점수: ${score} / ${Q.length}</span><button type="button" class="btn ghost" data-finalreset>다시 풀기</button>`:`<button type="button" class="btn" data-finalsubmit>제출하기</button><span class="small muted" id="finalMsg"></span>`}</div>
+    ${sub?`<div class="panel"><h2 style="font-size:22px;margin-bottom:10px">스스로 평가하기</h2><div class="self">${D.SELF.map((s,i)=>`<div class="s"><span>${s}</span><span class="stars" role="group" aria-label="${s}">${[1,2,3].map(n=>`<button type="button" data-star="${i}-${n}" class="${S.self[i]>=n?"on":""}" aria-label="별 ${n}개">★</button>`).join("")}</span></div>`).join("")}</div></div>${cert}`:""}
+  </section>`;
+}
+
+function afterRender(){
+  document.querySelectorAll("[data-lesson] input[data-bk]").forEach(inp=>{
+    inp.addEventListener("input",()=>{ const L=inp.closest("[data-lesson]").dataset.lesson; S.blanks[L].vals[inp.dataset.bk]=inp.value; });
+    inp.addEventListener("keydown",e=>{ if(e.key==="Enter"){ checkBlanks(inp.closest("[data-lesson]").dataset.lesson); } });
+  });
+  document.querySelectorAll("textarea[id^=think-]").forEach(t=>t.addEventListener("input",()=>{ S["think_"+t.id.split("-")[1]]=t.value; }));
+  document.querySelectorAll("select[data-mi]").forEach(s=>s.addEventListener("change",()=>{ S["m"+s.dataset.mi]=s.value; }));
+  const cn=$("#certName"); if(cn) cn.addEventListener("input",()=>S.name=cn.value);
+  document.querySelectorAll("input[name^=fq]").forEach(r=>r.addEventListener("change",()=>{ if(!S.final) S.final={ans:{},submitted:false}; S.final.ans[r.name.slice(2)]=+r.value; }));
+}
+function syncVals(id){ const st=S.blanks[id]; document.querySelectorAll(`[data-lesson="${id}"] input[data-bk]`).forEach(el=>st.vals[el.dataset.bk]=el.value); }
+function checkBlanks(id){
+  const L=LESSONS.find(l=>l.id===id), st=S.blanks[id]; syncVals(id); st.reveal=false; st.res={};
+  L.blanks.forEach((b,i)=>b.ans.forEach((alts,j)=>{ st.res[`${i}-${j}`]=alts.some(a=>norm(a)===norm(st.vals[`${i}-${j}`])); }));
+  const vals=Object.values(st.res), ok=vals.filter(Boolean).length, all=ok===vals.length;
+  const first=all&&!S.stamps[id]; if(all) S.stamps[id]=true;
+  const y=window.scrollY; render(); window.scrollTo(0,y);
+  if(first){ renderTop(true,id); toast(`${L.short} 도장 쾅!`); } else if(!all) toast(`${ok}개 맞혔어요. 틀린 빈칸을 다시 채워 봐요!`);
+}
+function giveStamp(key,msg){ if(S.stamps[key]) return; S.stamps[key]=true; renderTop(true,key); toast(msg); }
+function checkPlay(){ if(S.orderDone&&S.detDone&&S.matchDone) giveStamp("play","놀이 도장 쾅! 모든 놀이 성공!"); }
+
+document.addEventListener("click",e=>{
+  if(e.target.classList&&e.target.classList.contains("lb")){ $("#overlay").innerHTML=""; return; }
+  const t=e.target.closest("button, a"); if(!t) return;
+  const d=t.dataset; const keep=()=>{const y=window.scrollY; render(); window.scrollTo(0,y);};
+  if(d.go){ go(d.go); return; }
+  if(d.zoom){ const m=IMG[d.zoom]; $("#overlay").innerHTML=`<div class="lb" role="dialog" aria-label="사진 크게 보기"><figure><img src="img/${d.zoom}.jpg" alt="${esc(m.cap)}"><figcaption>${m.cap}</figcaption></figure><button class="btn x" data-close>닫기</button></div>`; return; }
+  if(d.close!==undefined){ $("#overlay").innerHTML=""; return; }
+  if(d.hint!==undefined){ const L=t.closest("[data-lesson]").dataset.lesson; syncVals(L); S.blanks[L].hints[d.hint]=true; keep(); return; }
+  if(d.check){ checkBlanks(d.check); return; }
+  if(d.reset){ S.blanks[d.reset]={vals:{},res:null,hints:{},reveal:false}; keep(); return; }
+  if(d.reveal){ S.blanks[d.reveal].reveal=true; keep(); return; }
+  if(d.ex){ const el=$("#ex-"+d.ex); el.hidden=!el.hidden; t.textContent=el.hidden?"예시 답 보기":"예시 답 숨기기"; return; }
+  if(d.ord){ if(S.orderPick.length<D.ORDER.length){ S.orderPick.push(d.ord); S.orderChecked=false; } keep(); return; }
+  if(d.ordreset!==undefined){ S.orderPick=[]; S.orderChecked=false; S.orderPool=shuffle(D.ORDER); keep(); return; }
+  if(d.ordcheck!==undefined){ S.orderChecked=true; if(S.orderPick.every((p,i)=>p===D.ORDER[i])){ S.orderDone=true; toast("순서 완벽!"); checkPlay(); } keep(); return; }
+  if(d.det){ const Dt=S.det; Dt.answered=true; Dt.picked=d.det; if(d.det===D.DETECT[Dt.order[Dt.i]].a) Dt.score++; keep(); return; }
+  if(d.detnext!==undefined){ const Dt=S.det; Dt.i++; Dt.answered=false; Dt.opts=null; Dt.picked=null; if(Dt.i>=D.DETECT.length){ Dt.done=true; if(Dt.score>=7){ S.detDone=true; checkPlay(); } } keep(); return; }
+  if(d.detreset!==undefined){ S.det={i:0,score:0,answered:false,order:shuffle(D.DETECT.map((_,i)=>i)),done:false}; keep(); return; }
+  if(d.matchcheck!==undefined){ S.matchRes=D.PEOPLE.map((p,i)=>($("#match-"+i).value===p[1])); if(S.matchRes.every(Boolean)){ S.matchDone=true; toast("인물 짝 찾기 성공!"); checkPlay(); } keep(); return; }
+  if(d.finalsubmit!==undefined){ const F=S.final||{ans:{}}; const miss=D.FINAL.map((_,i)=>i).filter(i=>F.ans[i]===undefined); if(miss.length){ $("#finalMsg").textContent=`아직 안 푼 문제: ${miss.map(i=>i+1).join(", ")}번`; return; } F.submitted=true; S.final=F; const sc=D.FINAL.filter((q,i)=>F.ans[i]===q.a).length; const first=!S.stamps.final; S.stamps.final=true; render(); renderTop(first,"final"); toast(`${sc}점! 평가 도장을 받았어요.`); setTimeout(()=>{const c=$(".cert"); if(c) c.scrollIntoView({behavior:"smooth",block:"center"});},300); return; }
+  if(d.finalreset!==undefined){ S.final=null; render(); window.scrollTo(0,0); return; }
+  if(d.star){ const [i,n]=d.star.split("-").map(Number); S.self[i]=n; keep(); return; }
+});
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") $("#overlay").innerHTML=""; });
+renderTop(); render();
+
+</script>
